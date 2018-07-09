@@ -1,0 +1,6 @@
+{
+  "name": "ManajemenPengguna",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ManajemenPengguna.js"
+}
