@@ -21,8 +21,26 @@ class AdminPusatController extends Controller
 
     function view_tpu(){
     	$tpu = Tpu::all();
-		return response()->json($tpu);
+        return response()->json($tpu);
+        
     }
+    
+    function view_penghunimakam(){
+        $view = DB::table('penghuni_makam')
+            ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+            ->select('penghuni_makam.*', 'makam.*')
+            ->get();
+		return response()->json($view);
+    }
+
+    function view_blok(){
+    	$view = DB::table('blok_makam')
+            ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+            ->select('blok_makam.*', 'tpu.*')
+            ->get();
+		return response()->json($view);
+    }
+
 
     function view_role_tpu(){
     	$role_tpu = Role_tpu::all();

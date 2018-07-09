@@ -43,12 +43,18 @@ const Log = Loadable({
   loading: Loading,
 });
 
+const Search = Loadable({
+  loader: () => import('./views/Search'),
+  loading: Loading,
+});
+
 
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
+  { path: '/Search', exact: true, name: 'Search', component: Search  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/supplier', name: 'Supplier', component: Supplier },

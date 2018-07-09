@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('cors')->post('login', 'AuthController@login');
 Route::middleware('cors')->get('user/view', 'AdminPusatController@view');
 Route::middleware('cors')->get('tpu/view', 'AdminPusatController@view_tpu');
+Route::middleware('cors')->get('penghuni_makam/view', 'AdminPusatController@view_penghunimakam');
+Route::middleware('cors')->get('blok/view', 'AdminPusatController@view_blok');
 Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_tpu');
 Route::middleware('cors')->put('update_user/{id_user}', 'AdminPusatController@update_user');
 Route::middleware('cors')->delete('delete_user/{id_user}', 'AdminPusatController@delete_user');
