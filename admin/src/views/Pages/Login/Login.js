@@ -48,7 +48,7 @@ class Login extends Component {
             if(this.state.temp.role == 0){
               this.props.history.push('/ManajemenPengguna')
             } else if(this.state.temp.role == 1){
-              this.props.history.push('/404')
+              this.props.history.push('/DataPenghuniMakam')
             } else if(this.state.temp.role == 2){
               this.props.history.push('/')
             }

@@ -48,6 +48,11 @@ const Search = Loadable({
   loading: Loading,
 });
 
+const ManajemenPenghuniMakam = Loadable({
+  loader: () => import('./views/ManajemenDataPenghuniMakam'),
+  loading: Loading,
+});
+
 
 
 
@@ -55,6 +60,7 @@ const Search = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/Search', exact: true, name: 'Search', component: Search  },
+  { path: '/DataPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/supplier', name: 'Supplier', component: Supplier },

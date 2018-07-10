@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Role_tpu;
 use App\Tpu;
+use App\Penghuni_makam;
 
 class AdminPusatController extends Controller
 {
@@ -31,6 +32,63 @@ class AdminPusatController extends Controller
             ->select('penghuni_makam.*', 'makam.*')
             ->get();
 		return response()->json($view);
+    }
+
+    function create_penghunimakam(Request $request){
+
+        $nama = $request->input('nama');
+        $alamat_terakhir = $request->input('alamat_terakhir');
+        $tanggal_wafat = $request->input('tanggal_wafat');
+        $status = $request->input('status');
+        $id_makam = $request->input('id_makam');
+        $nama_ahli_waris = $request->input('nama_ahli_waris');
+        $alamat_ahli_waris = $request->input('alamat_ahli_waris');
+        $nik_ahli_waris = $request->input('nik_ahli_waris');
+        $kontak_ahli_waris = $request->input('kontak_ahli_waris');
+
+        return Penghuni_Makam::create(array(
+            'nama' => $nama,
+            'alamat_terakhir' => $alamat_terakhir,
+            'tanggal_wafat' => $tanggal_wafat,
+            'status' => $status,
+            'id_makam' => $id_makam,
+            'nama_ahli_waris' => $nama_ahli_waris,
+            'alamat_ahli_waris' => $alamat_ahli_waris,
+            'nik_ahli_waris' => $nik_ahli_waris,
+            'kontak_ahli_waris' => $kontak_ahli_waris,
+        ));
+        
+
+
+        // $p_makam = new Penghuni_makam([
+            // 'nama' => $nama,
+            // 'alamat_terakhir' => $alamat_terakhir,
+            // 'tanggal_wafat' => $tanggal_wafat,
+            // 'status' => $status,
+            // 'id_makam' => $id_makam,
+            // 'nama_ahli_waris' => $nama_ahli_waris,
+            // 'alamat_ahli_waris' => $alamat_ahli_waris,
+            // 'nik_ahli_waris' => $nik_ahli_waris,
+            // 'kontak_ahli_waris' => $kontak_ahli_waris,
+        // ]);
+
+        // $p_makam->save();
+		// return $p_makam;
+    }
+    
+    public function update_penghunimakam(Request $request, $id)
+    {
+        $penghuni_makam = Penghuni_makam::findOrFail($id);
+        $penghuni_makam->update($request->all());
+        return $penghuni_makam;
+    }
+
+    public function delete_penghunimakam(Request $request, $id)
+    {
+        $penghuni_makam = Penghuni_makam::findOrFail($id);
+        $penghuni_makam->delete();
+
+        return 204;
     }
 
     function view_blok(){
