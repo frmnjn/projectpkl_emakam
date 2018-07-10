@@ -126,7 +126,7 @@ class ManajemenHakAkses extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    console.log(this.state.table_user);
+    console.log(this.state.value_user);
     fetch('http://localhost:8000/api/create_role_tpu', {
       method: 'POST',
       headers: {

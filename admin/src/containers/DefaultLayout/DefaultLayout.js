@@ -28,6 +28,8 @@ class DefaultLayout extends Component {
   render() {
     const Pusat = "Pusat";
     const TPU = "TPU";
+    console.log(sessionStorage.getItem('login_session'));
+    
     return (
       <div className="app">
         <AppHeader fixed>
@@ -37,14 +39,14 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={usersData.role == 0 ? navigationAdminPusat:navigationAdminTPU} {...this.props} />
+            <AppSidebarNav navConfig={sessionStorage.getItem('login_session') == "0" ? navigationAdminPusat:navigationAdminTPU} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-            <h1>Welcome, Admin {usersData.role == 0 ? Pusat:TPU}</h1>
+            <h1>Welcome, Admin {sessionStorage.getItem('login_session') == "0" ? Pusat:TPU}</h1>
               <Switch>
                 {routes.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (

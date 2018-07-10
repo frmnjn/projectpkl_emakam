@@ -12,10 +12,7 @@ use App\Penghuni_makam;
 class AdminPusatController extends Controller
 {
     function view(){
-    	$user = DB::table('user')
-        ->join('role_tpu', 'user.id_user', '=', 'role_tpu.id_user')
-        ->select('user.*', 'role_tpu.*')
-        ->get();
+        $user = User::all();
 
         return response()->json($user);
     }

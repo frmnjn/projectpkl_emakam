@@ -56,18 +56,15 @@ class Login extends Component {
             console.log(usersData.role);
           },
         )
-          // this.setState({
-          //   temp: responseJson
-          // });
-          // const data = Object.entries(this.state.temp)
-          // //this.props.history.push('/home')
-          
+        sessionStorage.setItem('login_session', this.state.temp.role);
+        alert(sessionStorage.getItem('login_session'));
         }
       });
 
   }
 
   render() {
+    console.log(sessionStorage.getItem('login_session'));
     return (
       <div className="app flex-row align-items-center">
         <Container>

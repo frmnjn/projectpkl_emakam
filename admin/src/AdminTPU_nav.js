@@ -11,7 +11,7 @@ export default {
     },
     {
       name: 'Manajemen Makam',
-      url: '/ManajemenPengguna',
+      url: '/DataPenghuniMakam',
       icon: 'icon-user',
     },
     // {

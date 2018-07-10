@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
@@ -16,12 +17,10 @@ const defaultProps = {};
 class DefaultHeader extends Component {
 
   logout() {
-    usersData.id = null;
-    usersData.nama = null;
-    usersData.username = null;
-    usersData.password = null;
-
-    this.props.history.push('/login')
+    sessionStorage.clear();
+    <Switch>
+    <Redirect to="/login" />
+    </Switch>
   }
 
   render() {
@@ -47,7 +46,8 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
               <DropdownItem href="#/users/1" ><i className="fa fa-user"></i> Profile</DropdownItem>
-              <DropdownItem href={() => this.logout()}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              {/* <DropdownItem onClick={() => this.logout()}><i className="fa fa-lock"></i> Logout</DropdownItem> */}
+              <DropdownItem><i className="fa fa-lock"></i> <a href="/login" onClick={() => this.logout()}>Log Out</a></DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
