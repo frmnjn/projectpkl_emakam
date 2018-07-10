@@ -23,6 +23,11 @@ const ManajemenPengguna = Loadable({
   loading: Loading,
 });
 
+const ManajemenHakAkses = Loadable({
+  loader: () => import('./views/AdminPusat/ManajemenHakAkses/ManajemenHakAkses'),
+  loading: Loading,
+});
+
 const Home = Loadable({
   loader: () => import('./views/Home'),
   loading: Loading,
@@ -63,6 +68,7 @@ const routes = [
   { path: '/DataPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
+  { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },
   { path: '/supplier', name: 'Supplier', component: Supplier },
   { path: '/buyer', name: 'Buyer', component: Buyer },
   { path: '/log', name: 'Log', component: Log },

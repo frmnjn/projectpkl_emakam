@@ -23,7 +23,7 @@ import {
   ModalBody, ModalFooter, ModalHeader,
 } from 'reactstrap';
 
-class ManajemenPengguna extends Component {
+class ManajemenHakAkses extends Component {
   constructor(props) {
     super(props);
 
@@ -34,6 +34,18 @@ class ManajemenPengguna extends Component {
       table_user: [],
       table_tpu: [],
       table_role_tpu: [],
+      table_constraint_user: [],
+      id_tpu: "",
+      id_user: "",
+      value_tpu: "",
+      value_user: "",
+      activevalue_tpu: "",
+      activevalue_user: "",
+      activeid_tpu: "",
+      activeid_user: "",
+      activenama_tpu: "",
+      activeusername: "",
+      activeid_role_tpu: ""
     };
 
     this.toggle = this.toggle.bind(this);
@@ -69,7 +81,17 @@ class ManajemenPengguna extends Component {
           });
         },
     )
+    fetch('http://localhost:8000/api/constraint_user')
+      .then(response => response.json())
+      .then(
+        (result) => {
+          this.setState({
+            table_constraint_user: result
+          });
+        },
+    )
   }
+
 
 
 
@@ -80,24 +102,22 @@ class ManajemenPengguna extends Component {
     });
   }
 
-  toggleLarge(table_user) {
+  toggleLarge(table_constraint_user) {
     this.setState({
       large: !this.state.large
     });
-    this.state.activeid = table_user.id_user;
-    this.state.activeusername = table_user.username;
-    this.state.activepassword = table_user.password;
-    this.state.activerole = table_user.role;
-    this.state.activetpu = table_user.id_tpu;
+    this.state.activeid_tpu = table_constraint_user.id_tpu;
+    this.state.activenama_tpu = table_constraint_user.nama_tpu;
+    this.state.activeid_user = table_constraint_user.id_user;
+    this.state.activeusername = table_constraint_user.username;
+    this.state.activeid_role_tpu = table_constraint_user.id_role_tpu;
+
   }
 
   togglePrimary() {
     this.setState({
       primary: !this.state.primary,
     });
-  }
-
-  componentDidMount() {
   }
 
   handleChange = (e) => {
@@ -107,17 +127,15 @@ class ManajemenPengguna extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.table_user);
-    fetch('http://localhost:8000/admin/create_user', {
+    fetch('http://localhost:8000/api/create_role_tpu', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        nama: this.state.nama,
-        username: this.state.username,
-        password: this.state.password,
-        actor: this.state.actor
+        id_tpu: this.state.value_tpu,
+        id_user: this.state.value_user
       })
     }).catch((error) => {
       console.error(error);
@@ -127,32 +145,53 @@ class ManajemenPengguna extends Component {
 
   handleSubmitEdit = event => {
     event.preventDefault();
+    console.log(this.state.activevalue_tpu);
+    console.log(this.state.activevalue_user);
 
-    fetch('http://localhost:8000/admin/edit_user/' + this.state.activeid, {
+    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_user, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        nama: this.state.activename,
-        username: this.state.activeusername,
-        password: this.state.activepassword,
-        actor: this.state.activeactor
+        id_tpu: this.state.activevalue_tpu,
+        id_user: this.state.activevalue_user,
       })
+    }).then(function(response) {
+      return response.json();
     })
-    alert("Data user dengan id " + this.state.activeid + " berhasil di update!");
+    .then(function(myJson) {
+      alert(myJson.msg);
+    });
   }
 
-  handledelete(table_user) {
-    fetch('http://localhost:8000/api/delete_user/' + table_user.id_user, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
+  handledelete(table_constraint_user) {
+    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_user, {
+      method: 'DELETE'
     })
-    alert("Data user dengan id " + this.state.activeid + " berhasil di hapus!");
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        alert(myJson.msg);
+      });
+  }
+
+  handleChangeOption_tpu = (e) => {
+    this.setState({ value_tpu: e.target.value });
+  }
+
+  handleChangeOption_user = (e) => {
+    this.setState({ value_user: e.target.value });
+  }
+
+  handleChangeOption_active_tpu = (e) => {
+    this.setState({ activevalue_tpu: e.target.value });
+  }
+
+  handleChangeOption_active_user = (e) => {
+    this.setState({ activevalue_user: e.target.value });
   }
 
   render() {
@@ -170,42 +209,29 @@ class ManajemenPengguna extends Component {
                 <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
                 <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
                   className={'modal-primary ' + this.props.className}>
-                  <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
+                  <ModalHeader toggle={this.togglePrimary}>Buat Hak Akses</ModalHeader>
                   <ModalBody>
                     <form onSubmit={this.handleSubmitCreate}>
                       <div class="form-group">
-                        <label>ID User</label>
-                        <input type="text" className="form-control" placeholder="ID User" name="id_user" onChange={this.handleChange}></input>
-
-                      </div>
-                      <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" name="role_tpu">
-                          {this.state.table_role_tpu.map((table_role_tpu, index) => {
+                        <label>ID TPU</label>
+                        <select class="form-control" onChange={this.handleChangeOption_tpu}>
+                          <option disabled selected>ID TPU</option>
+                          {this.state.table_tpu.map((table_tpu, index) => {
                             return (
-                              <option>{table_role_tpu.id_role_tpu}</option>
+                              <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
                             )
                           })}
-
                         </select>
                       </div>
                       <div class="form-group">
-                        <label>ID TPU</label>
-                        <select class="form-control" name="id_tpu">
-                          {this.state.table_tpu.map((table_tpu, index) => {
+                        <label>ID User</label>
+                        <select class="form-control" onChange={this.handleChangeOption_user}>
+                          <option disabled selected>ID User</option>
+                          {this.state.table_user.map((table_user, index) => {
                             return (
-                              <option>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                              <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
                             )
                           })}
-
                         </select>
                       </div>
                       <div class="form-group">
@@ -219,70 +245,58 @@ class ManajemenPengguna extends Component {
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">ID User</th>
-                      <th scope="col">Username</th>
-                      <th scope="col">Password</th>
-                      <th scope="col">Role</th>
+                      <th scope="col">ID Role TPU</th>
                       <th scope="col">TPU</th>
+                      <th scope="col">User</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
 
-                  {this.state.table_user.map((table_user, index) => {
+                  {this.state.table_constraint_user.map((table_constraint_user, index) => {
                     return (
                       <tbody>
-                        <th> {table_user.id_user}</th>
-                        <th> {table_user.username}</th>
-                        <th> {table_user.password}</th>
-                        <th> {table_user.role}</th>
-                        <th> {table_user.id_tpu} </th>
-                        <th><Button color="success" onClick={() => this.toggleLarge(table_user)} className="mr-1">Edit</Button>
-                        <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                          className={'modal-Large ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
-                          <ModalBody>
-                            <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                              <div class="form-group">
-                                <label>ID User</label>
-                                <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
-                              </div>
-                              <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
-                              </div>
-                              <div class="form-group">
-                                <label>Password</label>
-                                <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
-                              </div>
-                              <div class="form-group">
-                                <label>Role</label>
-                                <select class="form-control" name="role_tpu">
-                                  {this.state.table_role_tpu.map((table_role_tpu, index) => {
-                                    return (
-                                      <option>{table_role_tpu.id_role_tpu}</option>
-                                    )
-                                  })}
-
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <label>TPU</label>
-                                <select class="form-control" name="role_tpu">
-                                  {this.state.table_tpu.map((table_tpu, index) => {
-                                    return (
-                                      <option>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
-                                    )
-                                  })}
-
-                                </select>
-                              </div>
-                              <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
-                            </form>
-                          </ModalBody>
-                          <ModalFooter>
-                          </ModalFooter>
-                        </Modal>
-                        <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_user) }} className="mr-1">Delete</Button></th>
+                        <th> {table_constraint_user.id_role_tpu}</th>
+                        <th> {table_constraint_user.id_tpu} - {table_constraint_user.nama_tpu}</th>
+                        <th> {table_constraint_user.id_user} - {table_constraint_user.username}</th>
+                        <th><Button color="success" onClick={() => this.toggleLarge(table_constraint_user)} className="mr-1">Edit</Button>
+                          <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                            className={'modal-Large ' + this.props.className}>
+                            <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
+                            <ModalBody>
+                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                                <div class="form-group">
+                                  <label>ID Role User</label>
+                                  <input type="number" className="form-control" name="activeid_role_tpu" onChange={this.handleChange} value={this.state.activeid_role_tpu}></input>
+                                </div>
+                                <div class="form-group">
+                                  <label>ID TPU</label>
+                                  <select class="form-control" onChange={this.handleChangeOption_active_tpu}>
+                                    <option disabled selected>Pilih ID TPU</option>
+                                    {this.state.table_tpu.map((table_tpu, index) => {
+                                      return (
+                                        <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                                      )
+                                    })}
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                  <label>ID User</label>
+                                  <select class="form-control" onChange={this.handleChangeOption_active_user}>
+                                  <option disabled selected>Pilih ID User</option>
+                                    {this.state.table_user.map((table_user, index) => {
+                                      return (
+                                        <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
+                                      )
+                                    })}
+                                  </select>
+                                </div>
+                                <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                              </form>
+                            </ModalBody>
+                            <ModalFooter>
+                            </ModalFooter>
+                          </Modal>
+                          <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_constraint_user) }} className="mr-1">Delete</Button></th>
                       </tbody>
                     )
                   })}
@@ -297,4 +311,4 @@ class ManajemenPengguna extends Component {
   }
 }
 
-export default ManajemenPengguna;
+export default ManajemenHakAkses;
