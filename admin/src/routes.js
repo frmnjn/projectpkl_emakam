@@ -68,6 +68,11 @@ const ManajemenBlokMakam = Loadable({
   loading: Loading,
 });
 
+const ManajemenTPU = Loadable({
+  loader: () => import('./views/ManajemenTPU'),
+  loading: Loading,
+});
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -77,6 +82,7 @@ const routes = [
   { path: '/DataPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/ManajemenMakam', exact: true, name: 'Manajemen Makam', component: ManajemenMakam  },
   { path: '/ManajemenBlokMakam', exact: true, name: 'Manajemen Makam', component: ManajemenBlokMakam  },
+  { path: '/ManajemenTpu', exact: true, name: 'Manajemen TPU', component: ManajemenTPU  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },

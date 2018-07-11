@@ -27,6 +27,9 @@ Route::middleware('cors')->get('constraint_user', 'AdminPusatController@constrai
 
 //tpu
 Route::middleware('cors')->get('tpu/view', 'AdminPusatController@view_tpu');
+Route::middleware('cors')->post('tpu/create', 'AdminPusatController@create_tpu');
+Route::middleware('cors')->put('tpu/edit/{id}', 'AdminPusatController@edit_tpu');
+Route::middleware('cors')->delete('tpu/delete/{id}', 'AdminPusatController@delete_tpu');
 
 //penghuni makam
 Route::middleware('cors')->get('penghuni_makam/view', 'AdminPusatController@view_penghunimakam');

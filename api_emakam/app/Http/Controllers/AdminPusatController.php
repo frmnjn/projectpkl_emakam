@@ -35,6 +35,50 @@ class AdminPusatController extends Controller
         
     }
 
+    function create_tpu(Request $request){
+
+        return Tpu::create($request->all());
+
+    }
+
+    function edit_tpu(Request $request,$id){
+
+        $tpu = Tpu::findOrFail($id);
+        $tpu->update($request->all());
+
+        return response()->json($tpu);
+
+    }
+
+    public function delete_tpu(Request $request, $id)
+    {
+        $penghuni_makam = DB::table('penghuni_makam')
+            ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
+            ->where('tpu.id_tpu','=',$id)
+            ->delete();
+
+        $makam = DB::table('makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
+            ->where('tpu.id_tpu','=',$id)
+            ->delete();
+
+        $blokmakam = DB::table('blok_makam')
+            ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
+            ->where('tpu.id_tpu','=',$id)
+            ->delete();
+        
+        $tpu = Tpu::findOrFail($id);
+        $tpu->delete();
+
+        return response()->json($tpu);
+    }
+
     function view_makam(){
     	$view = DB::table('makam')
         ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
