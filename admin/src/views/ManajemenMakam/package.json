@@ -1,0 +1,6 @@
+{
+  "name": "Manajemen_Makam",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Makam.js"
+}

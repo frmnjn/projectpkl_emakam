@@ -34,6 +34,14 @@ Route::middleware('cors')->post('penghuni_makam/create', 'AdminPusatController@c
 Route::middleware('cors')->put('penghuni_makam/update/{id}', 'AdminPusatController@update_penghunimakam');
 Route::middleware('cors')->delete('penghuni_makam/delete/{id}', 'AdminPusatController@delete_penghunimakam');
 
+//makam
+Route::middleware('cors')->get('makam/view', 'AdminPusatController@view_makam');
+Route::middleware('cors')->post('makam/create', 'AdminPusatController@create_makam');
+Route::middleware('cors')->put('makam/edit/{id}', 'AdminPusatController@edit_makam');
+Route::middleware('cors')->delete('makam/delete/{id}', 'AdminPusatController@delete_makam');
+
+
+
 //blok makam
 Route::middleware('cors')->get('blok/view', 'AdminPusatController@view_blok');
 
@@ -42,4 +50,5 @@ Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_
 Route::middleware('cors')->post('create_role_tpu', 'AdminPusatController@create_role_tpu');
 Route::middleware('cors')->put('update_role_tpu/{id_user}', 'AdminPusatController@update_role_tpu');
 Route::middleware('cors')->delete('delete_role_tpu/{id_user}', 'AdminPusatController@delete_role_tpu');
+
 

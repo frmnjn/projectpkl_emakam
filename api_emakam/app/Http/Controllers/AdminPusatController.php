@@ -8,6 +8,8 @@ use App\User;
 use App\Role_tpu;
 use App\Tpu;
 use App\Penghuni_makam;
+use App\Makam;
+
 
 class AdminPusatController extends Controller
 {
@@ -30,6 +32,42 @@ class AdminPusatController extends Controller
     	$tpu = Tpu::all();
         return response()->json($tpu);
         
+    }
+
+    function view_makam(){
+    	$view = DB::table('makam')
+        ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+        ->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
+        ->select('blok_makam.*', 'makam.*','tpu.*')
+        ->get();
+        return response()->json($view);
+    }
+
+    function create_makam(Request $request){
+
+        return Makam::create($request->all());
+
+    }
+
+    function edit_makam(Request $request,$id){
+
+        $makam = Makam::findOrFail($id);
+        $makam->update($request->all());
+
+        return response()->json($makam);
+
+    }
+
+    function delete_makam(Request $request,$id){
+        $penghuni_makam = DB::table('penghuni_makam')
+            ->where('penghuni_makam.id_makam','=',$id)
+            ->delete();
+        
+        $makam = Makam::findOrFail($id);
+        $makam->delete();
+
+        return response()->json($makam);
+
     }
     
     function view_penghunimakam(){
@@ -64,22 +102,6 @@ class AdminPusatController extends Controller
             'kontak_ahli_waris' => $kontak_ahli_waris,
         ));
         
-
-
-        // $p_makam = new Penghuni_makam([
-            // 'nama' => $nama,
-            // 'alamat_terakhir' => $alamat_terakhir,
-            // 'tanggal_wafat' => $tanggal_wafat,
-            // 'status' => $status,
-            // 'id_makam' => $id_makam,
-            // 'nama_ahli_waris' => $nama_ahli_waris,
-            // 'alamat_ahli_waris' => $alamat_ahli_waris,
-            // 'nik_ahli_waris' => $nik_ahli_waris,
-            // 'kontak_ahli_waris' => $kontak_ahli_waris,
-        // ]);
-
-        // $p_makam->save();
-		// return $p_makam;
     }
     
     public function update_penghunimakam(Request $request, $id)
