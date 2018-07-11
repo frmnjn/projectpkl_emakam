@@ -45,7 +45,7 @@ const brandWarning = getStyle('--warning')
 const brandDanger = getStyle('--danger')
 
 
-class Makam extends Component {
+class BlokMakam extends Component {
   constructor(props) {
     super(props);
 
@@ -56,7 +56,7 @@ class Makam extends Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
-    this.fetchmakam = this.fetchmakam.bind(this);
+    this.fetchblok = this.fetchblok.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
 
@@ -74,7 +74,7 @@ class Makam extends Component {
       activeqty:null,
       activesupplier:null,
 
-      idmakamaktif:null,
+      idblokaktif:null,
       nomoraktif:null,
       blokaktif:null,
       kodeaktif:null,
@@ -91,8 +91,11 @@ class Makam extends Component {
 
   componentDidMount() {
     
-    this.fetchmakam()
-    
+    this.fetchblok()
+
+  }
+
+  fetchblok(){
     fetch("http://localhost:8000/api/blok/view")
       .then(response => {
         return response.json()
@@ -107,55 +110,40 @@ class Makam extends Component {
       )
   }
 
-  fetchmakam(){
-    fetch("http://localhost:8000/api/makam/view")
-      .then(response => {
-        return response.json()
-      })
-      .then(
-        (json) => {
-          this.setState({
-            isLoaded: true,
-            items: json
-          });
-        },
-      )
-  }
-
-  handleEdit(items){
+  handleEdit(){
     
-    fetch('http://localhost:8000/api/makam/edit/'+this.state.idmakamaktif, {
+    fetch('http://localhost:8000/api/blok/edit/'+this.state.idblokaktif, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_blok: this.state.blokaktif,
-        nomor_makam: this.state.nomoraktif,
+        kode_blok: this.state.kodeaktif,
       })
     }).then(
-      this.fetchmakam
+      this.fetchblok
     ).then(
-      ()=>this.toggleEdit(items)
+      this.setState({
+        edit:!this.state.edit
+      })
     )
   }
 
   handleCreate(){
     
-    fetch('http://localhost:8000/api/makam/create', {
+    fetch('http://localhost:8000/api/blok/create', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_blok: this.state.blokaktif,
-        nomor_makam: this.state.nomoraktif,
-        kode_makam: this.state.kodeaktif,
+        id_tpu: '1',
+        kode_blok: this.state.kodeaktif,
       })
     }).then(
-      this.fetchmakam
+      this.fetchblok
     ).then(
       this.setState({
         create:!this.state.create
@@ -165,10 +153,10 @@ class Makam extends Component {
 
   handleDelete(){
     
-    fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif, {
+    fetch('http://localhost:8000/api/blok/delete/'+this.state.idblokaktif, {
       method: 'DELETE',
     }).then(
-      this.fetchmakam
+      this.fetchblok
     ).then(
       this.setState({
         small:!this.state.small
@@ -181,13 +169,6 @@ class Makam extends Component {
     this.setState({ kodeaktif: event.target.value });
   }
 
-  handleNomor = event => {
-    this.setState({ nomoraktif: event.target.value });
-  }
-
-  handleBlok = event => {
-    this.setState({ blokaktif: event.target.value });
-  }
 
 
   toggle() {
@@ -212,16 +193,15 @@ class Makam extends Component {
   toggleSmall(items) {
     this.setState({
       small: !this.state.small,
-      idmakamaktif:items.id_makam,
+      idblokaktif:items.id_blok,
     });
   }
 
   toggleEdit(items) {
     this.setState({
       edit: !this.state.edit,
-      idmakamaktif:items.id_makam,
-      nomoraktif:items.nomor_makam,
-      blokaktif:items.id_blok,
+      idblokaktif:items.id_blok,
+      kodeaktif:items.kode_blok,
     });
   }
 
@@ -246,7 +226,7 @@ class Makam extends Component {
             <Card>
               <CardHeader>
                 <Row>
-                  <Col col="10" ><strong>Manajemen Makam</strong></Col>
+                  <Col col="10" ><strong>Manajemen Blok Makam</strong></Col>
                   <Col col="2" className="text-right">
                     <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
                         <Modal isOpen={this.state.create} toggle={this.toggleCreate}
@@ -263,22 +243,13 @@ class Makam extends Component {
                                 <br/>
                                 <Row>
                                   <Col xs="12">
-                                      <Input onChange={this.handleBlok} type="select" name="blok" id="blok">
-                                      <option>Pilih Blok</option>
-                                        {this.state.blok.map((items) =>{
-                                            return(
-                                              <option value={items.id_blok}>blok {items.kode_blok}</option>
-                                            )
-                                        })
-                                        }
-                                      </Input><br/>
-                                      <Input onChange={this.handleNomor} type="text" id="input1-group3" name="input1-group3" placeholder='Nomor Makam' /><br/>
                                       <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
                                   </Col>
                                 </Row>
+                                <br/><Button color="default" onClick=''>Pilih Area</Button>
                           </ModalBody>
                           <ModalFooter>
-                            <Button color="primary" onClick={this.handleCreate}>Buat</Button>{' '}
+                            <Button color="primary" onClick={this.handleCreate}>Buat</Button>
                             <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
                           </ModalFooter>
                         </Modal>
@@ -289,29 +260,28 @@ class Makam extends Component {
                 <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
                   <thead className="thead-light">
                   <tr>
-                    <th>Nomor Makam</th>
-                    <th>Kode Makam</th>
-                    <th>Blok/TPU Makam</th>
+                    <th>Kode Blok</th>
+                    <th>TPU Makam</th>
                     <th className="text-center">Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  {this.state.items.map((items) =>{
+                  {this.state.blok.map((items) =>{
                   return (
-                    <tr key={items.id_makam} >
+                    <tr key={items.id_blok} >
                     <td>
                       <div>
-                        {items.nomor_makam}
+                        {items.kode_blok}
                       </div>
                     </td>
                     <td>
-                      <div>{items.kode_makam}</div>
-                    </td>
-                    <td>
-                      <div>{items.nama_tpu} | blok {items.kode_blok}</div>
+                      <div>{items.nama_tpu}</div>
                     </td>
                     <td>
                       <Row>
+                      <Col>
+                      <Button onClick=''   block outline color="primary"><i className="cui-pencil icons text-left"></i> Lihat Area</Button>
+                      </Col>
                       <Col col="2"  xl className="mb-1 mb-xl-0">
                         <Button onClick={()=>this.toggleEdit(items)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
                         <Modal isOpen={this.state.edit} toggle={()=>this.toggleEdit(items)}
@@ -321,7 +291,7 @@ class Makam extends Component {
                                 <Row>
                                   <Col xs="12">
                                     <div className="small text-muted">
-                                      <span>Blok / Nomor</span>
+                                      <span>Kode Blok</span>
                                     </div>
                                   </Col>
                                 </Row>
@@ -329,26 +299,14 @@ class Makam extends Component {
                                 <Row>
                                   <Col xs="12">
                                   <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                      <Input onChange={this.handleBlok} type="select" name="blok" id="blok">
-                                        <option value={this.state.blokaktif}>blok {this.state.blokaktif}</option>
-                                        {this.state.blok.map((items) =>{
-                                          if (items.id_blok!=this.state.blokaktif){
-                                            return(
-                                              <option value={items.id_blok}>blok {items.kode_blok}</option>
-                                            )
-                                          }
-                                        })
-                                        }
-                                      </Input>
-                                      </InputGroupAddon>
-                                      <Input onChange={this.handleNomor} type="text" id="input1-group3" name="input1-group3" value={this.state.nomoraktif} />
+                                      <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
+                                      <br/><Button color="default" onClick=''>Pilih Area</Button>
                                   </InputGroup>
                                   </Col>
                                 </Row>
                           </ModalBody>
                           <ModalFooter>
-                            <Button color="success" onClick={() => this.handleEdit(items)}>edit</Button>{' '}
+                            <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
                             <Button color="secondary" onClick={()=>this.toggleEdit(items)}>Cancel</Button>
                           </ModalFooter>
                         </Modal>
@@ -361,7 +319,7 @@ class Makam extends Component {
                           <ModalBody>
                                 <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
                                 <br/><br/><br/>
-                                <strong>Apakah anda yakin ingin menghapus makam {this.state.idmakamaktif} ?</strong>
+                                <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
                           </ModalBody>
                           <ModalFooter>
                             <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
@@ -388,4 +346,4 @@ class Makam extends Component {
   }
 }
 
-export default Makam;
+export default BlokMakam;

@@ -9,6 +9,7 @@ use App\Role_tpu;
 use App\Tpu;
 use App\Penghuni_makam;
 use App\Makam;
+use App\Blok_Makam;
 
 
 class AdminPusatController extends Controller
@@ -126,6 +127,41 @@ class AdminPusatController extends Controller
         ->get();
         return response()->json($view);
     }
+
+    function create_blok(Request $request){
+
+        return Blok_Makam::create($request->all());
+
+    }
+
+    public function edit_blok(Request $request, $id)
+    {
+        $blok = Blok_Makam::findOrFail($id);
+        $blok->update($request->all());
+        return $blok;
+    }
+
+    public function delete_blok(Request $request, $id)
+    {
+        $penghuni_makam = DB::table('penghuni_makam')
+            ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
+            ->where('blok_makam.id_blok','=',$id)
+            ->delete();
+
+        $makam = DB::table('makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            // ->select('blok_makam.*', 'tpu.*')
+            ->where('blok_makam.id_blok','=',$id)
+            ->delete();
+        
+        $blok = Blok_Makam::findOrFail($id);
+        $blok->delete();
+
+        return response()->json($blok);
+    }
+
 
 
     function view_role_tpu(){

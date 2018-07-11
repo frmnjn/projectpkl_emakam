@@ -63,6 +63,10 @@ const ManajemenMakam = Loadable({
   loading: Loading,
 });
 
+const ManajemenBlokMakam = Loadable({
+  loader: () => import('./views/ManajemenBlokMakam'),
+  loading: Loading,
+});
 
 
 
@@ -72,6 +76,7 @@ const routes = [
   { path: '/Search', exact: true, name: 'Search', component: Search  },
   { path: '/DataPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/ManajemenMakam', exact: true, name: 'Manajemen Makam', component: ManajemenMakam  },
+  { path: '/ManajemenBlokMakam', exact: true, name: 'Manajemen Makam', component: ManajemenBlokMakam  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },

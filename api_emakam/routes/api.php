@@ -44,6 +44,10 @@ Route::middleware('cors')->delete('makam/delete/{id}', 'AdminPusatController@del
 
 //blok makam
 Route::middleware('cors')->get('blok/view', 'AdminPusatController@view_blok');
+Route::middleware('cors')->post('blok/create', 'AdminPusatController@create_blok');
+Route::middleware('cors')->put('blok/edit/{id}', 'AdminPusatController@edit_blok');
+Route::middleware('cors')->delete('blok/delete/{id}', 'AdminPusatController@delete_blok');
+
 
 //role_tpu
 Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_tpu');
