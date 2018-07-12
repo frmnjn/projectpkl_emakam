@@ -44,11 +44,12 @@ class Login extends Component {
             usersData.password=this.state.temp.password;
             usersData.role=this.state.temp.role;
             usersData.id_tpu=this.state.temp.id_tpu;
+            sessionStorage.setItem('login_session', this.state.temp.role);
 
             if(this.state.temp.role == 0){
               this.props.history.push('/ManajemenPengguna')
             } else if(this.state.temp.role == 1){
-              this.props.history.push('/DataPenghuniMakam')
+              this.props.history.push('/ManajemenTpu')
             } else if(this.state.temp.role == 2){
               this.props.history.push('/')
             }
@@ -56,8 +57,7 @@ class Login extends Component {
             console.log(usersData.role);
           },
         )
-        sessionStorage.setItem('login_session', this.state.temp.role);
-        alert(sessionStorage.getItem('login_session'));
+        
         }
       });
 

@@ -17,9 +17,9 @@ function UserRow(props) {
 
   return (
     <tr key={user.id.toString()}>
-        <th scope="row"><a href={userLink}>{user.id}</a></th>
-        <td><a href={userLink}>{user.name}</a></td>
-        <td>{user.registered}</td>
+        <th scope="row"><a href={userLink}>{usersData.id_user}asdasd</a></th>
+        <td><a href={userLink}>{usersData.username}</a></td>
+        <td>{user.usersData.role}</td>
         <td>{user.role}</td>
         <td><Badge href={userLink} color={getBadge(user.status)}>{user.status}</Badge></td>
     </tr>
@@ -29,9 +29,6 @@ function UserRow(props) {
 class Users extends Component {
 
   render() {
-
-    const userList = usersData.filter((user) => user.id < 10)
-
     return (
       <div className="animated fadeIn">
         <Row>
@@ -44,15 +41,13 @@ class Users extends Component {
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
+                      <th scope="col">ID User</th>
+                      <th scope="col">Username</th>
                       <th scope="col">role</th>
-                      <th scope="col">status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userList.map((user, index) =>
+                    {usersData.map((user, index) =>
                       <UserRow key={index} user={user}/>
                     )}
                   </tbody>

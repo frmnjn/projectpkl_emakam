@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import usersData from './../../views/Users/UsersData';
 
 import {
   AppAside,
@@ -29,7 +28,6 @@ class DefaultLayout extends Component {
     const Pusat = "Pusat";
     const TPU = "TPU";
     console.log(sessionStorage.getItem('login_session'));
-    
     return (
       <div className="app">
         <AppHeader fixed>

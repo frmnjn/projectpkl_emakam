@@ -311,4 +311,14 @@ class ManajemenHakAkses extends Component {
   }
 }
 
-export default ManajemenHakAkses;
+class unauthorized extends Component{
+  render(){
+    alert("Anda tidak memiliki hak akses!");
+    return(
+      <p></p>
+    );
+  } 
+}
+const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenHakAkses : unauthorized;
+
+export default logger;

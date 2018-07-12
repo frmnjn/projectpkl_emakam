@@ -81,9 +81,6 @@ class ManajemenPengguna extends Component {
     )
   }
 
-
-
-
   toggle() {
     this.setState({
       modal: !this.state.modal,
@@ -186,7 +183,6 @@ class ManajemenPengguna extends Component {
       alert(myJson.msg);
     });
   }
-  
 
   render() {
     return (
@@ -322,5 +318,14 @@ class ManajemenPengguna extends Component {
     );
   }
 }
+class unauthorized extends Component{
+  render(){
+    alert("Anda tidak memiliki hak akses!");
+    return(
+      <p></p>
+    );
+  } 
+}
+const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenPengguna : unauthorized;
 
-export default ManajemenPengguna;
+export default logger;

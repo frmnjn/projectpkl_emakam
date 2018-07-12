@@ -3,6 +3,7 @@ import Loadable from 'react-loadable'
 
 import DefaultLayout from './containers/DefaultLayout';
 import { Login, Page404, Page500 } from './views/Pages';
+import { AuthorizedComponent } from 'react-router-role-authorization';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -28,48 +29,28 @@ const ManajemenHakAkses = Loadable({
   loading: Loading,
 });
 
-const Home = Loadable({
-  loader: () => import('./views/Home'),
-  loading: Loading,
-});
-
-const Supplier = Loadable({
-  loader: () => import('./views/Supplier'),
-  loading: Loading,
-});
-
-const Buyer = Loadable({
-  loader: () => import('./views/Buyer'),
-  loading: Loading,
-});
-
-const Log = Loadable({
-  loader: () => import('./views/Log'),
-  loading: Loading,
-});
-
 const Search = Loadable({
   loader: () => import('./views/Search'),
   loading: Loading,
 });
 
 const ManajemenPenghuniMakam = Loadable({
-  loader: () => import('./views/ManajemenDataPenghuniMakam'),
+  loader: () => import('./views/AdminTPU/ManajemenDataPenghuniMakam/ManajemenDataPenghuniMakam'),
   loading: Loading,
 });
 
 const ManajemenMakam = Loadable({
-  loader: () => import('./views/ManajemenMakam'),
+  loader: () => import('./views/AdminTPU/ManajemenMakam/Makam'),
   loading: Loading,
 });
 
 const ManajemenBlokMakam = Loadable({
-  loader: () => import('./views/ManajemenBlokMakam'),
+  loader: () => import('./views/AdminTPU/ManajemenBlokMakam/BlokMakam'),
   loading: Loading,
 });
 
 const ManajemenTPU = Loadable({
-  loader: () => import('./views/ManajemenTPU'),
+  loader: () => import('./views/AdminTPU/ManajemenTPU/tpu'),
   loading: Loading,
 });
 
@@ -79,16 +60,13 @@ const ManajemenTPU = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/Search', exact: true, name: 'Search', component: Search  },
-  { path: '/DataPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
+  { path: '/ManajemenPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/ManajemenMakam', exact: true, name: 'Manajemen Makam', component: ManajemenMakam  },
   { path: '/ManajemenBlokMakam', exact: true, name: 'Manajemen Makam', component: ManajemenBlokMakam  },
   { path: '/ManajemenTpu', exact: true, name: 'Manajemen TPU', component: ManajemenTPU  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },
-  { path: '/supplier', name: 'Supplier', component: Supplier },
-  { path: '/buyer', name: 'Buyer', component: Buyer },
-  { path: '/log', name: 'Log', component: Log },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
 ];

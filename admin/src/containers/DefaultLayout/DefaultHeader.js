@@ -45,7 +45,7 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-              <DropdownItem href="#/users/1" ><i className="fa fa-user"></i> Profile</DropdownItem>
+              {/* <DropdownItem href="#/users/1" ><i className="fa fa-user"></i> Profile</DropdownItem> */}
               {/* <DropdownItem onClick={() => this.logout()}><i className="fa fa-lock"></i> Logout</DropdownItem> */}
               <DropdownItem><i className="fa fa-lock"></i> <a href="/login" onClick={() => this.logout()}>Log Out</a></DropdownItem>
             </DropdownMenu>
