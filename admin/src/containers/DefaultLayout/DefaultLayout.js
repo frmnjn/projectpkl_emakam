@@ -17,6 +17,7 @@ import {
 // sidebar nav config
 import navigationAdminPusat from '../../AdminPusat_nav';
 import navigationAdminTPU from '../../AdminTPU_nav';
+import navigationPengguna from '../../Pengguna_nav';
 // routes config
 import routes from '../../routes';
 import DefaultAside from './DefaultAside';
@@ -25,8 +26,9 @@ import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
   render() {
-    const Pusat = "Pusat";
-    const TPU = "TPU";
+    const Pusat = "Admin Pusat";
+    const TPU = "Admin TPU";
+    const Pengguna = "Pengguna";
     console.log(sessionStorage.getItem('login_session'));
     return (
       <div className="app">
@@ -37,14 +39,23 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={sessionStorage.getItem('login_session') == "0" ? navigationAdminPusat:navigationAdminTPU} {...this.props} />
+            <AppSidebarNav navConfig={
+              sessionStorage.getItem('login_session') == "0" ? 
+              navigationAdminPusat:
+                sessionStorage.getItem('login_session') == "1" ?
+                 navigationAdminTPU:
+                 navigationPengguna} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-            <h1>Welcome, Admin {sessionStorage.getItem('login_session') == "0" ? Pusat:TPU}</h1>
+            <h1>Welcome, {sessionStorage.getItem('login_session') == "0" ? 
+              Pusat:
+                sessionStorage.getItem('login_session') == "1" ?
+                 TPU:
+                 Pengguna}</h1>
               <Switch>
                 {routes.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (

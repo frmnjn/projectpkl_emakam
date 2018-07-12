@@ -285,7 +285,7 @@ class AdminPusatController extends Controller
 
         $role_tpu->save();
 
-        return response()->json($role_tpu);
+        return response()->json(['msg' => "Hak Akses Berhasil dibuat!"]);
     }
 
     function update_role_tpu(Request $request, $id_user)

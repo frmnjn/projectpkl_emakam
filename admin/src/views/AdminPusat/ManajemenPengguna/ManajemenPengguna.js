@@ -50,6 +50,12 @@ class ManajemenPengguna extends Component {
     this.toggleLarge = this.toggleLarge.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
 
+    this.fetch_user();
+    this.fetch_tpu();
+    this.fetch_role_tpu();
+  }
+
+  fetch_user(){
     fetch('http://localhost:8000/api/user/view')
       .then(response => response.json())
       .then(
@@ -59,7 +65,9 @@ class ManajemenPengguna extends Component {
           });
         },
     )
+  }
 
+  fetch_tpu(){
     fetch('http://localhost:8000/api/tpu/view')
       .then(response => response.json())
       .then(
@@ -69,7 +77,9 @@ class ManajemenPengguna extends Component {
           });
         },
     )
+  }
 
+  fetch_role_tpu(){
     fetch('http://localhost:8000/api/role_tpu/view')
       .then(response => response.json())
       .then(
@@ -147,7 +157,9 @@ class ManajemenPengguna extends Component {
         password: this.state.password,
         role: this.state.value
       })
-    }).catch((error) => {
+    }).then(
+      this.fetch_user
+    ).catch((error) => {
       console.error(error);
     });
     alert("user berhasil ditambahkan!");

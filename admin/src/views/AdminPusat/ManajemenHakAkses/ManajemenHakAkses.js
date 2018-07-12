@@ -137,10 +137,12 @@ class ManajemenHakAkses extends Component {
         id_tpu: this.state.value_tpu,
         id_user: this.state.value_user
       })
-    }).catch((error) => {
-      console.error(error);
+    }).then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      alert(myJson.msg);
     });
-    alert("user berhasil ditambahkan!");
   }
 
   handleSubmitEdit = event => {
