@@ -228,6 +228,11 @@ class AdminPusatController extends Controller
         ]);
 
         $user->save();
+        $msg = ([
+                    'msg' => "User berhasil dibuat !"
+                ]);
+
+        return response()->json($msg);
     }
 
     function update_user(Request $request, $id_user)
@@ -244,9 +249,12 @@ class AdminPusatController extends Controller
             'password' => $request->input('password'),
             'role' => $request->input('role')
         ]);
-        $role_tpu->save();
 
-        return response()->json($username);
+        $msg = ([
+                    'msg' => "User berhasil diupdate !"
+                ]);
+
+        return response()->json($msg);
     }
 
     function delete_user(Request $request, $id_user)

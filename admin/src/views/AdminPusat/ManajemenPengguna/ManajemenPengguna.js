@@ -157,12 +157,14 @@ class ManajemenPengguna extends Component {
         password: this.state.password,
         role: this.state.value
       })
-    }).then(
-      this.fetch_user
-    ).catch((error) => {
-      console.error(error);
-    });
-    alert("user berhasil ditambahkan!");
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        alert(myJson.msg);
+      });
+    //alert("user berhasil ditambahkan!");
   }
 
   handleSubmitEdit = event => {
@@ -181,7 +183,12 @@ class ManajemenPengguna extends Component {
         role: this.state.activevalueNum
       })
     })
-    alert("Data user dengan id " + this.state.activeid + " berhasil di update!");
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      alert(myJson.msg);
+    });
   }
 
   handledelete(table_user) {
