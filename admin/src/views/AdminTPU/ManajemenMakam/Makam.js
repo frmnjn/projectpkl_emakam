@@ -93,7 +93,7 @@ class Makam extends Component {
     
     this.fetchmakam()
     
-    fetch("http://localhost:8000/api/blok/view")
+    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -108,7 +108,7 @@ class Makam extends Component {
   }
 
   fetchmakam(){
-    fetch("http://localhost:8000/api/makam/view")
+    fetch("http://localhost:8000/api/makam/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -124,7 +124,7 @@ class Makam extends Component {
 
   handleEdit(items){
     
-    fetch('http://localhost:8000/api/makam/edit/'+this.state.idmakamaktif, {
+    fetch('http://localhost:8000/api/makam/edit/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -143,7 +143,7 @@ class Makam extends Component {
 
   handleCreate(){
     
-    fetch('http://localhost:8000/api/makam/create', {
+    fetch('http://localhost:8000/api/makam/create?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -165,7 +165,7 @@ class Makam extends Component {
 
   handleDelete(){
     
-    fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif, {
+    fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       this.fetchmakam

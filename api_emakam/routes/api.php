@@ -16,7 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//login
 Route::middleware('cors')->post('login', 'AuthController@login');
+Route::middleware('cors')->post('signin', 'AuthController@signin');
+Route::middleware('cors')->post('hash', 'AuthController@hash');
 
 //user
 Route::middleware('cors')->get('user/view', 'AdminPusatController@view');

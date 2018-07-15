@@ -567,7 +567,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://localhost:8000/api/penghuni_makam/view/")
+    fetch("http://localhost:8000/api/penghuni_makam/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -581,7 +581,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://localhost:8000/api/blok/view/")
+      fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })

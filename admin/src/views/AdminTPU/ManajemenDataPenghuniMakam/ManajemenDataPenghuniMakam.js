@@ -61,7 +61,7 @@ class ManajemenDataPenghuniMakam extends Component {
     this.toggleLarge = this.toggleLarge.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
 
-    fetch('http://localhost:8000/api/penghuni_makam/view/')
+    fetch('http://localhost:8000/api/penghuni_makam/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -131,7 +131,7 @@ class ManajemenDataPenghuniMakam extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.list);
-    fetch('http://localhost:8000/api/penghuni_makam/create', {
+    fetch('http://localhost:8000/api/penghuni_makam/create?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -156,7 +156,7 @@ class ManajemenDataPenghuniMakam extends Component {
   handleSubmitEdit = event => {
     event.preventDefault();
     
-    fetch('http://localhost:8000/api/penghuni_makam/update/'+this.state.activeid_penghuni_makam, {
+    fetch('http://localhost:8000/api/penghuni_makam/update/'+this.state.activeid_penghuni_makam+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -178,7 +178,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   handledelete(list){
-    fetch('http://localhost:8000/api/penghuni_makam/delete/'+list.id_penghuni_makam, {
+    fetch('http://localhost:8000/api/penghuni_makam/delete/'+list.id_penghuni_makam+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

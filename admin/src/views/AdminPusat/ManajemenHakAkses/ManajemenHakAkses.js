@@ -52,7 +52,7 @@ class ManajemenHakAkses extends Component {
     this.toggleLarge = this.toggleLarge.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
 
-    fetch('http://localhost:8000/api/user/view')
+    fetch('http://localhost:8000/api/user/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -62,7 +62,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/tpu/view')
+    fetch('http://localhost:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -72,7 +72,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/role_tpu/view')
+    fetch('http://localhost:8000/api/role_tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -81,7 +81,7 @@ class ManajemenHakAkses extends Component {
           });
         },
     )
-    fetch('http://localhost:8000/api/constraint_user')
+    fetch('http://localhost:8000/api/constraint_user?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -127,7 +127,7 @@ class ManajemenHakAkses extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.value_user);
-    fetch('http://localhost:8000/api/create_role_tpu', {
+    fetch('http://localhost:8000/api/create_role_tpu?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -150,7 +150,7 @@ class ManajemenHakAkses extends Component {
     console.log(this.state.activevalue_tpu);
     console.log(this.state.activevalue_user);
 
-    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_user, {
+    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_user+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -169,7 +169,7 @@ class ManajemenHakAkses extends Component {
   }
 
   handledelete(table_constraint_user) {
-    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_user, {
+    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_user+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
       .then(function (response) {

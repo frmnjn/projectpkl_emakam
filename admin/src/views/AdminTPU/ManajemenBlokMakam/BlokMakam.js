@@ -96,7 +96,7 @@ class BlokMakam extends Component {
   }
 
   fetchblok(){
-    fetch("http://localhost:8000/api/blok/view")
+    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -112,7 +112,7 @@ class BlokMakam extends Component {
 
   handleEdit(){
     
-    fetch('http://localhost:8000/api/blok/edit/'+this.state.idblokaktif, {
+    fetch('http://localhost:8000/api/blok/edit/'+this.state.idblokaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -132,7 +132,7 @@ class BlokMakam extends Component {
 
   handleCreate(){
     
-    fetch('http://localhost:8000/api/blok/create', {
+    fetch('http://localhost:8000/api/blok/create?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -153,7 +153,7 @@ class BlokMakam extends Component {
 
   handleDelete(){
     
-    fetch('http://localhost:8000/api/blok/delete/'+this.state.idblokaktif, {
+    fetch('http://localhost:8000/api/blok/delete/'+this.state.idblokaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       this.fetchblok

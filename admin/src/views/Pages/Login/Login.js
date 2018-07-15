@@ -8,8 +8,9 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      temp:[]
-      
+      msg: "",
+      temp: []
+
     };
   }
 
@@ -19,7 +20,7 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    fetch('http://localhost:8000/api/login', {
+    fetch('http://localhost:8000/api/signin', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -31,41 +32,67 @@ class Login extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        if(responseJson.length > 0){
+
+        if (responseJson.length > 0) {
 
           responseJson.map((items) => {
-            
+
             this.setState({
-              temp:items
+              temp: items
             })
 
-            usersData.id_user=this.state.temp.id_user;
-            usersData.username=this.state.temp.username;
-            usersData.password=this.state.temp.password;
-            usersData.role=this.state.temp.role;
-            usersData.id_tpu=this.state.temp.id_tpu;
+            usersData.role = this.state.temp.role;
             sessionStorage.setItem('login_session', this.state.temp.role);
-            console.log(this.state.temp.role);
+            sessionStorage.setItem('token', this.state.temp.token);
 
-            if(this.state.temp.role == 0){
+            if (this.state.temp.role == 0) {
               this.props.history.push('/ManajemenPengguna')
-            } else if(this.state.temp.role == 1){
+            } else if (this.state.temp.role == 1) {
               this.props.history.push('/ManajemenTpu')
             } else {
               this.props.history.push('/Search')
             }
-            
-            console.log(usersData.role);
+
           },
-        )
-        
+          )
         }
-      });
+      }
+      );
 
   }
 
+  // handleLogin = event => {
+  //   event.preventDefault();
+  //   fetch('http://localhost:8000/api/signin', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       username: this.state.username,
+  //       password: this.state.password
+  //     })
+  //   }).then(function (response) {
+  //     return response.json();
+  //   })
+  //     .then(function (myJson) {
+  //       //alert(myJson.role);
+  //       usersData.role = myJson.role;
+  //       sessionStorage.setItem('login_session', myJson.role);
+  //       sessionStorage.setItem('token', myJson.token);
+  //       console.log(myJson.role);
+  //     });
+  //     if (sessionStorage.getItem('login_session') == 0) {
+  //       this.props.history.push('/ManajemenPengguna')
+  //     } else if (sessionStorage.getItem('login_session') == 1) {
+  //       this.props.history.push('/ManajemenTpu')
+  //     } else {
+  //       this.props.history.push('/Search')
+  //     }
+  // }
+
   render() {
-    console.log(sessionStorage.getItem('login_session'));
     return (
       <div className="app flex-row align-items-center">
         <Container>
