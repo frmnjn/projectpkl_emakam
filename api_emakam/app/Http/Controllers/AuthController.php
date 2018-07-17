@@ -59,7 +59,9 @@ class AuthController extends Controller
         $token = null;
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['success' => false, 'error' => 'Akun tidak ditemukan!'], 401);
+                return response()->json(['success' => false, 'error' => 'Akun tidak ditemukan!', 
+                'username'=> $request->input('username'),
+                'password'=> Hash::make($request->input('password'))],401);
             }
         } catch (JWTAuthException $e) {
             return response()->json(['msg'=>'Login Gagal !','success' => false, 'error' => 'Failed to login, please try again.'], 500);

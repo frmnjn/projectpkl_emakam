@@ -23,20 +23,33 @@ import {
   Table,
   Modal,
   ModalBody, ModalFooter, ModalHeader,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  
 } from 'reactstrap';
+
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+ 
+import 'react-datepicker/dist/react-datepicker.css';
 
 class ManajemenDataPenghuniMakam extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      primary: false,
-      large: false,
-      modal: false,
+      // primary: false,
+      // large: false,
+      // modal: false,
+
+      startDate: moment(),
+
       list: [],
+      makam:[],
       nama: "",
       alamat_terakhir: "",
-      tanggal_wafat: "",
+      tanggal_wafat: '',
       status:"",
       id_makam:"",
       nama_ahli_waris:"",
@@ -47,82 +60,113 @@ class ManajemenDataPenghuniMakam extends Component {
       activeid_penghuni_makam:"",
       activenama: "",
       activealamat_terakhir: "",
-      activetanggal_wafat: "",
+      activetanggal_wafat: '',
       activestatus:"",
       activeid_makam:"",
+      splittanggalwafat:'',
       activenama_ahli_waris:"",
       activealamat_ahli_waris:"",
       activenik_ahli_waris:"",
       activekontak_ahli_waris:"",
+
+      
       
     };
 
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
+    this.togglelargeclose = this.togglelargeclose.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
+    this.toggleclose = this.toggleclose.bind(this);
+    this.handleDate = this.handleDate.bind(this);
+
+    
 
     fetch('http://localhost:8000/api/penghuni_makam/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
           this.setState({            
-            // dateStr = JSOsN.parse(tanggal_wafat),  
-            //  console.log(dateStr); // 2014-01-01T23:28:56.782Z                
-            // date : new Date(dateStr),
-            // tanggal_wafat: date,
-            //  console.log(date);  // Wed Jan 01 2014 13:28:56 GMT-1000 (Hawaiian Standard Time)            
-           // obj = JSON.parse(result),
-            //obj.tanggal_wafat = new Date(obj.tanggal_wafat);
-
-            
-            
             list: result
-            
           }); //console.log(result);
         },        
     )
 
-    // fetch('http://localhost:8000/api/get')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //console.log(responseJson);
-        
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    fetch('http://localhost:8000/api/makam/view?token='+sessionStorage.getItem('token'))
+      .then(response => response.json())
+      .then(
+        (result) => {
+          this.setState({            
+            makam: result
+          }); //console.log(result);
+        },        
+    )
+
   }
 
-  toggle() {
+  toggle(list) {
     this.setState({
+      activeid_penghuni_makam: list.id_penghuni_makam,      
+      activenama: list.nama,
+      activealamat_terakhir: list.alamat_terakhir,
+      activetanggal_wafat: list.tanggal_wafat.substring(0,10),
+      activestatus: list.status,
+      activeid_makam: list.id_makam,
+      activenama_ahli_waris: list.nama_ahli_waris,
+      activealamat_ahli_waris: list.alamat_ahli_waris,
+      activenik_ahli_waris: list.nik_ahli_waris,
+      activekontak_ahli_waris: list.kontak_ahli_waris,
       modal: !this.state.modal,
     });
   }
 
+  toggleclose(){
+    this.setState({
+      modal: !this.state.modal,
+    })
+  }
+
   toggleLarge(list) {
     this.setState({
-      large: !this.state.large});
-      this.state.activeid_penghuni_makam = list.id_penghuni_makam;      
+      activeid_penghuni_makam: list.id_penghuni_makam,      
+      activenama: list.nama,
+      activealamat_terakhir: list.alamat_terakhir,
+      activetanggal_wafat: moment(list.tanggal_wafat),
+      activestatus: list.status,
+      activeid_makam: list.id_makam,
+      activenama_ahli_waris: list.nama_ahli_waris,
+      activealamat_ahli_waris: list.alamat_ahli_waris,
+      activenik_ahli_waris: list.nik_ahli_waris,
+      activekontak_ahli_waris: list.kontak_ahli_waris,
+      large: !this.state.large,
+      
+    });
+      
+  }
 
-      this.state.activenama= list.nama,
-      this.state.activealamat_terakhir= list.alamat_terakhir,
-      this.state.activetanggal_wafat= list.tanggal_wafat,
-      this.state.activestatus= list.status,
-      this.state.activeid_makam= list.id_makam,
-      this.state.activenama_ahli_waris= list.nama_ahli_waris,
-      this.state.activealamat_ahli_waris= list.alamat_ahli_waris,
-      this.state.activenik_ahli_waris= list.nik_ahli_waris,
-      this.state.activekontak_ahli_waris= list.kontak_ahli_waris
+  togglelargeclose(){
+    this.setState({
+      large: !this.state.large,
+    })
   }
 
   togglePrimary() {
     this.setState({
+      tanggal_wafat: this.state.startDate,
       primary: !this.state.primary,
     });
   }
 
   componentDidMount() {
   }
+
+  handleDate(date) {
+    this.setState({
+      activetanggal_wafat: date,
+      tanggal_wafat: date,
+    });
+  }
+
 
   handleChange = (e) => { 
     this.setState({ [e.target.name]: e.target.value });
@@ -140,7 +184,7 @@ class ManajemenDataPenghuniMakam extends Component {
       body: JSON.stringify({
         nama: this.state.nama,
         alamat_terakhir: this.state.alamat_terakhir,
-        tanggal_wafat: this.state.tanggal_wafat,
+        tanggal_wafat: this.state.tanggal_wafat.format().substring(0,10),
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -165,7 +209,7 @@ class ManajemenDataPenghuniMakam extends Component {
       body: JSON.stringify({
         nama: this.state.activenama,
         alamat_terakhir: this.state.activealamat_terakhir,
-        tanggal_wafat: this.state.activetanggal_wafat,
+        tanggal_wafat: this.state.activetanggal_wafat.format().substring(0,10),
         status: this.state.activestatus,
         id_makam: this.state.activeid_makam,
         nama_ahli_waris: this.state.activenama_ahli_waris,
@@ -193,11 +237,11 @@ class ManajemenDataPenghuniMakam extends Component {
 
       <div className="animated fadeIn">
         <Row>
-
           <Col xl={12}>
             <Card>
               <CardHeader>
-                Tabel Data Penghuni Makam
+                Tabel Data Penghuni Makam <br/>
+                Date today : {this.state.startDate.format().substring(0,10)}
               </CardHeader>
               <CardBody>                
                 <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
@@ -209,12 +253,25 @@ class ManajemenDataPenghuniMakam extends Component {
                       <input type="text" className="form-control" name="nama"placeholder="nama" onChange={this.handleChange}></input>
                       <label>Alamat Terakhir</label>
                       <input type="text" className="form-control" name="alamat_terakhir"placeholder="Jl.abc" onChange={this.handleChange}></input>
+                      <br/>
                       <label>Tanggal Wafat</label>
-                      <input type="text" className="form-control" name="tanggal_wafat" placeholder="tahun-bulan-tanggal"onChange={this.handleChange}></input>
+                      <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} />
+                      <br/>
                       <label>Status</label>
-                      <input type="text" className="form-control" name="status" placeholder="1/2/3"onChange={this.handleChange}></input>
+                      <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
+                        <option value='2'>Pending</option>
+                        <option value='0'>Declined</option>
+                        <option value='1'>Accepted</option>
+                      </Input>
                       <label>Pilih Nomor Makam (ID Makam)</label>
-                      <input type="text" className="form-control" name="id_makam" placeholder="dropdown"onChange={this.handleChange}></input>
+                      <Input type="select" className="form-control" name="id_makam" placeholder="dropdown"onChange={this.handleChange}>
+                        {this.state.makam.map((items) => {
+                          return(
+                          <option value={items.id_makam}>{items.kode_makam}</option>
+                          )
+                        }
+                        )}
+                      </Input>
                       <label>Nama Ahli Waris</label>
                       <input type="text" className="form-control" name="nama_ahli_waris"placeholder="nama_ahli_waris" onChange={this.handleChange}></input>
                       <label>Alamat Ahli Waris</label>
@@ -229,7 +286,80 @@ class ManajemenDataPenghuniMakam extends Component {
                   <ModalFooter>
                   </ModalFooter>
                 </Modal>
-                <Table hover bordered striped responsive size="sm">
+                <Modal isOpen={this.state.modal} toggle={this.toggleclose}
+                            className={'modal-Large ' + this.props.className}>
+                          <ModalHeader toggle={this.toggleclose}>Lihat Data Penghuni Makam</ModalHeader>
+                            <ModalBody>
+                              <form className="form-group" onSubmit=''>
+                                <label>ID</label>
+                                <input type="text" className="form-control" name="activeid_penghuni_makam" onChange={this.handleChange} value={this.state.activeid_penghuni_makam} disabled></input>
+                                <label>Nama Penghuni Makam</label>
+                                <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama} disabled></input>
+                                <label>Alamat Terakhir</label>
+                                <input type="text" className="form-control" name="activealamat_terakhir" onChange={this.handleChange} value={this.state.activealamat_terakhir} disabled></input>
+                                <label>Tanggal Wafat</label>
+                                <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat} disabled></input>
+                                <label>Status</label>
+                                <input type="text" className="form-control" name="activestatus" onChange={this.handleChange} value={this.state.activestatus} disabled></input>
+                                <label>ID Makam</label>
+                                <input type="text" className="form-control" name="activeid_makam" onChange={this.handleChange} value={this.state.activeid_makam} disabled></input>
+                                <label>Nama Ahli Waris</label>
+                                <input type="text" className="form-control" name="activenama_ahli_waris" onChange={this.handleChange} value={this.state.activenama_ahli_waris} disabled></input>
+                                <label>Alamat Ahli Waris</label>
+                                <input type="text" className="form-control" name="activealamat_ahli_waris" onChange={this.handleChange} value={this.state.activealamat_ahli_waris} disabled></input>
+                                <label>NIK Ahli Waris</label>
+                                <input type="text" className="form-control" name="activenik_ahli_waris" onChange={this.handleChange} value={this.state.activenik_ahli_waris} disabled></input>
+                                <label>Kontak Ahli Waris</label>
+                                <input type="text" className="form-control" name="activekontak_ahli_waris" onChange={this.handleChange} value={this.state.activekontak_ahli_waris} disabled></input>
+                              </form>
+                            </ModalBody>
+                  </Modal>
+                  <Modal isOpen={this.state.large} toggle={this.togglelargeclose}
+                            className={'modal-Large ' + this.props.className}>
+                            <ModalHeader toggle={this.togglelargeclose}>Edit Data Penghuni Makam</ModalHeader>
+                            <ModalBody>
+                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                                <label>ID</label>
+                                <input type="text" className="form-control" name="activeid_penghuni_makam" onChange={this.handleChange} value={this.state.activeid_penghuni_makam} disabled></input>
+                                <label>Nama Penghuni Makam</label>
+                                <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama}></input>
+                                <label>Alamat Terakhir</label>
+                                <input type="text" className="form-control" name="activealamat_terakhir" onChange={this.handleChange} value={this.state.activealamat_terakhir}></input>
+                                <br/>
+                                <label>Tanggal Wafat</label>
+                                <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.activetanggal_wafat} onChange={this.handleDate} />
+                                <br/>
+                                {/* <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat}></input> */}
+                                <label>Status</label>
+                                <Input type="select" className="form-control" name="activestatus" onChange={this.handleChange} defaultValue={this.state.activestatus}>
+                                  <option value='2'>Pending</option>
+                                  <option value='0'>Declined</option>
+                                  <option value='1'>Accepted</option>
+                                </Input>
+                                <label>Pilih Nomor Makam (ID Makam)</label>
+                                <Input type="select" className="form-control" name="id_makam" placeholder="dropdown"onChange={this.handleChange}>
+                                  {this.state.makam.map((items) => {
+                                    return(
+                                    <option value={items.id_makam}>{items.kode_makam}</option>
+                                    )
+                                  }
+                                  )}
+                                </Input>
+                                <label>Nama Ahli Waris</label>
+                                <input type="text" className="form-control" name="activenama_ahli_waris" onChange={this.handleChange} value={this.state.activenama_ahli_waris}></input>
+                                <label>Alamat Ahli Waris</label>
+                                <input type="text" className="form-control" name="activealamat_ahli_waris" onChange={this.handleChange} value={this.state.activealamat_ahli_waris}></input>
+                                <label>NIK Ahli Waris</label>
+                                <input type="text" className="form-control" name="activenik_ahli_waris" onChange={this.handleChange} value={this.state.activenik_ahli_waris}></input>
+                                <label>Kontak Ahli Waris</label>
+                                <input type="text" className="form-control" name="activekontak_ahli_waris" onChange={this.handleChange} value={this.state.activekontak_ahli_waris}></input>                                
+                                <input type="submit" className="form-control btn btn-success" value="Submit"></input>
+                              </form>
+                            </ModalBody>
+                            <ModalFooter>
+                            </ModalFooter>
+                  </Modal>
+                <Table hover responsive size="sm">
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
@@ -247,60 +377,27 @@ class ManajemenDataPenghuniMakam extends Component {
                       <th scope="col">Hapus Data </th>
                     </tr>
                   </thead>
-
+                  <tbody >
                   {this.state.list.map((list, index) => {
                     return (
-                      <tbody key={list.id_penghuni_makam}>
-                        <tr>
-                          <th> {list.id_penghuni_makam} {index.value}</th>
-                          <th> {list.nama} </th>
-                          <th> {list.alamat_terakhir}</th> 
-                          <th> {list.tanggal_wafat}</th>                           
-                          <th> {list.status}</th>
-                          <th> {list.id_makam}</th>
-                          <th> {list.nama_ahli_waris}</th>
-                          <th> {list.alamat_ahli_waris}</th> 
-                          <th> {list.nik_ahli_waris}</th> 
-                          <th> {list.kontak_ahli_waris}</th>
-                          <th><Button color="info" onClick={()=>this.toggleLarge(list)} className="mr-1">Lihat</Button></th> 
-                          <th><Button color="success" onClick={()=>this.toggleLarge(list)} className="mr-1">Edit</Button></th>
-                          <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                            className={'modal-Large ' + this.props.className}>
-                            <ModalHeader toggle={this.toggleLarge}>Edit Data Penghuni Makam</ModalHeader>
-                            <ModalBody>
-                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                                <label>ID</label>
-                                <input type="text" className="form-control" name="activeid_penghuni_makam" onChange={this.handleChange} value={this.state.activeid_penghuni_makam} disabled></input>
-                                <label>Nama Penghuni Makam</label>
-                                <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama}></input>
-                                <label>Alamat Terakhir</label>
-                                <input type="text" className="form-control" name="activealamat_terakhir" onChange={this.handleChange} value={this.state.activealamat_terakhir}></input>
-                                <label>Tanggal Wafat</label>
-                                <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat}></input>
-                                <label>Status</label>
-                                <input type="text" className="form-control" name="activestatus" onChange={this.handleChange} value={this.state.activestatus}></input>
-                                <label>ID Makam</label>
-                                <input type="text" className="form-control" name="activeid_makam" onChange={this.handleChange} value={this.state.activeid_makam}></input>
-                                <label>Nama Ahli Waris</label>
-                                <input type="text" className="form-control" name="activenama_ahli_waris" onChange={this.handleChange} value={this.state.activenama_ahli_waris}></input>
-                                <label>Alamat Ahli Waris</label>
-                                <input type="text" className="form-control" name="activealamat_ahli_waris" onChange={this.handleChange} value={this.state.activealamat_ahli_waris}></input>
-                                <label>NIK Ahli Waris</label>
-                                <input type="text" className="form-control" name="activenik_ahli_waris" onChange={this.handleChange} value={this.state.activenik_ahli_waris}></input>
-                                <label>Kontak Ahli Waris</label>
-                                <input type="text" className="form-control" name="activekontak_ahli_waris" onChange={this.handleChange} value={this.state.activekontak_ahli_waris}></input>                                
-                                <input type="submit" className="form-control btn btn-success" value="Submit"></input>
-                              </form>
-                            </ModalBody>
-                            <ModalFooter>
-                            </ModalFooter>
-                          </Modal>
+                        <tr key={list.id_penghuni_makam}>
+                          <td> {list.id_penghuni_makam} {index.value}</td>
+                          <td> {list.nama} </td>
+                          <td> {list.alamat_terakhir}</td> 
+                          <td> {list.tanggal_wafat}</td>                           
+                          <td> {list.status}</td>
+                          <td> {list.id_makam}</td>
+                          <td> {list.nama_ahli_waris}</td>
+                          <td> {list.alamat_ahli_waris}</td> 
+                          <td> {list.nik_ahli_waris}</td> 
+                          <td> {list.kontak_ahli_waris}</td>
+                          <td><Button color="info" onClick={()=>this.toggle(list)} className="mr-1">Lihat</Button></td> 
+                          <td><Button color="success" onClick={()=>this.toggleLarge(list)} className="mr-1">Edit</Button></td>
                         <th><Button color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(list) } } className="mr-1">Delete</Button></th>
                         </tr>
-                      </tbody>
                     )
                   })}
-
+                  </tbody>
                 </Table>               
                 <nav>
                   <Pagination>

@@ -720,8 +720,8 @@ class Search extends Component {
                   </Col>
                 </Row>
                 <br/>
-                <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
-                  <thead className="thead-light">
+                <Table hover responsive className="sm">
+                  <thead>
                   <tr>
                     <th className="">Informasi Makam</th>
                     <th className="">Penghuni Makam</th>
@@ -767,38 +767,6 @@ class Search extends Component {
                     <td>
                       <div>{items.status}</div>
                     </td>
-                    {/* <td>
-                      <Col col="6" sm="1" md="2" xl className="mb-1 mb-xl-0">
-                        <Button onClick={()=>this.toggleSmall(items)}   block outline color="primary">Buy</Button>
-                        <Modal isOpen={this.state.small} toggle={this.toggleSmall}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleSmall}>Buy</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div>{this.state.activename}</div>
-                                    <div className="small text-muted">
-                                      <span>Maximum Qty :</span> {this.state.activeqty}
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                    <FormGroup>
-                                      <Label htmlFor="ccnumber">Qty</Label>
-                                      <Input onChange={this.handleFormQty} type="text" id="ccnumber" placeholder="numbers" required />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="primary" onClick={() => this.handlesubmit(items)}>buy</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleSmall}>Cancel</Button>
-                          </ModalFooter>
-                        </Modal>
-                      </Col>
-                    </td> */}
                   </tr>
                   )
                       } 

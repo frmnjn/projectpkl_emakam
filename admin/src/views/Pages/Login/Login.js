@@ -107,7 +107,7 @@ class Login extends Component {
                     <input type="text" className="form-control" name="username" onChange={this.handleChange} value={this.state.activeusername}></input>
                     <label>password</label>
                     <input type="password" className="form-control" name="password" onChange={this.handleChange} value={this.state.activepassword}></input>
-                    <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                    <br/><input type="submit" className="form-control btn btn-success" Value="Submit"></input>
                   </form>
                 </CardBody>
               </Card>
