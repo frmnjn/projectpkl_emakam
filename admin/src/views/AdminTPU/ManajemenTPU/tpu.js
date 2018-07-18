@@ -37,6 +37,10 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import ReactTable from "react-table";
+
+
+import 'react-table/react-table.css'
 
 const brandPrimary = getStyle('--primary')
 const brandSuccess = getStyle('--success')
@@ -54,6 +58,7 @@ class tpu extends Component {
     this.toggle = this.toggle.bind(this);
     this.toggleSmall = this.toggleSmall.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchdata = this.fetchdata.bind(this);
@@ -210,6 +215,12 @@ class tpu extends Component {
     });
   }
 
+  toggleEditclose(items) {
+    this.setState({
+      edit: !this.state.edit,
+    });
+  }
+
   toggleCreate() {
     this.setState({
       create: !this.state.create,
@@ -226,14 +237,34 @@ class tpu extends Component {
     }else{
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col>
-            <Card>
-              <CardHeader>
-                <Row>
-                  <Col col="10" ><strong>Manajemen TPU</strong></Col>
-                  <Col col="2" className="text-right">
-                    <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
+                        <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
+                              className={'modal-sm ' + this.props.className}>
+                          <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
+                          <ModalBody>
+                                <Row>
+                                  <Col xs="12">
+                                    <div className="small text-muted">
+                                      <span>Ubah Data TPU</span>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <br/>
+                                <Row>
+                                  <Col xs="12">
+                                      <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" value={this.state.namaaktif} />
+                                      <br/>
+                                      <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
+                                      <br/>
+                                      <Button color="default" onClick=''>Pilih Area</Button>
+                                  </Col>
+                                </Row>
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
+                            <Button color="secondary" onClick={this.toggleEditclose}>Cancel</Button>
+                          </ModalFooter>
+                        </Modal>
+
                         <Modal isOpen={this.state.create} toggle={this.toggleCreate}
                               className={'modal-sm ' + this.props.className}>
                           <ModalHeader toggle={this.toggleCreate}>Buat Baru</ModalHeader>
@@ -261,67 +292,7 @@ class tpu extends Component {
                             <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
                           </ModalFooter>
                         </Modal>
-                  </Col>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
-                  <thead className="thead-light">
-                  <tr>
-                    <th>Nama TPU</th>
-                    <th>Alamat TPU</th>
-                    <th className="text-center">Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {this.state.items.map((items) =>{
-                  return (
-                    <tr key={items.id_tpu} >
-                    <td>
-                      <div>
-                        {items.nama_tpu}
-                      </div>
-                    </td>
-                    <td>
-                      <div>{items.alamat_tpu}</div>
-                    </td>
-                    <td>
-                      <Row>
-                      <Col>
-                      <Button onClick=''   block outline color="primary"><i className="cui-pencil icons text-left"></i> Lihat Area</Button>
-                      </Col>
-                      <Col col="2"  xl className="mb-1 mb-xl-0">
-                        <Button onClick={()=>this.toggleEdit(items)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
-                        <Modal isOpen={this.state.edit} toggle={()=>this.toggleEdit(items)}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={()=>this.toggleEdit(items)}>edit</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div className="small text-muted">
-                                      <span>Ubah Data TPU</span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                      <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" value={this.state.namaaktif} />
-                                      <br/>
-                                      <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
-                                      <br/>
-                                      <Button color="default" onClick=''>Pilih Area</Button>
-                                  </Col>
-                                </Row>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
-                            <Button color="secondary" onClick={()=>this.toggleEdit(items)}>Cancel</Button>
-                          </ModalFooter>
-                        </Modal>
-                      </Col>
-                      <Col col="2"  xl className="mb-1 mb-xl-0">
-                        <Button onClick={()=>this.toggleSmall(items)}   block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+
                         <Modal isOpen={this.state.small} toggle={this.toggleSmall}
                               className={'modal-sm ' + this.props.className}>
                           <ModalHeader toggle={this.toggleSmall}></ModalHeader>
@@ -335,17 +306,56 @@ class tpu extends Component {
                             <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
                           </ModalFooter>
                         </Modal>
-                      </Col>
-                      </Row>
-                    </td>
-                  </tr>
-                  )
-                      } 
-                    )
-                  }
-                  </tbody>
-                </Table>
-              </CardBody>
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <Row>
+                  <Col col="10" ><strong>Manajemen TPU</strong></Col>
+                  <Col col="2" className="text-right">
+                    <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+              <ReactTable
+                  data={this.state.items}
+                  defaultPageSize={10}
+                  filterable
+                  columns={[
+                    {accessor:'id_tpu',show:false},
+                    {
+                      Header: 'Nama TPU',
+                      accessor: 'nama_tpu' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Alamat TPU',
+                      accessor: 'alamat_tpu', // String-based value accessors!
+                    },
+                    {
+                      Header: 'Actions',
+                      accessor: 'id_blok', // String-based value accessors!
+                      filterable:false,
+                      Cell: row => (
+                        <div>
+                          <Row>
+                          <Col col="2"  xl className="mb-1 mb-xl-0">
+                            <Button onClick=''  block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                          </Col>
+                          <Col col="2"  xl className="mb-1 mb-xl-0">
+                            <Button onClick={()=>this.toggleEdit(row.row)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                          </Col>
+                          <Col col="2"  xl className="mb-1 mb-xl-0">
+                            <Button onClick={()=>this.toggleSmall(row.row)}   block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                          </Col>
+                          </Row>
+                        </div>
+                      )
+                    },
+                  ]}
+                />
+                <hr></hr>
+            </CardBody>
             </Card>
           </Col>
         </Row>

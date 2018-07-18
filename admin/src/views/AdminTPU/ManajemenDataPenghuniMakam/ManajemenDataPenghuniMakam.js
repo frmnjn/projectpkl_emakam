@@ -246,8 +246,16 @@ class ManajemenDataPenghuniMakam extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                Tabel Data Penghuni Makam <br/>
-                Date today : {this.state.startDate.format().substring(0,10)}
+                <Row>
+                  <Col col="10" >
+                    <strong>Tabel Data Penghuni Makam</strong><br/>
+                    Date today : {this.state.startDate.format().substring(0,10)}
+                  </Col>
+                  <Col col="2" className="text-right">
+                    <Button onClick={this.togglePrimary}   outline color="primary">Create</Button>
+                  </Col>
+                </Row>
+                
               </CardHeader>
               <CardBody>                
                 <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
@@ -365,8 +373,6 @@ class ManajemenDataPenghuniMakam extends Component {
                             <ModalFooter>
                             </ModalFooter>
                   </Modal>
-                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                <hr></hr>
                 <div>
                 <ReactTable
                   data={this.state.list}
@@ -376,6 +382,7 @@ class ManajemenDataPenghuniMakam extends Component {
                   columns={[
                     {
                       Header: 'Name',
+                      show:false,
                       accessor: 'id_penghuni_makam' // String-based value accessors!
                     },
                     {
@@ -431,6 +438,7 @@ class ManajemenDataPenghuniMakam extends Component {
                     },
                   ]}
                 />
+                <hr></hr>
                 </div>       
               </CardBody>
             </Card>
