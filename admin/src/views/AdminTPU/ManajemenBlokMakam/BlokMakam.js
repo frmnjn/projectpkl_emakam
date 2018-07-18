@@ -210,11 +210,13 @@ class BlokMakam extends Component {
     });
   }
 
+    
+  toggleEditclose() {
     this.setState({
       edit: !this.state.edit,
     });
   }
-
+  
   toggleCreate() {
     this.setState({
       create: !this.state.create,
