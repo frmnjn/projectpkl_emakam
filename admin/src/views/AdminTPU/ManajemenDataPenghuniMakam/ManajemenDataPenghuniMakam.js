@@ -31,8 +31,14 @@ import {
 
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import ReactTable from "react-table";
+
  
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-table/react-table.css'
+
+
+
 
 class ManajemenDataPenghuniMakam extends Component {
   constructor(props) {
@@ -359,60 +365,73 @@ class ManajemenDataPenghuniMakam extends Component {
                             <ModalFooter>
                             </ModalFooter>
                   </Modal>
-                <Table hover responsive size="sm">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Nama</th>
-                      <th scope="col">Alamat Terakhir</th>
-                      <th scope="col">Tanggal Wafat</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">ID Makam</th>
-                      <th scope="col">Nama Ahli Waris</th>
-                      <th scope="col">Alamat Ahli Waris</th>
-                      <th scope="col">NIK Ahli Waris</th>
-                      <th scope="col">Kontak Ahli Waris</th>
-                      <th scope="col">Lihat Detail</th>
-                      <th scope="col">Edit Data</th>
-                      <th scope="col">Hapus Data </th>
-                    </tr>
-                  </thead>
-                  <tbody >
-                  {this.state.list.map((list, index) => {
-                    return (
-                        <tr key={list.id_penghuni_makam}>
-                          <td> {list.id_penghuni_makam} {index.value}</td>
-                          <td> {list.nama} </td>
-                          <td> {list.alamat_terakhir}</td> 
-                          <td> {list.tanggal_wafat}</td>                           
-                          <td> {list.status}</td>
-                          <td> {list.id_makam}</td>
-                          <td> {list.nama_ahli_waris}</td>
-                          <td> {list.alamat_ahli_waris}</td> 
-                          <td> {list.nik_ahli_waris}</td> 
-                          <td> {list.kontak_ahli_waris}</td>
-                          <td><Button color="info" onClick={()=>this.toggle(list)} className="mr-1">Lihat</Button></td> 
-                          <td><Button color="success" onClick={()=>this.toggleLarge(list)} className="mr-1">Edit</Button></td>
-                        <th><Button color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(list) } } className="mr-1">Delete</Button></th>
-                        </tr>
-                    )
-                  })}
-                  </tbody>
-                </Table>               
-                <nav>
-                  <Pagination>
-                    <PaginationItem><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
-                    <PaginationItem active>
-                      <PaginationLink tag="button">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem><PaginationLink tag="button">2</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
-                  </Pagination>
-                  <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                </nav>
-                
+                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                <hr></hr>
+                <div>
+                <ReactTable
+                  data={this.state.list}
+                  resolveData={data => data.map(row => row)}
+                  defaultPageSize={10}
+                  filterable
+                  columns={[
+                    {
+                      Header: 'Name',
+                      accessor: 'id_penghuni_makam' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Name',
+                      accessor: 'nama' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Alamat Terakhir',
+                      accessor: 'alamat_terakhir' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Tanggal Wafat',
+                      accessor: 'tanggal_wafat' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Status',
+                      accessor: 'status' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Makam',
+                      accessor: 'id_makam' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Ahli Waris',
+                      accessor: 'nama_ahli_waris' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Alamat',
+                      accessor: 'alamat_ahli_waris' // String-based value accessors!
+                    },
+                    {
+                      Header: 'NIK',
+                      accessor: 'nik_ahli_waris' // String-based value accessors!
+                    },
+                    {
+                      Header: 'Kontak',
+                      accessor: 'kontak_ahli_waris' // String-based value accessors!
+                    },
+                    {
+                      Header: '',
+                      filterable:false,
+                      Cell: row => (<Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">Lihat</Button>)
+                    },
+                    {
+                      Header: '',
+                      filterable:false,
+                      Cell: row => (<Button color="success" onClick={()=>this.toggleLarge(row.row)} className="mr-1">Edit</Button>)
+                    },
+                    {
+                      Header: '',
+                      filterable:false,
+                      Cell: row => (<Button color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) } } className="mr-1">Delete</Button>)
+                    },
+                  ]}
+                />
+                </div>       
               </CardBody>
             </Card>
           </Col>
