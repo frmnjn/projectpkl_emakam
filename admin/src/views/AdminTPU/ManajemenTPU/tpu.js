@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Bar, Line } from 'react-chartjs-2';
 import axios from 'axios';
 import usersData from '../../../views/Users/UsersData';
@@ -22,8 +23,8 @@ import {
   Row,
   Table,
   Modal,
-  ModalBody, 
-  ModalFooter, 
+  ModalBody,
+  ModalFooter,
   ModalHeader,
   Form,
   FormGroup,
@@ -53,8 +54,8 @@ class tpu extends Component {
   constructor(props) {
     super(props);
 
-    
-    
+
+
     this.toggle = this.toggle.bind(this);
     this.toggleSmall = this.toggleSmall.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
@@ -75,32 +76,32 @@ class tpu extends Component {
       items: [],
       blok: [],
 
-      activename:null,
-      activeqty:null,
-      activesupplier:null,
+      activename: null,
+      activeqty: null,
+      activesupplier: null,
 
-      idtpuaktif:null,
-      namaaktif:null,
-      alamataktif:null,
-      
-      formqty:'1',
+      idtpuaktif: null,
+      namaaktif: null,
+      alamataktif: null,
 
-      
+      formqty: '1',
+
+
     };
 
-      
+
   }
 
 
 
   componentDidMount() {
-    
+
     this.fetchdata()
 
   }
 
-  fetchdata(){
-    fetch("http://localhost:8000/api/tpu/view?token="+sessionStorage.getItem('token'))
+  fetchdata() {
+    fetch("http://localhost:8000/api/tpu/view?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -111,12 +112,12 @@ class tpu extends Component {
             items: json
           });
         },
-      )
+    )
   }
 
-  handleEdit(){
-    
-    fetch('http://localhost:8000/api/tpu/edit/'+this.state.idtpuaktif+"?token="+sessionStorage.getItem('token'), {
+  handleEdit() {
+
+    fetch('http://localhost:8000/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -130,14 +131,14 @@ class tpu extends Component {
       this.fetchdata
     ).then(
       this.setState({
-        edit:!this.state.edit
+        edit: !this.state.edit
       })
     )
   }
 
-  handleCreate(){
-    
-    fetch('http://localhost:8000/api/tpu/create?token='+sessionStorage.getItem('token'), {
+  handleCreate() {
+
+    fetch('http://localhost:8000/api/tpu/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -151,29 +152,29 @@ class tpu extends Component {
       this.fetchdata
     ).then(
       this.setState({
-        create:!this.state.create
+        create: !this.state.create
       })
     )
   }
 
-  handleDelete(){
-    
-    fetch('http://localhost:8000/api/tpu/delete/'+this.state.idtpuaktif+"?token="+sessionStorage.getItem('token'), {
+  handleDelete() {
+
+    fetch('http://localhost:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       this.fetchdata
     ).then(
       this.setState({
-        small:!this.state.small
+        small: !this.state.small
       })
     )
   }
 
-  
+
   handleNama = event => {
     this.setState({ namaaktif: event.target.value });
   }
-  
+
   handleAlamat = event => {
     this.setState({ alamataktif: event.target.value });
   }
@@ -202,16 +203,16 @@ class tpu extends Component {
   toggleSmall(items) {
     this.setState({
       small: !this.state.small,
-      idtpuaktif:items.id_tpu,
+      idtpuaktif: items.id_tpu,
     });
   }
 
   toggleEdit(items) {
     this.setState({
       edit: !this.state.edit,
-      idtpuaktif:items.id_tpu,
-      namaaktif:items.nama_tpu,
-      alamataktif:items.alamat_tpu,
+      idtpuaktif: items.id_tpu,
+      namaaktif: items.nama_tpu,
+      alamataktif: items.alamat_tpu,
     });
   }
 
@@ -227,154 +228,155 @@ class tpu extends Component {
     });
   }
 
-  
+
 
 
   render() {
     // const {isLoaded, items} = this.state;
     if (!this.state.isLoaded) {
       return (<div>loading...</div>)
-    }else{
-    return (
-      <div className="animated fadeIn">
-                        <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div className="small text-muted">
-                                      <span>Ubah Data TPU</span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                      <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" value={this.state.namaaktif} />
-                                      <br/>
-                                      <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
-                                      <br/>
-                                      <Button color="default" onClick=''>Pilih Area</Button>
-                                  </Col>
-                                </Row>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleEditclose}>Cancel</Button>
-                          </ModalFooter>
-                        </Modal>
-
-                        <Modal isOpen={this.state.create} toggle={this.toggleCreate}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleCreate}>Buat Baru</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div className="small text-muted">
-                                      <span>Masukan Data</span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                      <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" placeholder='Nama TPU' />
-                                  </Col><br/><br/>
-                                  <Col xs="12">
-                                      <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" placeholder='Alamat TPU' />
-                                  </Col>
-                                </Row>
-                                <br/><Button color="default" onClick=''>Pilih Area</Button>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="primary" onClick={this.handleCreate}>Buat</Button>
-                            <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
-                          </ModalFooter>
-                        </Modal>
-
-                        <Modal isOpen={this.state.small} toggle={this.toggleSmall}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleSmall}></ModalHeader>
-                          <ModalBody>
-                                <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
-                                <br/><br/><br/>
-                                <strong>Apakah anda yakin ingin menghapus makam {this.state.idtpuaktif} ?</strong>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
-                          </ModalFooter>
-                        </Modal>
-        <Row>
-          <Col>
-            <Card>
-              <CardHeader>
+    } else {
+      if (sessionStorage.getItem('login_session') == 1) {
+        return (
+          <div className="animated fadeIn">
+            <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
+              className={'modal-sm ' + this.props.className}>
+              <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
+              <ModalBody>
                 <Row>
-                  <Col col="10" ><strong>Manajemen TPU</strong></Col>
-                  <Col col="2" className="text-right">
-                    <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
+                  <Col xs="12">
+                    <div className="small text-muted">
+                      <span>Ubah Data TPU</span>
+                    </div>
                   </Col>
                 </Row>
-              </CardHeader>
-              <CardBody>
-              <ReactTable
-                  data={this.state.items}
-                  defaultPageSize={10}
-                  filterable
-                  columns={[
-                    {accessor:'id_tpu',show:false},
-                    {
-                      Header: 'Nama TPU',
-                      accessor: 'nama_tpu' // String-based value accessors!
-                    },
-                    {
-                      Header: 'Alamat TPU',
-                      accessor: 'alamat_tpu', // String-based value accessors!
-                    },
-                    {
-                      Header: 'Actions',
-                      accessor: 'id_blok', // String-based value accessors!
-                      filterable:false,
-                      Cell: row => (
-                        <div>
-                          <Row>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick=''  block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
-                          </Col>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick={()=>this.toggleEdit(row.row)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
-                          </Col>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick={()=>this.toggleSmall(row.row)}   block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
-                          </Col>
-                          </Row>
-                        </div>
-                      )
-                    },
-                  ]}
-                />
-                <hr></hr>
-            </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
+                <br />
+                <Row>
+                  <Col xs="12">
+                    <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" value={this.state.namaaktif} />
+                    <br />
+                    <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
+                    <br />
+                    <Button color="default" onClick=''>Pilih Area</Button>
+                  </Col>
+                </Row>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
+                <Button color="secondary" onClick={this.toggleEditclose}>Cancel</Button>
+              </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={this.state.create} toggle={this.toggleCreate}
+              className={'modal-sm ' + this.props.className}>
+              <ModalHeader toggle={this.toggleCreate}>Buat Baru</ModalHeader>
+              <ModalBody>
+                <Row>
+                  <Col xs="12">
+                    <div className="small text-muted">
+                      <span>Masukan Data</span>
+                    </div>
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col xs="12">
+                    <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" placeholder='Nama TPU' />
+                  </Col><br /><br />
+                  <Col xs="12">
+                    <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" placeholder='Alamat TPU' />
+                  </Col>
+                </Row>
+                <br /><Button color="default" onClick=''>Pilih Area</Button>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.handleCreate}>Buat</Button>
+                <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
+              </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={this.state.small} toggle={this.toggleSmall}
+              className={'modal-sm ' + this.props.className}>
+              <ModalHeader toggle={this.toggleSmall}></ModalHeader>
+              <ModalBody>
+                <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
+                <br /><br /><br />
+                <strong>Apakah anda yakin ingin menghapus makam {this.state.idtpuaktif} ?</strong>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
+                <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
+              </ModalFooter>
+            </Modal>
+            <Row>
+              <Col>
+                <Card>
+                  <CardHeader>
+                    <Row>
+                      <Col col="10" ><strong>Manajemen TPU</strong></Col>
+                      <Col col="2" className="text-right">
+                        <Button onClick={this.toggleCreate} outline color="primary">Create</Button>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <ReactTable
+                      data={this.state.items}
+                      defaultPageSize={10}
+                      filterable
+                      columns={[
+                        { accessor: 'id_tpu', show: false },
+                        {
+                          Header: 'Nama TPU',
+                          accessor: 'nama_tpu' // String-based value accessors!
+                        },
+                        {
+                          Header: 'Alamat TPU',
+                          accessor: 'alamat_tpu', // String-based value accessors!
+                        },
+                        {
+                          Header: 'Actions',
+                          accessor: 'id_blok', // String-based value accessors!
+                          filterable: false,
+                          Cell: row => (
+                            <div>
+                              <Row>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick='' block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                </Col>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                                </Col>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                                </Col>
+                              </Row>
+                            </div>
+                          )
+                        },
+                      ]}
+                    />
+                    <hr></hr>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        );
+      } else if (sessionStorage.getItem('login_session') == "0") {
+        return (
+          <div>
+            {alert("Anda tidak memiliki hak akses!")}
+            <Redirect to="/login" />
+          </div>
+        );
+      } else {
+        return (
+          <Redirect to="/404" />
+        );
+      }
+    }
   }
 }
 
-class unauthorized extends Component{
-  render(){
-    alert("Anda tidak memiliki hak akses!");
-    return(
-      <p></p>
-    );
-  } 
-}
-const logger = sessionStorage.getItem('login_session') == "0" ? tpu : unauthorized;
-
-export default logger;
-
-//export default tpu;
+export default tpu;

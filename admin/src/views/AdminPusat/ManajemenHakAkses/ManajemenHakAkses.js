@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -193,8 +193,8 @@ class ManajemenHakAkses extends Component {
       .then(
         this.fetchall
       )
-      .then(function (myJson) {
-        alert(myJson.msg);
+      .then(function() {
+        alert("Hak Akses Berhasil dihapus!");
       });
   }
 
@@ -215,154 +215,165 @@ class ManajemenHakAkses extends Component {
   }
 
   render() {
-    return (
-
-      <div className="animated fadeIn">
-        <Row>
-
-          <Col xl={12}>
-            <Card>
-              <CardHeader>
-                <row>
-                  <Col col="2" ><strong>Users Role</strong></Col>
-                  <Col col="2" className="text-right">
-                    <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                  </Col>
-                </row>
-              </CardHeader>
-              <CardBody>
-                <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
-                  className={'modal-primary ' + this.props.className}>
-                  <ModalHeader toggle={this.togglePrimary}>Buat Hak Akses</ModalHeader>
-                  <ModalBody>
-                    <form onSubmit={this.handleSubmitCreate}>
-                      <div class="form-group">
-                        <label>ID TPU</label>
-                        <select class="form-control" onChange={this.handleChangeOption_tpu}>
-                          <option disabled selected>ID TPU</option>
-                          {this.state.table_tpu.map((table_tpu, index) => {
-                            return (
-                              <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
-                            )
-                          })}
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label>ID User</label>
-                        <select class="form-control" onChange={this.handleChangeOption_user}>
-                          <option disabled selected>ID User</option>
-                          {this.state.table_user.map((table_user, index) => {
-                            return (
-                              <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
-                            )
-                          })}
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
-                      </div>
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                  </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                            className={'modal-Large ' + this.props.className}>
-                            <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
-                            <ModalBody>
-                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                                <div class="form-group">
-                                  <label>ID Role User</label>
-                                  <input type="number" className="form-control" name="activeid_role_tpu" onChange={this.handleChange} value={this.state.activeid_role_tpu}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>ID TPU</label>
-                                  <select class="form-control" onChange={this.handleChangeOption_active_tpu}>
-                                    <option disabled selected>Pilih ID TPU</option>
-                                    {this.state.table_tpu.map((table_tpu, index) => {
-                                      return (
-                                        <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
-                                      )
-                                    })}
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <label>ID User</label>
-                                  <select class="form-control" onChange={this.handleChangeOption_active_user}>
-                                  <option disabled selected>Pilih ID User</option>
-                                    {this.state.table_user.map((table_user, index) => {
-                                      return (
-                                        <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
-                                      )
-                                    })}
-                                  </select>
-                                </div>
-                                <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
-                              </form>
-                            </ModalBody>
-                            <ModalFooter>
-                            </ModalFooter>
-                </Modal>
-              <ReactTable
-                  data={this.state.table_constraint_user}
-                  defaultPageSize={10}
-                  filterable
-                  columns={[
-                    {accessor:'id_user',show:false},
-                    {accessor:'id_tpu',show:false},
-                    {
-                      Header: 'User',
-                      accessor: 'username', // String-based value accessors!
-                      Cell: row => (
-                        <div>
-                          {row.row.username} | {row.row.id_user}
+    if(sessionStorage.getItem('login_session') == 0){
+      return (
+        <div className="animated fadeIn">
+          <Row>
+            <Col xl={12}>
+              <Card>
+                <CardHeader>
+                  <row>
+                    <Col col="2" ><strong>Users Role</strong></Col>
+                    <Col col="2" className="text-right">
+                      <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                    </Col>
+                  </row>
+                </CardHeader>
+                <CardBody>
+                  <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
+                    className={'modal-primary ' + this.props.className}>
+                    <ModalHeader toggle={this.togglePrimary}>Buat Hak Akses</ModalHeader>
+                    <ModalBody>
+                      <form onSubmit={this.handleSubmitCreate}>
+                        <div class="form-group">
+                          <label>ID TPU</label>
+                          <select class="form-control" onChange={this.handleChangeOption_tpu}>
+                            <option disabled selected>ID TPU</option>
+                            {this.state.table_tpu.map((table_tpu, index) => {
+                              return (
+                                <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                              )
+                            })}
+                          </select>
                         </div>
-                      )
-                    },
-                    {
-                      Header: 'TPU',
-                      accessor: 'nama_tpu', // String-based value accessors!
-                      Cell: row => (
-                        <div>
-                          {row.row.nama_tpu} | ID {row.row.id_tpu}
+                        <div class="form-group">
+                          <label>ID User</label>
+                          <select class="form-control" onChange={this.handleChangeOption_user}>
+                            <option disabled selected>ID User</option>
+                            {this.state.table_user.map((table_user, index) => {
+                              return (
+                                <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
+                              )
+                            })}
+                          </select>
                         </div>
-                      )
-                    },
-                    {
-                      Header: 'Role TPU',
-                      accessor: 'id_role_tpu', // String-based value accessors!
-                    },
-                    {
-                      Header: 'Actions',
-                      filterable:false,
-                      Cell: row => (
-                        <div>
-                          <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
-                          <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                        <div class="form-group">
+                          <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
                         </div>
-                      )
-                    },
-                  ]}
-                />
-                <hr></hr>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+                      </form>
+                    </ModalBody>
+                    <ModalFooter>
+                    </ModalFooter>
+                  </Modal>
+  
+                  <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                              className={'modal-Large ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
+                              <ModalBody>
+                                <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                                  <div class="form-group">
+                                    <label>ID Role User</label>
+                                    <input type="number" className="form-control" name="activeid_role_tpu" onChange={this.handleChange} value={this.state.activeid_role_tpu}></input>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>ID TPU</label>
+                                    <select class="form-control" onChange={this.handleChangeOption_active_tpu}>
+                                      <option disabled selected>Pilih ID TPU</option>
+                                      {this.state.table_tpu.map((table_tpu, index) => {
+                                        return (
+                                          <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                                        )
+                                      })}
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>ID User</label>
+                                    <select class="form-control" onChange={this.handleChangeOption_active_user}>
+                                    <option disabled selected>Pilih ID User</option>
+                                      {this.state.table_user.map((table_user, index) => {
+                                        return (
+                                          <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
+                                        )
+                                      })}
+                                    </select>
+                                  </div>
+                                  <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                                </form>
+                              </ModalBody>
+                              <ModalFooter>
+                              </ModalFooter>
+                  </Modal>
+                <ReactTable
+                    data={this.state.table_constraint_user}
+                    defaultPageSize={10}
+                    filterable
+                    columns={[
+                      {accessor:'id_user',show:false},
+                      {accessor:'id_tpu',show:false},
+                      {
+                        Header: 'User',
+                        accessor: 'username', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            {row.row.username} | {row.row.id_user}
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'TPU',
+                        accessor: 'nama_tpu', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            {row.row.nama_tpu} | ID {row.row.id_tpu}
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'Role TPU',
+                        accessor: 'id_role_tpu', // String-based value accessors!
+                      },
+                      {
+                        Header: 'Actions',
+                        filterable:false,
+                        Cell: row => (
+                          <div>
+                            <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
+                            <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                          </div>
+                        )
+                      },
+                    ]}
+                  />
+                  <hr></hr>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      );
+    } else if(sessionStorage.getItem('login_session') == "1"){
+      return(
+        <div>
+        {alert("Anda tidak memiliki hak akses!")}
+        <Redirect to="/login" />
+        </div>
+      );
+    } else {
+      return(
+        <Redirect to="/404" />
+      );
+    }
   }
 }
 
-class unauthorized extends Component{
-  render(){
-    alert("Anda tidak memiliki hak akses!");
-    return(
-      <p></p>
-    );
-  } 
-}
-const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenHakAkses : unauthorized;
+// class unauthorized extends Component{
+//   render(){
+//     alert("Anda tidak memiliki hak akses!");
+//     return(
+//       <p></p>
+//     );
+//   } 
+// }
+// const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenHakAkses : unauthorized;
 
-export default logger;
+export default ManajemenHakAkses;

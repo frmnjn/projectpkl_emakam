@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -218,132 +219,136 @@ class ManajemenPengguna extends Component {
   }
 
   render() {
-    return (                   
-      <div className="animated fadeIn">
-        <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
-                  className={'modal-primary ' + this.props.className}>
-                  <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
-                  <ModalBody>
-                    <form onSubmit={this.handleSubmitCreate}>
-                      <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" onChange={this.handleChangeOption}>
-                          <option value="0">Admin Pusat</option>
-                          <option value="1">Admin TPU</option>
-                          <option value="2">Admin Kelurahan</option>
-                          <option value="3">Kepala UPT Pemakaman</option>
-                          <option value="4">Kepala Dinas Perkim</option>
-                          <option value="5">Camat</option>
-                          <option value="6">Pengguna</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
-                      </div>
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                  </ModalFooter>
-                </Modal>
-              <Modal isOpen={this.state.large} toggle={this.toggleLarge} className={'modal-Large ' + this.props.className}>
-              <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
-              <ModalBody>
-                <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                  <div class="form-group">
-                    <label>ID User</label>
-                    <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
-                  </div>
-                  <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
-                  </div>
-                  <div class="form-group">
-                    <label>Password</label>
-                    <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
-                  </div>
-                  <div class="form-group">
-                    <label>Role</label>
-                    <select class="form-control"  onChange={this.handleChangeOptionActiveValue}>
-                      <option value="0" selected={this.state.activevalueNum==0}>Admin Pusat</option>
-                      <option value="1" selected={this.state.activevalueNum==1}>Admin TPU</option>
-                      <option value="2" selected={this.state.activevalueNum==2}>Admin Kelurahan</option>
-                      <option value="3" selected={this.state.activevalueNum==3}>Kepala UPT Pemakaman</option>
-                      <option value="4" selected={this.state.activevalueNum==4}>Kepala Dinas Perkim</option>
-                      <option value="5" selected={this.state.activevalueNum==5}>Camat</option>
-                      <option value="6" selected={this.state.activevalueNum==6}>Pengguna</option>
-                    </select>
-                  </div>
-                  <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
-                </form>
-              </ModalBody>
-              <ModalFooter>
-              </ModalFooter>
-            </Modal> 
-
-        <Row>
-          <Col xl={12}>
-            <Card>
-              <CardHeader>
-                <row>
-                  <Col col="2" ><strong>Users</strong></Col>
-                  <Col col="2" className="text-right">
-                    <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                  </Col>
-                </row>
-              </CardHeader>
-              <CardBody>
-              <ReactTable
-                  data={this.state.table_user}
-                  defaultPageSize={10}
-                  filterable
-                  columns={[
-                    {accessor:'id_user',show:false},
-                    {accessor:'password',show:false},
-                    {
-                      Header: 'Username',
-                      accessor: 'username', // String-based value accessors!
-                    },
-                    {
-                      Header: 'Role',
-                      accessor: 'role', // String-based value accessors!
-                    },
-                    {
-                      Header: 'Actions',
-                      filterable:false,
-                      Cell: row => (
-                        <div>
-                          <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
-                          <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+    if(sessionStorage.getItem('login_session') == 0){
+      return (                   
+        <div className="animated fadeIn">
+          <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
+                    className={'modal-primary ' + this.props.className}>
+                    <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
+                    <ModalBody>
+                      <form onSubmit={this.handleSubmitCreate}>
+                        <div class="form-group">
+                          <label>Username</label>
+                          <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.handleChange}></input>
                         </div>
-                      )
-                    },
-                  ]}
-                />
-                <hr></hr>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+                        <div class="form-group">
+                          <label>Password</label>
+                          <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.handleChange}></input>
+                        </div>
+                        <div class="form-group">
+                          <label>Role</label>
+                          <select class="form-control" onChange={this.handleChangeOption}>
+                            <option value="0">Admin Pusat</option>
+                            <option value="1">Admin TPU</option>
+                            <option value="2">Admin Kelurahan</option>
+                            <option value="3">Kepala UPT Pemakaman</option>
+                            <option value="4">Kepala Dinas Perkim</option>
+                            <option value="5">Camat</option>
+                            <option value="6">Pengguna</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
+                        </div>
+                      </form>
+                    </ModalBody>
+                    <ModalFooter>
+                    </ModalFooter>
+                  </Modal>
+                <Modal isOpen={this.state.large} toggle={this.toggleLarge} className={'modal-Large ' + this.props.className}>
+                <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
+                <ModalBody>
+                  <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                    <div class="form-group">
+                      <label>ID User</label>
+                      <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
+                    </div>
+                    <div class="form-group">
+                      <label>Username</label>
+                      <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
+                    </div>
+                    <div class="form-group">
+                      <label hidden>Password</label>
+                      <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword} hidden></input>
+                    </div>
+                    <div class="form-group">
+                      <label>Role</label>
+                      <select class="form-control"  onChange={this.handleChangeOptionActiveValue}>
+                        <option value="0" selected={this.state.activevalueNum==0}>Admin Pusat</option>
+                        <option value="1" selected={this.state.activevalueNum==1}>Admin TPU</option>
+                        <option value="2" selected={this.state.activevalueNum==2}>Admin Kelurahan</option>
+                        <option value="3" selected={this.state.activevalueNum==3}>Kepala UPT Pemakaman</option>
+                        <option value="4" selected={this.state.activevalueNum==4}>Kepala Dinas Perkim</option>
+                        <option value="5" selected={this.state.activevalueNum==5}>Camat</option>
+                        <option value="6" selected={this.state.activevalueNum==6}>Pengguna</option>
+                      </select>
+                    </div>
+                    <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                  </form>
+                </ModalBody>
+                <ModalFooter>
+                </ModalFooter>
+              </Modal> 
+  
+          <Row>
+            <Col xl={12}>
+              <Card>
+                <CardHeader>
+                  <row>
+                    <Col col="2" ><strong>Users</strong></Col>
+                    <Col col="2" className="text-right">
+                      <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                    </Col>
+                  </row>
+                </CardHeader>
+                <CardBody>
+                <ReactTable
+                    data={this.state.table_user}
+                    defaultPageSize={10}
+                    filterable
+                    columns={[
+                      {accessor:'id_user',show:false},
+                      {accessor:'password',show:false},
+                      {
+                        Header: 'Username',
+                        accessor: 'username', // String-based value accessors!
+                      },
+                      {
+                        Header: 'Role',
+                        accessor: 'role', // String-based value accessors!
+                      },
+                      {
+                        Header: 'Actions',
+                        filterable:false,
+                        Cell: row => (
+                          <div>
+                            <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
+                            <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                          </div>
+                        )
+                      },
+                    ]}
+                  />
+                  <hr></hr>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      );
+    } else if(sessionStorage.getItem('login_session') == "1"){
+      return(
+        <div>
+        {alert("Anda tidak memiliki hak akses!")}
+        <Redirect to="/login" />
+        </div>
+      );
+    } else {
+      return(
+        <Redirect to="/404" />
+      );
+    }
   }
 }
-class unauthorized extends Component{
-  render(){
-    alert("Anda tidak memiliki hak akses!");
-    return(
-      <p></p>
-    );
-  } 
-}
-const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenPengguna : unauthorized;
 
-export default logger;
+export default ManajemenPengguna;

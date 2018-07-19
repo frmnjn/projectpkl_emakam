@@ -181,7 +181,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `role`) VALUES
-(1, 'firman', '$2y$10$fEJMmXWBBYO5lh/mdiN/LeSRSx9f5ViYUPmLoLciCBlrziTcee53m', 1),
+(1, 'firman', '$2y$10$G0Jggo0BbVFd8mjwZPZsJuzumSbvhvqIZ5mxdglRxGA72E/2YtccG', 1),
 (2, 'urubneg', '$2y$10$OOq0bWyfjaqWREiaaLaS2.aotrOLV4oZjeyXi4DOcinVxF31hHKZ2', 0),
 (4, 'genburu', '$2y$10$SpYLI7.3kwL6d1zwW.BjResBg7IGCB6gL8lPVLbSUZLvD1JXnEF.e', 2);
 

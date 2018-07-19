@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import axios from 'axios';
 import usersData from '../../../views/Users/UsersData';
+import { Redirect } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -22,8 +23,8 @@ import {
   Row,
   Table,
   Modal,
-  ModalBody, 
-  ModalFooter, 
+  ModalBody,
+  ModalFooter,
   ModalHeader,
   Form,
   FormGroup,
@@ -53,8 +54,8 @@ class BlokMakam extends Component {
   constructor(props) {
     super(props);
 
-    
-    
+
+
     this.toggle = this.toggle.bind(this);
     this.toggleSmall = this.toggleSmall.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
@@ -75,33 +76,33 @@ class BlokMakam extends Component {
       items: [],
       blok: [],
 
-      activename:null,
-      activeqty:null,
-      activesupplier:null,
+      activename: null,
+      activeqty: null,
+      activesupplier: null,
 
-      idblokaktif:null,
-      nomoraktif:null,
-      blokaktif:null,
-      kodeaktif:null,
-      
-      formqty:'1',
+      idblokaktif: null,
+      nomoraktif: null,
+      blokaktif: null,
+      kodeaktif: null,
 
-      
+      formqty: '1',
+
+
     };
 
-      
+
   }
 
 
 
   componentDidMount() {
-    
+
     this.fetchblok()
 
   }
 
-  fetchblok(){
-    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token'))
+  fetchblok() {
+    fetch("http://localhost:8000/api/blok/view?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -112,12 +113,12 @@ class BlokMakam extends Component {
             blok: json
           });
         },
-      )
+    )
   }
 
-  handleEdit(){
-    
-    fetch('http://localhost:8000/api/blok/edit/'+this.state.idblokaktif+"?token="+sessionStorage.getItem('token'), {
+  handleEdit() {
+
+    fetch('http://localhost:8000/api/blok/edit/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -130,14 +131,14 @@ class BlokMakam extends Component {
       this.fetchblok
     ).then(
       this.setState({
-        edit:!this.state.edit
+        edit: !this.state.edit
       })
     )
   }
 
-  handleCreate(){
-    
-    fetch('http://localhost:8000/api/blok/create?token='+sessionStorage.getItem('token'), {
+  handleCreate() {
+
+    fetch('http://localhost:8000/api/blok/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -151,25 +152,25 @@ class BlokMakam extends Component {
       this.fetchblok
     ).then(
       this.setState({
-        create:!this.state.create
+        create: !this.state.create
       })
     )
   }
 
-  handleDelete(){
-    
-    fetch('http://localhost:8000/api/blok/delete/'+this.state.idblokaktif+"?token="+sessionStorage.getItem('token'), {
+  handleDelete() {
+
+    fetch('http://localhost:8000/api/blok/delete/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       this.fetchblok
     ).then(
       this.setState({
-        small:!this.state.small
+        small: !this.state.small
       })
     )
   }
 
-  
+
   handleKode = event => {
     this.setState({ kodeaktif: event.target.value });
   }
@@ -198,176 +199,180 @@ class BlokMakam extends Component {
   toggleSmall(items) {
     this.setState({
       small: !this.state.small,
-      idblokaktif:items.id_blok,
+      idblokaktif: items.id_blok,
     });
   }
 
   toggleEdit(items) {
     this.setState({
       edit: !this.state.edit,
-      idblokaktif:items.id_blok,
-      kodeaktif:items.kode_blok,
+      idblokaktif: items.id_blok,
+      kodeaktif: items.kode_blok,
     });
   }
 
-    
+
   toggleEditclose() {
     this.setState({
       edit: !this.state.edit,
     });
   }
-  
+
   toggleCreate() {
     this.setState({
       create: !this.state.create,
     });
   }
 
-  
+
 
 
   render() {
     // const {isLoaded, items} = this.state;
     if (!this.state.isLoaded) {
       return (<div>loading...</div>)
-    }else{
-    return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col>
-                        <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div className="small text-muted">
-                                      <span>Kode Blok</span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                  <InputGroup>
-                                      <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
-                                      <br/><Button color="default" onClick=''>Pilih Area</Button>
-                                  </InputGroup>
-                                  </Col>
-                                </Row>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleEditclose}>Cancel</Button>
-                          </ModalFooter>
-                        </Modal>
-                        <Modal isOpen={this.state.create} toggle={this.toggleCreate}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleCreate}>Buat Baru</ModalHeader>
-                          <ModalBody>
-                                <Row>
-                                  <Col xs="12">
-                                    <div className="small text-muted">
-                                      <span>Masukan Data</span>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <br/>
-                                <Row>
-                                  <Col xs="12">
-                                      <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
-                                  </Col>
-                                </Row>
-                                <br/><Button color="default" onClick=''>Pilih Area</Button>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="primary" onClick={this.handleCreate}>Buat</Button>
-                            <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
-                          </ModalFooter>
-                        </Modal>
-                        <Modal isOpen={this.state.small} toggle={this.toggleSmall}
-                              className={'modal-sm ' + this.props.className}>
-                          <ModalHeader toggle={this.toggleSmall}></ModalHeader>
-                          <ModalBody>
-                                <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
-                                <br/><br/><br/>
-                                <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
-                          </ModalFooter>
-                        </Modal>
-            <Card>
-              <CardHeader>
-                <Row>
-                  <Col col="10" ><strong>Manajemen Blok Makam</strong></Col>
-                  <Col col="2" className="text-right">
-                    <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
-                  </Col>
-                </Row>
-              </CardHeader>
-              <CardBody>
-              <ReactTable
-                  data={this.state.blok}
-                  defaultPageSize={10}
-                  filterable
-                  columns={[
-                    {accessor:'id_blok',show:false},
-                    {
-                      Header: 'Kode Blok',
-                      accessor: 'kode_blok' // String-based value accessors!
-                    },
-                    {
-                      Header: 'TPU',
-                      accessor: 'nama_tpu', // String-based value accessors!
-                      Cell: row => (
-                        <div>
-                          {row.row.nama_tpu} | blok {row.row.kode_blok}
+    } else {
+      if (sessionStorage.getItem('login_session') == 1) {
+        return (
+          <div className="animated fadeIn">
+            <Row>
+              <Col>
+                <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
+                  className={'modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
+                  <ModalBody>
+                    <Row>
+                      <Col xs="12">
+                        <div className="small text-muted">
+                          <span>Kode Blok</span>
                         </div>
-                      )
-                    },
-                    {
-                      Header: 'Actions',
-                      accessor: 'id_blok', // String-based value accessors!
-                      filterable:false,
-                      Cell: row => (
-                        <div>
-                          <Row>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick=''  block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
-                          </Col>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick={()=>this.toggleEdit(row.row)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
-                          </Col>
-                          <Col col="2"  xl className="mb-1 mb-xl-0">
-                            <Button onClick={()=>this.toggleSmall(row.row)}   block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
-                          </Col>
-                          </Row>
+                      </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                      <Col xs="12">
+                        <InputGroup>
+                          <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
+                          <br /><Button color="default" onClick=''>Pilih Area</Button>
+                        </InputGroup>
+                      </Col>
+                    </Row>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="success" onClick={this.handleEdit}>edit</Button>{' '}
+                    <Button color="secondary" onClick={this.toggleEditclose}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
+                <Modal isOpen={this.state.create} toggle={this.toggleCreate}
+                  className={'modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleCreate}>Buat Baru</ModalHeader>
+                  <ModalBody>
+                    <Row>
+                      <Col xs="12">
+                        <div className="small text-muted">
+                          <span>Masukan Data</span>
                         </div>
-                      )
-                    },
-                  ]}
-                />
-                <hr></hr>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
+                      </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                      <Col xs="12">
+                        <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
+                      </Col>
+                    </Row>
+                    <br /><Button color="default" onClick=''>Pilih Area</Button>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" onClick={this.handleCreate}>Buat</Button>
+                    <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
+                  </ModalFooter>
+                </Modal>
+                <Modal isOpen={this.state.small} toggle={this.toggleSmall}
+                  className={'modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleSmall}></ModalHeader>
+                  <ModalBody>
+                    <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
+                    <br /><br /><br />
+                    <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
+                    <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
+                  </ModalFooter>
+                </Modal>
+                <Card>
+                  <CardHeader>
+                    <Row>
+                      <Col col="10" ><strong>Manajemen Blok Makam</strong></Col>
+                      <Col col="2" className="text-right">
+                        <Button onClick={this.toggleCreate} outline color="primary">Create</Button>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <ReactTable
+                      data={this.state.blok}
+                      defaultPageSize={10}
+                      filterable
+                      columns={[
+                        { accessor: 'id_blok', show: false },
+                        {
+                          Header: 'Kode Blok',
+                          accessor: 'kode_blok' // String-based value accessors!
+                        },
+                        {
+                          Header: 'TPU',
+                          accessor: 'nama_tpu', // String-based value accessors!
+                          Cell: row => (
+                            <div>
+                              {row.row.nama_tpu} | blok {row.row.kode_blok}
+                            </div>
+                          )
+                        },
+                        {
+                          Header: 'Actions',
+                          accessor: 'id_blok', // String-based value accessors!
+                          filterable: false,
+                          Cell: row => (
+                            <div>
+                              <Row>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick='' block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                </Col>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                                </Col>
+                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                                </Col>
+                              </Row>
+                            </div>
+                          )
+                        },
+                      ]}
+                    />
+                    <hr></hr>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        );
+      } else if (sessionStorage.getItem('login_session') == "0") {
+        return (
+          <div>
+            {alert("Anda tidak memiliki hak akses!")}
+            <Redirect to="/login" />
+          </div>
+        );
+      } else {
+        return (
+          <Redirect to="/404" />
+        );
+      }
+
+    }
   }
 }
 
-class unauthorized extends Component{
-  render(){
-    alert("Anda tidak memiliki hak akses!");
-    return(
-      <p></p>
-    );
-  } 
-}
-const logger = sessionStorage.getItem('login_session') == "1" ? BlokMakam : unauthorized;
-
-export default logger;
+export default BlokMakam;

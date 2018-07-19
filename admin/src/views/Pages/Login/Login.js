@@ -4,6 +4,7 @@ import usersData from '../../../views/Users/UsersData';
 class Login extends Component {
   constructor(props) {
     super(props);
+    sessionStorage.setItem('login_session', 99);
 
     this.state = {
       username: "",
@@ -48,7 +49,7 @@ class Login extends Component {
             if (this.state.temp.role == 0) {
               this.props.history.push('/ManajemenPengguna')
             } else if (this.state.temp.role == 1) {
-              this.props.history.push('/ManajemenTpu')
+              this.props.history.push('/ManajemenBlokMakam')
             } else {
               this.props.history.push('/Search')
             }
