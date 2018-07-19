@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -204,147 +205,149 @@ class ManajemenPengguna extends Component {
   }
 
   render() {
-    return (
-
-      <div className="animated fadeIn">
-        <Row>
-
-          <Col xl={12}>
-            <Card>
-              <CardHeader>
-                Users
-              </CardHeader>
-              <CardBody>
-                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
-                  className={'modal-primary ' + this.props.className}>
-                  <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
-                  <ModalBody>
-                    <form onSubmit={this.handleSubmitCreate}>
-                      <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.handleChange}></input>
-                      </div>
-                      <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" onChange={this.handleChangeOption}>
-                          <option value="0">Admin Pusat</option>
-                          <option value="1">Admin TPU</option>
-                          <option value="2">Admin Kelurahan</option>
-                          <option value="3">Kepala UPT Pemakaman</option>
-                          <option value="3">Kepala Dinas Perkim</option>
-                          <option value="4">Camat</option>
-                          <option value="5">Pengguna</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
-                      </div>
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                  </ModalFooter>
-                </Modal>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">ID User</th>
-                      <th scope="col">Username</th>
-                      <th scope="col">Password</th>
-                      <th scope="col">Role</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-
-                  {this.state.table_user.map((table_user, index) => {
-                    return (
-                      <tbody>
-                        <th> {table_user.id_user}</th>
-                        <th> {table_user.username}</th>
-                        <th> {table_user.password}</th>
-                        <th> {table_user.role}</th>
-                        <th><Button color="success" onClick={() => this.toggleLarge(table_user)} className="mr-1">Edit</Button>
-                          <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                            className={'modal-Large ' + this.props.className}>
-                            <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
-                            <ModalBody>
-                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                                <div class="form-group">
-                                  <label>ID User</label>
-                                  <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Username</label>
-                                  <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Password</label>
-                                  <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Role</label>
-                                  <select class="form-control" value={this.state.activevalue} onChange={this.handleChangeOptionActiveValue}>
-                                    <option value={this.state.activevalueNum}>{this.state.activevalue}</option>
-                                    <option value="0">Admin Pusat</option>
-                                    <option value="1">Admin TPU</option>
-                                    <option value="2">Admin Kelurahan</option>
-                                    <option value="3">Kepala UPT Pemakaman</option>
-                                    <option value="3">Kepala Dinas Perkim</option>
-                                    <option value="4">Camat</option>
-                                    <option value="5">Pengguna</option>
+    if(sessionStorage.getItem('login_session') == 0){
+      return (
+        <div className="animated fadeIn">
+          <Row>
+            <Col xl={12}>
+              <Card>
+                <CardHeader>
+                  Users
+                </CardHeader>
+                <CardBody>
+                  <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                  <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
+                    className={'modal-primary ' + this.props.className}>
+                    <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
+                    <ModalBody>
+                      <form onSubmit={this.handleSubmitCreate}>
+                        <div class="form-group">
+                          <label>Username</label>
+                          <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.handleChange}></input>
+                        </div>
+                        <div class="form-group">
+                          <label>Password</label>
+                          <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.handleChange}></input>
+                        </div>
+                        <div class="form-group">
+                          <label>Role</label>
+                          <select class="form-control" onChange={this.handleChangeOption}>
+                            <option value="0">Admin Pusat</option>
+                            <option value="1">Admin TPU</option>
+                            <option value="2">Admin Kelurahan</option>
+                            <option value="3">Kepala UPT Pemakaman</option>
+                            <option value="3">Kepala Dinas Perkim</option>
+                            <option value="4">Camat</option>
+                            <option value="5">Pengguna</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
+                        </div>
+                      </form>
+                    </ModalBody>
+                    <ModalFooter>
+                    </ModalFooter>
+                  </Modal>
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th scope="col">ID User</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+  
+                    {this.state.table_user.map((table_user, index) => {
+                      return (
+                        <tbody>
+                          <th> {table_user.id_user}</th>
+                          <th> {table_user.username}</th>
+                          <th> {table_user.password}</th>
+                          <th> {table_user.role}</th>
+                          <th><Button color="success" onClick={() => this.toggleLarge(table_user)} className="mr-1">Edit</Button>
+                            <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                              className={'modal-Large ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
+                              <ModalBody>
+                                <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                                  <div class="form-group">
+                                    <label>ID User</label>
+                                    <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Role</label>
+                                    <select class="form-control" value={this.state.activevalue} onChange={this.handleChangeOptionActiveValue}>
+                                      <option value={this.state.activevalueNum}>{this.state.activevalue}</option>
+                                      <option value="0">Admin Pusat</option>
+                                      <option value="1">Admin TPU</option>
+                                      <option value="2">Admin Kelurahan</option>
+                                      <option value="3">Kepala UPT Pemakaman</option>
+                                      <option value="3">Kepala Dinas Perkim</option>
+                                      <option value="4">Camat</option>
+                                      <option value="5">Pengguna</option>
+                                    </select>
+                                    {/* <select class="form-control" name="role_tpu">
+                                    {this.state.table_role_tpu.map((table_role_tpu, index) => {
+                                      return (
+                                        <option>{table_role_tpu.id_role_tpu}</option>
+                                      )
+                                    })}
+  
+                                  </select> */}
+                                  </div>
+                                  {/* <div class="form-group">
+                                  <label>TPU</label>
+                                  <select class="form-control" name="role_tpu">
+                                    {this.state.table_tpu.map((table_tpu, index) => {
+                                      return (
+                                        <option>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                                      )
+                                    })}
+  
                                   </select>
-                                  {/* <select class="form-control" name="role_tpu">
-                                  {this.state.table_role_tpu.map((table_role_tpu, index) => {
-                                    return (
-                                      <option>{table_role_tpu.id_role_tpu}</option>
-                                    )
-                                  })}
-
-                                </select> */}
-                                </div>
-                                {/* <div class="form-group">
-                                <label>TPU</label>
-                                <select class="form-control" name="role_tpu">
-                                  {this.state.table_tpu.map((table_tpu, index) => {
-                                    return (
-                                      <option>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
-                                    )
-                                  })}
-
-                                </select>
-                              </div> */}
-                                <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
-                              </form>
-                            </ModalBody>
-                            <ModalFooter>
-                            </ModalFooter>
-                          </Modal>
-                          <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_user) }} className="mr-1">Delete</Button></th>
-                      </tbody>
-                    )
-                  })}
-
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+                                </div> */}
+                                  <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                                </form>
+                              </ModalBody>
+                              <ModalFooter>
+                              </ModalFooter>
+                            </Modal>
+                            <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_user) }} className="mr-1">Delete</Button></th>
+                        </tbody>
+                      )
+                    })}
+  
+                  </Table>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      );
+    } else if(sessionStorage.getItem('login_session') == "1"){
+      return(
+        <div>
+        {alert("Anda tidak memiliki hak akses!")}
+        <Redirect to="/login" />
+        </div>
+      );
+    } else {
+      return(
+        <Redirect to="/login" />
+      );
+    }
   }
 }
-class unauthorized extends Component{
-  render(){
-    alert("Anda tidak memiliki hak akses!");
-    return(
-      <p></p>
-    );
-  } 
-}
-const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenPengguna : unauthorized;
 
-export default logger;
+export default ManajemenPengguna;
