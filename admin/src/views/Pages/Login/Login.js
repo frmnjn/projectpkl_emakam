@@ -12,8 +12,6 @@ class Login extends Component {
       temp: []
 
     };
-
-    sessionStorage.setItem('login_session', 99);
   }
 
   handleChange = (e) => {
@@ -22,7 +20,6 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    
     fetch('http://localhost:8000/api/signin', {
       method: 'POST',
       headers: {
@@ -35,6 +32,7 @@ class Login extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
+
         if (responseJson.length > 0) {
 
           responseJson.map((items) => {
@@ -54,11 +52,13 @@ class Login extends Component {
             } else {
               this.props.history.push('/Search')
             }
+
           },
           )
-        }      
+        }
       }
       );
+
   }
 
   // handleLogin = event => {
