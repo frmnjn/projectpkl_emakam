@@ -59,7 +59,7 @@ Route::middleware('cors')->delete('blok/delete/{id}', 'AdminPusatController@dele
 //role_tpu
 Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_tpu');
 Route::middleware('cors')->post('create_role_tpu', 'AdminPusatController@create_role_tpu');
-Route::middleware('cors')->put('update_role_tpu/{id_user}', 'AdminPusatController@update_role_tpu');
-Route::middleware('cors')->delete('delete_role_tpu/{id_user}', 'AdminPusatController@delete_role_tpu');
+Route::middleware('cors')->put('update_role_tpu/{id_role_tpu}', 'AdminPusatController@update_role_tpu');
+Route::middleware('cors')->delete('delete_role_tpu/{id_role_tpu}', 'AdminPusatController@delete_role_tpu');
 
 

@@ -22,6 +22,10 @@ import {
   Modal,
   ModalBody, ModalFooter, ModalHeader,
 } from 'reactstrap';
+import ReactTable from "react-table";
+
+
+import 'react-table/react-table.css'
 
 class ManajemenHakAkses extends Component {
   constructor(props) {
@@ -51,6 +55,19 @@ class ManajemenHakAkses extends Component {
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
+    this.fetchall = this.fetchall.bind(this);
+
+    
+
+    
+  }
+
+  componentDidMount(){
+    this.fetchall()
+  }
+
+
+  fetchall(){
 
     fetch('http://localhost:8000/api/user/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
@@ -60,9 +77,8 @@ class ManajemenHakAkses extends Component {
             table_user: result
           });
         },
-    )
-
-    fetch('http://localhost:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
+    ).then(
+      fetch('http://localhost:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -70,9 +86,9 @@ class ManajemenHakAkses extends Component {
             table_tpu: result
           });
         },
-    )
-
-    fetch('http://localhost:8000/api/role_tpu/view?token='+sessionStorage.getItem('token'))
+      )
+    ).then(
+      fetch('http://localhost:8000/api/role_tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -80,8 +96,9 @@ class ManajemenHakAkses extends Component {
             table_role_tpu: result
           });
         },
-    )
-    fetch('http://localhost:8000/api/constraint_user?token='+sessionStorage.getItem('token'))
+      ) 
+    ).then(
+      fetch('http://localhost:8000/api/constraint_user?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -89,13 +106,10 @@ class ManajemenHakAkses extends Component {
             table_constraint_user: result
           });
         },
+      )
     )
   }
-
-
-
-
-
+  
   toggle() {
     this.setState({
       modal: !this.state.modal,
@@ -137,12 +151,14 @@ class ManajemenHakAkses extends Component {
         id_tpu: this.state.value_tpu,
         id_user: this.state.value_user
       })
-    }).then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      alert(myJson.msg);
-    });
+    }).then(
+      this.fetchall
+    )
+    .then(
+      this.setState({
+        primary : !this.state.primary
+      })
+    );
   }
 
   handleSubmitEdit = event => {
@@ -150,7 +166,7 @@ class ManajemenHakAkses extends Component {
     console.log(this.state.activevalue_tpu);
     console.log(this.state.activevalue_user);
 
-    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_user+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_role_tpu+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -160,21 +176,23 @@ class ManajemenHakAkses extends Component {
         id_tpu: this.state.activevalue_tpu,
         id_user: this.state.activevalue_user,
       })
-    }).then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      alert(myJson.msg);
-    });
+    }).then(
+      this.fetchall
+    )
+    .then(
+      this.setState({
+        large : !this.state.large
+      })
+    );
   }
 
   handledelete(table_constraint_user) {
-    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_user+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_role_tpu+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
-      .then(function (response) {
-        return response.json();
-      })
+      .then(
+        this.fetchall
+      )
       .then(function (myJson) {
         alert(myJson.msg);
       });
@@ -205,10 +223,14 @@ class ManajemenHakAkses extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                Users
+                <row>
+                  <Col col="2" ><strong>Users Role</strong></Col>
+                  <Col col="2" className="text-right">
+                    <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                  </Col>
+                </row>
               </CardHeader>
               <CardBody>
-                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
                 <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
                   className={'modal-primary ' + this.props.className}>
                   <ModalHeader toggle={this.togglePrimary}>Buat Hak Akses</ModalHeader>
@@ -244,24 +266,8 @@ class ManajemenHakAkses extends Component {
                   <ModalFooter>
                   </ModalFooter>
                 </Modal>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">ID Role TPU</th>
-                      <th scope="col">TPU</th>
-                      <th scope="col">User</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
 
-                  {this.state.table_constraint_user.map((table_constraint_user, index) => {
-                    return (
-                      <tbody>
-                        <th> {table_constraint_user.id_role_tpu}</th>
-                        <th> {table_constraint_user.id_tpu} - {table_constraint_user.nama_tpu}</th>
-                        <th> {table_constraint_user.id_user} - {table_constraint_user.username}</th>
-                        <th><Button color="success" onClick={() => this.toggleLarge(table_constraint_user)} className="mr-1">Edit</Button>
-                          <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                <Modal isOpen={this.state.large} toggle={this.toggleLarge}
                             className={'modal-Large ' + this.props.className}>
                             <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
                             <ModalBody>
@@ -297,13 +303,49 @@ class ManajemenHakAkses extends Component {
                             </ModalBody>
                             <ModalFooter>
                             </ModalFooter>
-                          </Modal>
-                          <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_constraint_user) }} className="mr-1">Delete</Button></th>
-                      </tbody>
-                    )
-                  })}
-
-                </Table>
+                </Modal>
+              <ReactTable
+                  data={this.state.table_constraint_user}
+                  defaultPageSize={10}
+                  filterable
+                  columns={[
+                    {accessor:'id_user',show:false},
+                    {accessor:'id_tpu',show:false},
+                    {
+                      Header: 'User',
+                      accessor: 'username', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          {row.row.username} | {row.row.id_user}
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'TPU',
+                      accessor: 'nama_tpu', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          {row.row.nama_tpu} | ID {row.row.id_tpu}
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Role TPU',
+                      accessor: 'id_role_tpu', // String-based value accessors!
+                    },
+                    {
+                      Header: 'Actions',
+                      filterable:false,
+                      Cell: row => (
+                        <div>
+                          <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
+                          <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                        </div>
+                      )
+                    },
+                  ]}
+                />
+                <hr></hr>
               </CardBody>
             </Card>
           </Col>

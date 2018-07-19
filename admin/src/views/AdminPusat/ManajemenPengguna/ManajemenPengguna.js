@@ -22,6 +22,11 @@ import {
   ModalBody, ModalFooter, ModalHeader,
 } from 'reactstrap';
 
+import ReactTable from "react-table";
+
+
+import 'react-table/react-table.css'
+
 class ManajemenPengguna extends Component {
   constructor(props) {
     super(props);
@@ -49,10 +54,18 @@ class ManajemenPengguna extends Component {
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
+    this.fetchall = this.fetchall.bind(this);
+    this.fetch_role_tpu = this.fetch_role_tpu.bind(this);
+    this.fetch_user = this.fetch_user.bind(this);
+    this.fetch_tpu = this.fetch_tpu.bind(this);
 
-    this.fetch_user();
-    this.fetch_tpu();
-    this.fetch_role_tpu();
+    this.fetchall()
+  }
+
+  fetchall(){
+    this.fetch_user()
+    this.fetch_tpu()
+    this.fetch_role_tpu()
   }
 
   fetch_user(){
@@ -204,19 +217,10 @@ class ManajemenPengguna extends Component {
   }
 
   render() {
-    return (
-
+    return (                   
       <div className="animated fadeIn">
-        <Row>
 
-          <Col xl={12}>
-            <Card>
-              <CardHeader>
-                Users
-              </CardHeader>
-              <CardBody>
-                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
-                <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
+        <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
                   className={'modal-primary ' + this.props.className}>
                   <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>
                   <ModalBody>
@@ -236,9 +240,9 @@ class ManajemenPengguna extends Component {
                           <option value="1">Admin TPU</option>
                           <option value="2">Admin Kelurahan</option>
                           <option value="3">Kepala UPT Pemakaman</option>
-                          <option value="3">Kepala Dinas Perkim</option>
-                          <option value="4">Camat</option>
-                          <option value="5">Pengguna</option>
+                          <option value="4">Kepala Dinas Perkim</option>
+                          <option value="5">Camat</option>
+                          <option value="6">Pengguna</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -249,86 +253,81 @@ class ManajemenPengguna extends Component {
                   <ModalFooter>
                   </ModalFooter>
                 </Modal>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">ID User</th>
-                      <th scope="col">Username</th>
-                      <th scope="col">Password</th>
-                      <th scope="col">Role</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
+              <Modal isOpen={this.state.large} toggle={this.toggleLarge} className={'modal-Large ' + this.props.className}>
+              <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
+              <ModalBody>
+                <form className="form-group" onSubmit={this.handleSubmitEdit}>
+                  <div class="form-group">
+                    <label>ID User</label>
+                    <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
+                  </div>
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
+                  </div>
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
+                  </div>
+                  <div class="form-group">
+                    <label>Role</label>
+                    <select class="form-control"  onChange={this.handleChangeOptionActiveValue}>
+                      <option value="0" selected={this.state.activevalueNum==0}>Admin Pusat</option>
+                      <option value="1" selected={this.state.activevalueNum==1}>Admin TPU</option>
+                      <option value="2" selected={this.state.activevalueNum==2}>Admin Kelurahan</option>
+                      <option value="3" selected={this.state.activevalueNum==3}>Kepala UPT Pemakaman</option>
+                      <option value="4" selected={this.state.activevalueNum==4}>Kepala Dinas Perkim</option>
+                      <option value="5" selected={this.state.activevalueNum==5}>Camat</option>
+                      <option value="6" selected={this.state.activevalueNum==6}>Pengguna</option>
+                    </select>
+                  </div>
+                  <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                </form>
+              </ModalBody>
+              <ModalFooter>
+              </ModalFooter>
+            </Modal> 
 
-                  {this.state.table_user.map((table_user, index) => {
-                    return (
-                      <tbody>
-                        <th> {table_user.id_user}</th>
-                        <th> {table_user.username}</th>
-                        <th> {table_user.password}</th>
-                        <th> {table_user.role}</th>
-                        <th><Button color="success" onClick={() => this.toggleLarge(table_user)} className="mr-1">Edit</Button>
-                          <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                            className={'modal-Large ' + this.props.className}>
-                            <ModalHeader toggle={this.toggleLarge}>Edit User</ModalHeader>
-                            <ModalBody>
-                              <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                                <div class="form-group">
-                                  <label>ID User</label>
-                                  <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Username</label>
-                                  <input type="text" className="form-control" name="activeusername" onChange={this.handleChange} value={this.state.activeusername}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Password</label>
-                                  <input type="text" className="form-control" name="activepassword" onChange={this.handleChange} value={this.state.activepassword}></input>
-                                </div>
-                                <div class="form-group">
-                                  <label>Role</label>
-                                  <select class="form-control" value={this.state.activevalue} onChange={this.handleChangeOptionActiveValue}>
-                                    <option value={this.state.activevalueNum}>{this.state.activevalue}</option>
-                                    <option value="0">Admin Pusat</option>
-                                    <option value="1">Admin TPU</option>
-                                    <option value="2">Admin Kelurahan</option>
-                                    <option value="3">Kepala UPT Pemakaman</option>
-                                    <option value="3">Kepala Dinas Perkim</option>
-                                    <option value="4">Camat</option>
-                                    <option value="5">Pengguna</option>
-                                  </select>
-                                  {/* <select class="form-control" name="role_tpu">
-                                  {this.state.table_role_tpu.map((table_role_tpu, index) => {
-                                    return (
-                                      <option>{table_role_tpu.id_role_tpu}</option>
-                                    )
-                                  })}
-
-                                </select> */}
-                                </div>
-                                {/* <div class="form-group">
-                                <label>TPU</label>
-                                <select class="form-control" name="role_tpu">
-                                  {this.state.table_tpu.map((table_tpu, index) => {
-                                    return (
-                                      <option>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
-                                    )
-                                  })}
-
-                                </select>
-                              </div> */}
-                                <input type="submit" className="form-control btn btn-success" Value="Submit"></input>
-                              </form>
-                            </ModalBody>
-                            <ModalFooter>
-                            </ModalFooter>
-                          </Modal>
-                          <Button color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(table_user) }} className="mr-1">Delete</Button></th>
-                      </tbody>
-                    )
-                  })}
-
-                </Table>
+        <Row>
+          <Col xl={12}>
+            <Card>
+              <CardHeader>
+                <row>
+                  <Col col="2" ><strong>Users</strong></Col>
+                  <Col col="2" className="text-right">
+                    <Button outline color="primary" onClick={this.togglePrimary} className="mr-1">Create</Button>
+                  </Col>
+                </row>
+              </CardHeader>
+              <CardBody>
+              <ReactTable
+                  data={this.state.table_user}
+                  defaultPageSize={10}
+                  filterable
+                  columns={[
+                    {accessor:'id_user',show:false},
+                    {accessor:'password',show:false},
+                    {
+                      Header: 'Username',
+                      accessor: 'username', // String-based value accessors!
+                    },
+                    {
+                      Header: 'Role',
+                      accessor: 'role', // String-based value accessors!
+                    },
+                    {
+                      Header: 'Actions',
+                      filterable:false,
+                      Cell: row => (
+                        <div>
+                          <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
+                          <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                        </div>
+                      )
+                    },
+                  ]}
+                />
+                <hr></hr>
               </CardBody>
             </Card>
           </Col>

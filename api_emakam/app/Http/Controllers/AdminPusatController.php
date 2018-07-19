@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Role_tpu;
 use App\Tpu;
@@ -220,7 +221,7 @@ class AdminPusatController extends Controller
     function create_user(Request $request)
     {
         $username = $request->input('username');
-        $password = $request->input('password');
+        $password = Hash::make($request->input('password'));
         $role = $request->input('role');
         //$id_tpu = $request->input('id_tpu');
         //$id_user = "";
@@ -292,18 +293,18 @@ class AdminPusatController extends Controller
         return response()->json(['msg' => "Hak Akses Berhasil dibuat!"]);
     }
 
-    function update_role_tpu(Request $request, $id_user)
+    function update_role_tpu(Request $request, $id_role_tpu)
     {
-        $role_tpu = Role_tpu::findOrFail($id_user);
+        $role_tpu = Role_tpu::findOrFail($id_role_tpu);
         
         $role_tpu->update($request->all());
 
         return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
     }
 
-    function delete_role_tpu(Request $request, $id_user)
+    function delete_role_tpu(Request $request, $id_role_tpu)
     {
-        $role_tpu = Role_tpu::findOrFail($id_user);
+        $role_tpu = Role_tpu::findOrFail($id_role_tpu);
         $role_tpu->delete();
 
         return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
