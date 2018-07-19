@@ -373,7 +373,7 @@ class unauthorized extends Component{
     );
   } 
 }
-const logger = sessionStorage.getItem('login_session') == "1" ? tpu : unauthorized;
+const logger = sessionStorage.getItem('login_session') == "0" ? tpu : unauthorized;
 
 export default logger;
 

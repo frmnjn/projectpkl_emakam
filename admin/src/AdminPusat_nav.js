@@ -20,9 +20,14 @@ export default {
       icon: 'icon-pencil',
     },
     {
+      name: 'Manajemen TPU',
+      url: '/ManajemenTpu',
+      icon: 'icon-chart',
+    },
+    {
       name: 'Cari Data',
       url: '/Search',
-      icon: 'icon-user',
+      icon: 'icon-magnifier',
     },
   ],
 };

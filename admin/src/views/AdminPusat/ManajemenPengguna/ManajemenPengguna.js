@@ -171,12 +171,14 @@ class ManajemenPengguna extends Component {
         role: this.state.value
       })
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
-        alert(myJson.msg);
-      });
+      .then(
+        this.fetchall
+      )
+      .then(
+        this.setState({
+          primary: !this.state.primary
+        })
+      );
     //alert("user berhasil ditambahkan!");
   }
 
@@ -196,30 +198,28 @@ class ManajemenPengguna extends Component {
         role: this.state.activevalueNum
       })
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      alert(myJson.msg);
-    });
+    .then(
+      this.fetchall
+    )
+    .then(
+      this.setState({
+        large : !this.state.large
+      })
+    );
   }
 
   handledelete(table_user) {
     fetch('http://localhost:8000/api/delete_user/' + table_user.id_user+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      alert(myJson.msg);
-    });
+    .then(
+      this.fetchall
+    )
   }
 
   render() {
     return (                   
       <div className="animated fadeIn">
-
         <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
                   className={'modal-primary ' + this.props.className}>
                   <ModalHeader toggle={this.togglePrimary}>Create New User</ModalHeader>

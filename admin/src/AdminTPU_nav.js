@@ -10,29 +10,24 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Manajemen TPU',
-      url: '/ManajemenTpu',
-      icon: 'icon-user',
-    },
-    {
-      name: 'Manajemen Blok Makam',
+      name: 'M. Blok Makam',
       url: '/ManajemenBlokMakam',
-      icon: 'icon-user',
+      icon: 'icon-chart',
     },
     {
       name: 'Manajemen Makam',
       url: '/ManajemenMakam',
-      icon: 'icon-user',
+      icon: 'icon-chart',
     },
     {
-      name: 'Manajemen Penghuni Makam',
+      name: 'M. Penghuni Makam',
       url: '/ManajemenPenghuniMakam',
-      icon: 'icon-user',
+      icon: 'icon-chart',
     },
     {
       name: 'Cari Data',
       url: '/Search',
-      icon: 'icon-user',
+      icon: 'icon-magnifier',
     },
     
     // {

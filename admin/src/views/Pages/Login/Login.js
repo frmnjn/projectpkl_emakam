@@ -61,37 +61,6 @@ class Login extends Component {
 
   }
 
-  // handleLogin = event => {
-  //   event.preventDefault();
-  //   fetch('http://localhost:8000/api/signin', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       username: this.state.username,
-  //       password: this.state.password
-  //     })
-  //   }).then(function (response) {
-  //     return response.json();
-  //   })
-  //     .then(function (myJson) {
-  //       //alert(myJson.role);
-  //       usersData.role = myJson.role;
-  //       sessionStorage.setItem('login_session', myJson.role);
-  //       sessionStorage.setItem('token', myJson.token);
-  //       console.log(myJson.role);
-  //     });
-  //     if (sessionStorage.getItem('login_session') == 0) {
-  //       this.props.history.push('/ManajemenPengguna')
-  //     } else if (sessionStorage.getItem('login_session') == 1) {
-  //       this.props.history.push('/ManajemenTpu')
-  //     } else {
-  //       this.props.history.push('/Search')
-  //     }
-  // }
-
   render() {
     return (
       <div className="app flex-row align-items-center">

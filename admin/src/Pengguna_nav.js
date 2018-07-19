@@ -12,7 +12,7 @@ export default {
     {
       name: 'Cari Data',
       url: '/Search',
-      icon: 'icon-user',
+      icon: 'icon-magnifier',
     },
   ],
 };
