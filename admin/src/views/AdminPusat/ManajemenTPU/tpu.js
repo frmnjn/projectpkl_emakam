@@ -236,7 +236,7 @@ class tpu extends Component {
     if (!this.state.isLoaded) {
       return (<div>loading...</div>)
     } else {
-      if (sessionStorage.getItem('login_session') == 1) {
+      if (sessionStorage.getItem('login_session') == 0) {
         return (
           <div className="animated fadeIn">
             <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}

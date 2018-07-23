@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import axios from 'axios';
-import usersData from '../../views/Users/UsersData';
+import usersData from '../../../views/Users/UsersData';
 import {
   Badge,
   Button,
@@ -140,7 +140,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://localhost:8000/api/penghuni_makam/view?token="+sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -154,7 +154,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token'))
+      fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })

@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//ADMIN PUSAT
 //login
 Route::middleware('cors')->post('login', 'AuthController@login');
 Route::middleware('cors')->post('signin', 'AuthController@signin');
@@ -35,31 +36,36 @@ Route::middleware('cors')->post('tpu/create', 'AdminPusatController@create_tpu')
 Route::middleware('cors')->put('tpu/edit/{id}', 'AdminPusatController@edit_tpu');
 Route::middleware('cors')->delete('tpu/delete/{id}', 'AdminPusatController@delete_tpu');
 
-//penghuni makam
-Route::middleware('cors')->get('penghuni_makam/view', 'AdminPusatController@view_penghunimakam');
-Route::middleware('cors')->post('penghuni_makam/create', 'AdminPusatController@create_penghunimakam');
-Route::middleware('cors')->put('penghuni_makam/update/{id}', 'AdminPusatController@update_penghunimakam');
-Route::middleware('cors')->delete('penghuni_makam/delete/{id}', 'AdminPusatController@delete_penghunimakam');
-
-//makam
-Route::middleware('cors')->get('makam/view', 'AdminPusatController@view_makam');
-Route::middleware('cors')->post('makam/create', 'AdminPusatController@create_makam');
-Route::middleware('cors')->put('makam/edit/{id}', 'AdminPusatController@edit_makam');
-Route::middleware('cors')->delete('makam/delete/{id}', 'AdminPusatController@delete_makam');
-
-
-
-//blok makam
-Route::middleware('cors')->get('blok/view', 'AdminPusatController@view_blok');
-Route::middleware('cors')->post('blok/create', 'AdminPusatController@create_blok');
-Route::middleware('cors')->put('blok/edit/{id}', 'AdminPusatController@edit_blok');
-Route::middleware('cors')->delete('blok/delete/{id}', 'AdminPusatController@delete_blok');
-
-
 //role_tpu
 Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_tpu');
 Route::middleware('cors')->post('create_role_tpu', 'AdminPusatController@create_role_tpu');
 Route::middleware('cors')->put('update_role_tpu/{id_role_tpu}', 'AdminPusatController@update_role_tpu');
 Route::middleware('cors')->delete('delete_role_tpu/{id_role_tpu}', 'AdminPusatController@delete_role_tpu');
+
+
+//ADMIN TPU
+//penghuni makam
+Route::middleware('cors')->get('penghuni_makam/view', 'AdminTPUController@view_penghunimakam');
+Route::middleware('cors')->post('penghuni_makam/create', 'AdminTPUController@create_penghunimakam');
+Route::middleware('cors')->put('penghuni_makam/update/{id}', 'AdminTPUController@update_penghunimakam');
+Route::middleware('cors')->delete('penghuni_makam/delete/{id}', 'AdminTPUController@delete_penghunimakam');
+
+//makam
+Route::middleware('cors')->get('makam/view', 'AdminTPUController@view_makam');
+Route::middleware('cors')->post('makam/create', 'AdminTPUController@create_makam');
+Route::middleware('cors')->put('makam/edit/{id}', 'AdminTPUController@edit_makam');
+Route::middleware('cors')->delete('makam/delete/{id}', 'AdminTPUController@delete_makam');
+
+//blok makam
+Route::middleware('cors')->get('blok/view', 'AdminTPUController@view_blok');
+Route::middleware('cors')->post('blok/create', 'AdminTPUController@create_blok');
+Route::middleware('cors')->put('blok/edit/{id}', 'AdminTPUController@edit_blok');
+Route::middleware('cors')->delete('blok/delete/{id}', 'AdminTPUController@delete_blok');
+
+
+//PENGGUNA
+//Search
+Route::middleware('cors')->get('blok/view_search', 'PenggunaController@view_search_blok');
+Route::middleware('cors')->get('penghuni_makam/view_search', 'PenggunaController@view_search_penghunimakam');
 
 

@@ -30,7 +30,7 @@ const ManajemenHakAkses = Loadable({
 });
 
 const Search = Loadable({
-  loader: () => import('./views/Search'),
+  loader: () => import('./views/Pengguna/Search/Search'),
   loading: Loading,
 });
 
@@ -50,7 +50,7 @@ const ManajemenBlokMakam = Loadable({
 });
 
 const ManajemenTPU = Loadable({
-  loader: () => import('./views/AdminTPU/ManajemenTPU/tpu'),
+  loader: () => import('./views/AdminPusat/ManajemenTPU/tpu'),
   loading: Loading,
 });
 

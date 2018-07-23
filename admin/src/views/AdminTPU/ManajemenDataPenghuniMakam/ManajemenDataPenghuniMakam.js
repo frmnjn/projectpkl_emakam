@@ -89,7 +89,7 @@ class ManajemenDataPenghuniMakam extends Component {
 
 
 
-    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
       .then(response => response.json())
       .then(
         (result) => {
