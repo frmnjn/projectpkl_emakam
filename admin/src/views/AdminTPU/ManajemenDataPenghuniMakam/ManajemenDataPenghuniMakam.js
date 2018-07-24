@@ -86,9 +86,14 @@ class ManajemenDataPenghuniMakam extends Component {
     this.togglePrimary = this.togglePrimary.bind(this);
     this.toggleclose = this.toggleclose.bind(this);
     this.handleDate = this.handleDate.bind(this);
+    this.fetchall = this.fetchall.bind(this);
+
+    this.fetchall()
 
 
+  }
 
+  fetchall(){
     fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
       .then(response => response.json())
       .then(
@@ -97,9 +102,8 @@ class ManajemenDataPenghuniMakam extends Component {
             list: result
           }); //console.log(result);
         },
-    )
-
-    fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token'))
+    ).then(
+      fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -108,7 +112,9 @@ class ManajemenDataPenghuniMakam extends Component {
           }); //console.log(result);
         },
     )
+    )
 
+    
   }
 
   toggle(list) {
@@ -199,8 +205,13 @@ class ManajemenDataPenghuniMakam extends Component {
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris
       })
-    })
-    console.log(JSON);
+    }).then(
+      this.fetchall
+    ).then(
+      this.setState({
+        primary: !this.state.primary
+      })
+    )
     alert("Data penghuni baru berhasil ditambahkan!");
   }
 
@@ -224,8 +235,14 @@ class ManajemenDataPenghuniMakam extends Component {
         nik_ahli_waris: this.state.activenik_ahli_waris,
         kontak_ahli_waris: this.state.activekontak_ahli_waris
       })
-    })
-    alert("Data items dengan id " + this.state.activeid_penghuni_makam + " berhasil di update!");
+    }).then(
+      this.fetchall
+    ).then(
+      this.setState({
+        large: !this.state.large
+      })
+    )
+    alert("Data berhasil di update!");
   }
 
   handledelete(list) {

@@ -39,6 +39,8 @@ class ManajemenHakAkses extends Component {
       table_tpu: [],
       table_role_tpu: [],
       table_constraint_user: [],
+      table_validation: [],
+      tpu_validation: true,
       id_tpu: "",
       id_user: "",
       value_tpu: "",
@@ -57,13 +59,13 @@ class ManajemenHakAkses extends Component {
     this.togglePrimary = this.togglePrimary.bind(this);
     this.fetchall = this.fetchall.bind(this);
 
-    
+    this.fetchall()
+
 
     
   }
 
   componentDidMount(){
-    this.fetchall()
   }
 
 
@@ -109,6 +111,7 @@ class ManajemenHakAkses extends Component {
       )
     )
   }
+
   
   toggle() {
     this.setState({
@@ -118,14 +121,15 @@ class ManajemenHakAkses extends Component {
 
   toggleLarge(table_constraint_user) {
     this.setState({
-      large: !this.state.large
+      large: !this.state.large,
+      activevalue_tpu: table_constraint_user.id_tpu,
+      activevalue_user: table_constraint_user.id_user,
+      activeid_tpu : table_constraint_user.id_tpu,
+      activenama_tpu : table_constraint_user.nama_tpu,
+      activeid_user : table_constraint_user.id_user,
+      activeusername : table_constraint_user.username,
+      activeid_role_tpu : table_constraint_user.id_role_tpu,
     });
-    this.state.activeid_tpu = table_constraint_user.id_tpu;
-    this.state.activenama_tpu = table_constraint_user.nama_tpu;
-    this.state.activeid_user = table_constraint_user.id_user;
-    this.state.activeusername = table_constraint_user.username;
-    this.state.activeid_role_tpu = table_constraint_user.id_role_tpu;
-
   }
 
   togglePrimary() {
@@ -162,28 +166,26 @@ class ManajemenHakAkses extends Component {
   }
 
   handleSubmitEdit = event => {
-    event.preventDefault();
-    console.log(this.state.activevalue_tpu);
-    console.log(this.state.activevalue_user);
-
-    fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_role_tpu+"?token="+sessionStorage.getItem('token'), {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id_tpu: this.state.activevalue_tpu,
-        id_user: this.state.activevalue_user,
-      })
-    }).then(
-      this.fetchall
-    )
-    .then(
-      this.setState({
-        large : !this.state.large
-      })
-    );
+      if (this.state.tpu_validation){
+        fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_role_tpu+"?token="+sessionStorage.getItem('token'), {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_tpu: this.state.activevalue_tpu,
+          id_user: this.state.activevalue_user,
+        })
+      }).then(
+        this.fetchall
+      )
+      .then(
+        this.setState({
+          large : !this.state.large
+        })
+      );
+    }
   }
 
   handledelete(table_constraint_user) {
@@ -214,6 +216,9 @@ class ManajemenHakAkses extends Component {
     this.setState({ activevalue_user: e.target.value });
   }
 
+
+
+
   render() {
     if(sessionStorage.getItem('login_session') == 0){
       return (
@@ -241,7 +246,7 @@ class ManajemenHakAkses extends Component {
                             <option disabled selected>ID TPU</option>
                             {this.state.table_tpu.map((table_tpu, index) => {
                               return (
-                                <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                                <option value={table_tpu.id_tpu}>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
                               )
                             })}
                           </select>
@@ -278,10 +283,9 @@ class ManajemenHakAkses extends Component {
                                   <div class="form-group">
                                     <label>ID TPU</label>
                                     <select class="form-control" onChange={this.handleChangeOption_active_tpu}>
-                                      <option disabled selected>Pilih ID TPU</option>
                                       {this.state.table_tpu.map((table_tpu, index) => {
                                         return (
-                                          <option value={table_tpu.id_tpu} >{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
+                                          <option value={table_tpu.id_tpu} selected={table_tpu.id_tpu==this.state.activeid_tpu}>{table_tpu.id_tpu} - {table_tpu.nama_tpu}</option>
                                         )
                                       })}
                                     </select>
@@ -292,7 +296,7 @@ class ManajemenHakAkses extends Component {
                                     <option disabled selected>Pilih ID User</option>
                                       {this.state.table_user.map((table_user, index) => {
                                         return (
-                                          <option value={table_user.id_user} >{table_user.id_user} - {table_user.username}</option>
+                                          <option value={table_user.id_user} selected={table_user.id_user==this.state.activeid_user}>{table_user.id_user} - {table_user.username}</option>
                                         )
                                       })}
                                     </select>
