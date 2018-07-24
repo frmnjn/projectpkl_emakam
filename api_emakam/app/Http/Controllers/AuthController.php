@@ -45,7 +45,7 @@ class AuthController extends Controller
             'password' => 'required',
         ];
 
-        $user = User::where('username','=',$request->input('username'),'AND','password','=',Hash::make($request->input('password')))->select('id_user','role')->get();
+        $user = User::where('username','=',$request->input('username'),'AND','password','=',Hash::make($request->input('password')))->select('id_user','role','username')->get();
        // DB::table('user')
        //      ->join('role_tpu', 'user.id_user', '=', 'role_tpu.id_user')
        //      ->where($request->all())->select('user.*', 'role_tpu.*')
@@ -77,8 +77,10 @@ class AuthController extends Controller
                 'msg'=>'Login Berhasil !',
                 'success' => true, 
                 'token'=> $token,
+                'username' => $user[0]->username,
                 'role' => $user[0]->role,
-                'id_user' => $role_tpu[0]->id_user
+                'id_user' => $role_tpu[0]->id_user,
+                
             ]
         ];
         } else {

@@ -51,11 +51,16 @@ class DefaultLayout extends Component {
           <main className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-            <h1>Welcome, {sessionStorage.getItem('login_session') == "0" ? 
-              Pusat:
-                sessionStorage.getItem('login_session') == "1" ?
-                 TPU:
-                 Pengguna}</h1>
+            <h3>Welcome, {sessionStorage.getItem('username')}</h3>
+            {
+              sessionStorage.getItem('login_session') == "0" ?
+              <small class="text-muted">your role : Admin Pusat</small>:
+              sessionStorage.getItem('login_session') == "1" ?
+              <small class="text-muted">your role : Admin TPU</small>:
+              <small class="text-muted">your role : Guest</small>
+            }
+
+
               <Switch>
                 {routes.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
