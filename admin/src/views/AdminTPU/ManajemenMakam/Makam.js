@@ -97,7 +97,7 @@ class Makam extends Component {
     
     this.fetchmakam()
     
-    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
+    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -112,7 +112,7 @@ class Makam extends Component {
   }
 
   fetchmakam(){
-    fetch("http://localhost:8000/api/makam/view?token="+sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
+    fetch("http://localhost:8000/api/makam/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })

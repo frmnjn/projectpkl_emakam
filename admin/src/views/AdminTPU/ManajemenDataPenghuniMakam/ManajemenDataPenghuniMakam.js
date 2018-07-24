@@ -94,7 +94,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   fetchall(){
-    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -103,7 +103,7 @@ class ManajemenDataPenghuniMakam extends Component {
           }); //console.log(result);
         },
     ).then(
-      fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
+      fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -111,10 +111,8 @@ class ManajemenDataPenghuniMakam extends Component {
             makam: result
           }); //console.log(result);
         },
+      )
     )
-    )
-
-    
   }
 
   toggle(list) {

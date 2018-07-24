@@ -112,6 +112,14 @@ class AdminPusatController extends Controller
         return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
     }
 
+    function view_role_byuser(Request $request){
+		$id= $request->input('id_user');
+		$view = DB::table('role_tpu')
+		 ->where('role_tpu.id_user','=',$id)
+		 ->get();
+		return response()->json($view);
+	}
+
         function create_user(Request $request)
     {
         $username = $request->input('username');

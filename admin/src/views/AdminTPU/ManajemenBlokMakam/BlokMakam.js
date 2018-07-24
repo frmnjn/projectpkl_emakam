@@ -65,7 +65,7 @@ class BlokMakam extends Component {
     this.fetchblok = this.fetchblok.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
-
+    this.fetchtpu = this.fetchtpu.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
@@ -75,11 +75,14 @@ class BlokMakam extends Component {
       isLoaded: true,
       items: [],
       blok: [],
+      tpu_role:[],
+      tpu:[],
 
       activename: null,
       activeqty: null,
       activesupplier: null,
 
+      idtpuaktif:null,
       idblokaktif: null,
       nomoraktif: null,
       blokaktif: null,
@@ -93,21 +96,30 @@ class BlokMakam extends Component {
 
   }
 
-
-
   componentDidMount() {
 
     this.fetchblok()
-
+    this.fetchtpu()    
   }
-
+  fetchtpu(){
+    fetch('http://localhost:8000/api/tpu/view_byUser?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+      .then(response => response.json())
+      .then(
+        (result) => {
+          this.setState({
+            tpu: result
+          });
+        },
+      )
+  }
   fetchblok() {
-    fetch("http://localhost:8000/api/blok/view?token=" + sessionStorage.getItem('token')+'&id_tpu='+sessionStorage.getItem('id_tpu'))
+    
+    fetch("http://localhost:8000/api/blok/view?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
       .then(
-        (json) => {
+        (json) => {         
           this.setState({
             isLoaded: true,
             blok: json
@@ -126,6 +138,7 @@ class BlokMakam extends Component {
       },
       body: JSON.stringify({
         kode_blok: this.state.kodeaktif,
+        id_tpu: this.state.idtpuaktif,
       })
     }).then(
       this.fetchblok
@@ -145,8 +158,9 @@ class BlokMakam extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_tpu: '1',
+        id_tpu: this.state.idtpuaktif,
         kode_blok: this.state.kodeaktif,
+
       })
     }).then(
       this.fetchblok
@@ -173,6 +187,10 @@ class BlokMakam extends Component {
 
   handleKode = event => {
     this.setState({ kodeaktif: event.target.value });
+  }
+
+  handleChangeOption = event => {
+    this.setState({ idtpuaktif: event.target.value });
   }
 
 
@@ -207,6 +225,7 @@ class BlokMakam extends Component {
     this.setState({
       edit: !this.state.edit,
       idblokaktif: items.id_blok,
+      idtpuaktif: items.id_tpu,
       kodeaktif: items.kode_blok,
     });
   }
@@ -248,9 +267,16 @@ class BlokMakam extends Component {
                         </div>
                       </Col>
                     </Row>
-                    <br />
+                    <br/>
                     <Row>
                       <Col xs="12">
+                          <select class="form-control" onChange={this.handleChangeOption}>
+                            {this.state.tpu.map((tpu) => {
+                              return (
+                                <option value={tpu.id_tpu} selected={tpu.id_tpu==this.state.idtpuaktif}>{tpu.id_tpu} - {tpu.nama_tpu}</option>
+                              )
+                            })}
+                          </select>    
                         <InputGroup>
                           <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
                           <br /><Button color="default" onClick=''>Pilih Area</Button>
@@ -274,7 +300,16 @@ class BlokMakam extends Component {
                         </div>
                       </Col>
                     </Row>
-                    <br />
+                    <br/>
+                          <select class="form-control" onChange={this.handleChangeOption}>
+                            <option value=''>Pilih Tpu</option>
+                            {this.state.tpu.map((tpu) => {
+                              return (
+                                <option value={tpu.id_tpu}>{tpu.id_tpu} - {tpu.nama_tpu}</option>
+                              )
+                            })}
+                          </select>       
+                    <br/>
                     <Row>
                       <Col xs="12">
                         <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
@@ -316,6 +351,7 @@ class BlokMakam extends Component {
                       filterable
                       columns={[
                         { accessor: 'id_blok', show: false },
+                        { accessor: 'id_tpu', show: false },
                         {
                           Header: 'Kode Blok',
                           accessor: 'kode_blok' // String-based value accessors!

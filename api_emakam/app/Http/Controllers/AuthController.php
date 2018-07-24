@@ -71,14 +71,14 @@ class AuthController extends Controller
         }
 
         if($user[0]->role == 1){
-            $role_tpu = Role_tpu::where('id_user','=',$user[0]->id_user)->select('id_tpu')->get();
+            $role_tpu = Role_tpu::where('id_user','=',$user[0]->id_user)->select('id_user')->get();
             $resp = [
             [
                 'msg'=>'Login Berhasil !',
                 'success' => true, 
                 'token'=> $token,
                 'role' => $user[0]->role,
-                'id_tpu' => $role_tpu[0]->id_tpu
+                'id_user' => $role_tpu[0]->id_user
             ]
         ];
         } else {

@@ -31,12 +31,14 @@ Route::middleware('cors')->delete('delete_user/{id_user}', 'AdminPusatController
 Route::middleware('cors')->get('constraint_user', 'AdminPusatController@constraint_user');
 
 //tpu
+Route::middleware('cors')->get('tpu/view_byUser', 'AdminTPUController@view_tpu_byUser');
 Route::middleware('cors')->get('tpu/view', 'AdminPusatController@view_tpu');
 Route::middleware('cors')->post('tpu/create', 'AdminPusatController@create_tpu');
 Route::middleware('cors')->put('tpu/edit/{id}', 'AdminPusatController@edit_tpu');
 Route::middleware('cors')->delete('tpu/delete/{id}', 'AdminPusatController@delete_tpu');
 
 //role_tpu
+Route::middleware('cors')->get('role_tpu/view_byuser', 'AdminPusatController@view_role_byuser');
 Route::middleware('cors')->get('role_tpu/view', 'AdminPusatController@view_role_tpu');
 Route::middleware('cors')->post('create_role_tpu', 'AdminPusatController@create_role_tpu');
 Route::middleware('cors')->put('update_role_tpu/{id_role_tpu}', 'AdminPusatController@update_role_tpu');

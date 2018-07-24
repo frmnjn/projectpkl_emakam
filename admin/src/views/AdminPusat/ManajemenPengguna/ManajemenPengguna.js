@@ -261,7 +261,7 @@ class ManajemenPengguna extends Component {
                   <form className="form-group" onSubmit={this.handleSubmitEdit}>
                     <div class="form-group">
                       <label>ID User</label>
-                      <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid}></input>
+                      <input type="text" className="form-control" name="activeid" onChange={this.handleChange} value={this.state.activeid} disabled></input>
                     </div>
                     <div class="form-group">
                       <label>Username</label>

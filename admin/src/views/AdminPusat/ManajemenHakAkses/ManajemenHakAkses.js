@@ -51,7 +51,7 @@ class ManajemenHakAkses extends Component {
       activeid_user: "",
       activenama_tpu: "",
       activeusername: "",
-      activeid_role_tpu: ""
+      active_id_role_tpu: ""
     };
 
     this.toggle = this.toggle.bind(this);
@@ -59,27 +59,31 @@ class ManajemenHakAkses extends Component {
     this.togglePrimary = this.togglePrimary.bind(this);
     this.fetchall = this.fetchall.bind(this);
 
-    this.fetchall()
-
-
     
   }
 
   componentDidMount(){
+    
+    this.fetchall()
+
   }
 
 
   fetchall(){
 
-    fetch('http://localhost:8000/api/user/view?token='+sessionStorage.getItem('token'))
-      .then(response => response.json())
-      .then(
-        (result) => {
-          this.setState({
-            table_user: result
-          });
-        },
-    ).then(
+      fetch('http://localhost:8000/api/user/view?token='+sessionStorage.getItem('token'))
+        .then(response => response.json())
+        .then(
+          (result) => {
+            result = result.filter(function(item){
+              return item.role.toString().search('1')!== -1;
+            })
+            this.setState({
+              table_user: result
+            });
+          },
+      )
+
       fetch('http://localhost:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
@@ -89,7 +93,7 @@ class ManajemenHakAkses extends Component {
           });
         },
       )
-    ).then(
+    
       fetch('http://localhost:8000/api/role_tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
@@ -99,17 +103,19 @@ class ManajemenHakAkses extends Component {
           });
         },
       ) 
-    ).then(
+    
       fetch('http://localhost:8000/api/constraint_user?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
+          result = result.filter(function(item){
+            return item.role.toString().search('1')!== -1;
+          })
           this.setState({
             table_constraint_user: result
           });
         },
       )
-    )
   }
 
   
@@ -120,15 +126,17 @@ class ManajemenHakAkses extends Component {
   }
 
   toggleLarge(table_constraint_user) {
+
+    this.state.activevalue_tpu= table_constraint_user.id_tpu,
+    this.state.activevalue_user= table_constraint_user.id_user,
+    this.state.activeid_tpu = table_constraint_user.id_tpu,
+    this.state.activenama_tpu = table_constraint_user.nama_tpu,
+    this.state.activeid_user = table_constraint_user.id_user,
+    this.state.activeusername = table_constraint_user.username,
+    this.state.active_id_role_tpu = table_constraint_user.id_role_tpu,  
+
     this.setState({
       large: !this.state.large,
-      activevalue_tpu: table_constraint_user.id_tpu,
-      activevalue_user: table_constraint_user.id_user,
-      activeid_tpu : table_constraint_user.id_tpu,
-      activenama_tpu : table_constraint_user.nama_tpu,
-      activeid_user : table_constraint_user.id_user,
-      activeusername : table_constraint_user.username,
-      activeid_role_tpu : table_constraint_user.id_role_tpu,
     });
   }
 
@@ -167,7 +175,7 @@ class ManajemenHakAkses extends Component {
 
   handleSubmitEdit = event => {
       if (this.state.tpu_validation){
-        fetch('http://localhost:8000/api/update_role_tpu/' + this.state.activeid_role_tpu+"?token="+sessionStorage.getItem('token'), {
+        fetch('http://localhost:8000/api/update_role_tpu/'+ this.state.active_id_role_tpu+"?token="+sessionStorage.getItem('token'), {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -277,10 +285,6 @@ class ManajemenHakAkses extends Component {
                               <ModalBody>
                                 <form className="form-group" onSubmit={this.handleSubmitEdit}>
                                   <div class="form-group">
-                                    <label>ID Role User</label>
-                                    <input type="number" className="form-control" name="activeid_role_tpu" onChange={this.handleChange} value={this.state.activeid_role_tpu}></input>
-                                  </div>
-                                  <div class="form-group">
                                     <label>ID TPU</label>
                                     <select class="form-control" onChange={this.handleChangeOption_active_tpu}>
                                       {this.state.table_tpu.map((table_tpu, index) => {
@@ -334,7 +338,7 @@ class ManajemenHakAkses extends Component {
                       },
                       {
                         Header: 'Role TPU',
-                        accessor: 'id_role_tpu', // String-based value accessors!
+                        accessor: 'role', // String-based value accessors!
                       },
                       {
                         Header: 'Actions',
@@ -370,14 +374,14 @@ class ManajemenHakAkses extends Component {
   }
 }
 
-// class unauthorized extends Component{
-//   render(){
-//     alert("Anda tidak memiliki hak akses!");
-//     return(
-//       <p></p>
-//     );
-//   } 
-// }
-// const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenHakAkses : unauthorized;
+class unauthorized extends Component{
+  render(){
+    alert("Anda tidak memiliki hak akses!");
+    return(
+      <p></p>
+    );
+  } 
+}
+const logger = sessionStorage.getItem('login_session') == "0" ? ManajemenHakAkses : unauthorized;
 
 export default ManajemenHakAkses;

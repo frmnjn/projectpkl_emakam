@@ -45,7 +45,7 @@ class Login extends Component {
             usersData.role = this.state.temp.role;
             sessionStorage.setItem('login_session', this.state.temp.role);
             sessionStorage.setItem('token', this.state.temp.token);
-            sessionStorage.setItem('id_tpu', this.state.temp.id_tpu);
+            sessionStorage.setItem('id_user', this.state.temp.id_user);
 
             if (this.state.temp.role == 0) {
               this.props.history.push('/ManajemenPengguna')
