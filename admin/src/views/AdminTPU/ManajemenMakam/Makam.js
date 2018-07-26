@@ -39,6 +39,7 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
+import GoogleMapReact from 'google-map-react';
 
 
 import 'react-table/react-table.css'
@@ -48,7 +49,7 @@ const brandSuccess = getStyle('--success')
 const brandInfo = getStyle('--info')
 const brandWarning = getStyle('--warning')
 const brandDanger = getStyle('--danger')
-
+const AnyReactComponent = ({ text }) => <div><img src="assets/img/map-marker1.png" class="rounded" alt="..."></img>{text}</div>;
 
 class Makam extends Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class Makam extends Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
+    this.toggleLocation = this.toggleLocation.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchmakam = this.fetchmakam.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -249,6 +251,20 @@ class Makam extends Component {
     });
   }
 
+  toggleLocation(){
+    this.setState({
+      location: !this.state.location,
+    })
+  }
+
+  static defaultProps = {
+    center: {
+      lat: -7.952229,
+      lng: 112.613468
+    },
+    zoom: 20
+  };
+
   
 
 
@@ -341,8 +357,31 @@ class Makam extends Component {
                                     <strong>Apakah anda yakin ingin menghapus makam {this.state.idmakamaktif} ?</strong>
                               </ModalBody>
                               <ModalFooter>
-                                <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
+                                <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>
                                 <Button color="secondary" onClick={this.toggleSmallclose}>batal</Button>
+                              </ModalFooter>
+                            </Modal>
+
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                                  className={'modal-large ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
+                              <ModalBody>
+                              <div style={{ height: '100vh', width: '100%' }}>
+                                <GoogleMapReact
+                                  defaultCenter={this.props.center}
+                                  defaultZoom={this.props.zoom}
+                                >
+
+                                  <AnyReactComponent
+                                    lat={-7.952229}
+                                    lng={112.613468}
+                                    text={'Lokasi Makam'}
+                                  />
+                                </GoogleMapReact>
+                              </div>
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="secondary" onClick=''>Tutup</Button>
                               </ModalFooter>
                             </Modal>
                 <Card>
@@ -386,14 +425,15 @@ class Makam extends Component {
                           Cell: row => (
                             <div>
                               <Row>
-                              <Col col="1"  xl className="mb-1 mb-xl-0">
-                                <Button onClick=''  block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                &emsp;
+                                <Button onClick={this.toggleLocation}   outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                <Button onClick={()=>this.toggleEdit(row.row)}    outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                                <Button onClick={()=>this.toggleSmall(row.row)}    outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                              <Col col="1"  xl className="">
                               </Col>
-                              <Col col="1"  xl className="mb-1 mb-xl-0">
-                                <Button onClick={()=>this.toggleEdit(row.row)}   block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                              <Col col="1"  xl className="">
                               </Col>
-                              <Col col="1"  xl className="mb-1 mb-xl-0">
-                                <Button onClick={()=>this.toggleSmall(row.row)}   block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                              <Col col="1"  xl className="">
                               </Col>
                               </Row>
                             </div>
