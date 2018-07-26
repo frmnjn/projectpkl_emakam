@@ -57,16 +57,9 @@ class Search extends Component {
     
     
     this.toggle = this.toggle.bind(this);
-    this.toggleLarge = this.toggleLarge.bind(this);
-    this.toggleSmall = this.toggleSmall.bind(this);
-    this.togglePrimary = this.togglePrimary.bind(this);
-    this.toggleSuccess = this.toggleSuccess.bind(this);
-    this.toggleWarning = this.toggleWarning.bind(this);
-    this.toggleDanger = this.toggleDanger.bind(this);
-    this.toggleInfo = this.toggleInfo.bind(this);
-    this.handlesubmit = this.handlesubmit.bind(this);
+    this.toggleclose = this.toggleclose.bind(this);
 
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+
 
     usersData.id = 7;
     usersData.name = 'fsgr';
@@ -91,6 +84,8 @@ class Search extends Component {
       activeqty:null,
       activesupplier:null,
       formqty:'1',
+
+      activedata:[],
       
     };
 
@@ -167,94 +162,20 @@ class Search extends Component {
       )
   }
 
-  handlesubmit(items){
-    
-    fetch('http://localhost:8000/buy', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        qty: this.state.formqty,
-        name: this.state.activename,
-        usr_name: 'Fsgr',
-        supplier: this.state.activesupplier,
-        
-      })
-    }).then(
-      this.toggleSmall
-    )
-  }
 
-  handleFormQty = event => {
-    this.setState({ formqty: event.target.value });
-  }
-
-
-
-  toggle() {
+  toggle(items) {
     this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
+      activedata: items,
+      modal: !this.state.modal,
     });
   }
 
-  onRadioBtnClick(radioSelected) {
-    this.setState({
-      radioSelected: radioSelected,
-    });
-  }
-
-  toggle() {
+  toggleclose() {
     this.setState({
       modal: !this.state.modal,
     });
   }
 
-  toggleLarge() {
-    this.setState({
-      large: !this.state.large,
-    });
-  }
-
-  toggleSmall(items) {
-    this.setState({
-      small: !this.state.small,
-      activename:items.Name,
-      activesupplier:items.Supplier,
-      activeqty:items.Qty
-    });
-  }
-
-  togglePrimary() {
-    this.setState({
-      primary: !this.state.primary,
-    });
-  }
-
-  toggleSuccess() {
-    this.setState({
-      success: !this.state.success,
-    });
-  }
-
-  toggleWarning() {
-    this.setState({
-      warning: !this.state.warning,
-    });
-  }
-
-  toggleDanger() {
-    this.setState({
-      danger: !this.state.danger,
-    });
-  }
-
-  toggleInfo() {
-    this.setState({
-      info: !this.state.info,
-    });
-  }
 
   render() {
     // const {isLoaded, items} = this.state;
@@ -263,6 +184,32 @@ class Search extends Component {
     }else{
     return (
       <div className="animated fadeIn">
+                  <Modal isOpen={this.state.modal} toggle={this.toggleclose}
+                    className={'modal-Large ' + this.props.className}>
+                    <ModalHeader toggle={this.toggleclose}>Lihat Data Penghuni Makam</ModalHeader>
+                    <ModalBody>
+                      <form className="form-group" onSubmit=''>
+                        <label>Nama Penghuni Makam</label>
+                        <input type="text" className="form-control" name="activenama"  value={this.state.activedata.nama} disabled></input>
+                        <label>Alamat Terakhir</label>
+                        <input type="text" className="form-control" name="activealamat_terakhir"  value={this.state.activedata.alamat_terakhir} disabled></input>
+                        <label>Tanggal Wafat</label>
+                        <input type="text" className="form-control" name="activetanggal_wafat"  value={this.state.activedata.tanggal_wafat} disabled></input>
+                        <label>Status</label>
+                        <input type="text" className="form-control" name="activestatus" value={this.state.activedata.status} disabled></input>
+                        <label>Nomor Makam</label>
+                        <input type="text" className="form-control" name="activeid_makam"  value={this.state.activedata.nomor_makam} disabled></input>
+                        <label>Nama Ahli Waris</label>
+                        <input type="text" className="form-control" name="activenama_ahli_waris" value={this.state.activedata.nama_ahli_waris} disabled></input>
+                        <label>Alamat Ahli Waris</label>
+                        <input type="text" className="form-control" name="activealamat_ahli_waris"  value={this.state.activedata.alamat_ahli_waris} disabled></input>
+                        <label>NIK Ahli Waris</label>
+                        <input type="text" className="form-control" name="activenik_ahli_waris" value={this.state.activedata.nik_ahli_waris} disabled></input>
+                        <label>Kontak Ahli Waris</label>
+                        <input type="text" className="form-control" name="activekontak_ahli_waris"  value={this.state.activedata.kontak_ahli_waris} disabled></input>
+                      </form>
+                    </ModalBody>
+                  </Modal>
         <Row>
           <Col>
             <Card>
@@ -354,11 +301,11 @@ class Search extends Component {
                       )
                     },
                     {
-                      Header: 'Status',
+                      Header: 'Actions',
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <div>{row.row.status}</div>
+                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">Detail</Button>
                         </div>
                       )
                     },
