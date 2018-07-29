@@ -71,7 +71,7 @@ class ManajemenHakAkses extends Component {
 
   fetchall(){
 
-      fetch('http://localhost:8000/api/user/view?token='+sessionStorage.getItem('token'))
+      fetch('http://localhost:8000/api/user/view_admintpu_havent_given_access?token='+sessionStorage.getItem('token'))
         .then(response => response.json())
         .then(
           (result) => {
@@ -84,7 +84,7 @@ class ManajemenHakAkses extends Component {
           },
       )
 
-      fetch('http://localhost:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
+      fetch('http://localhost:8000/api/tpu/view_tpu_doesnt_have_admin?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {

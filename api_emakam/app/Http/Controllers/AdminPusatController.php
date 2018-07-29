@@ -25,6 +25,16 @@ class AdminPusatController extends Controller
         return response()->json($user);
     }
 
+    function view_admintpu_havent_given_access(){
+        $user = DB::table('role_tpu')
+        ->rightjoin('user', 'role_tpu.id_user', '=', 'user.id_user')
+        ->whereNull('role_tpu.id_role_tpu')
+        ->where('user.role','=','1')
+        ->select('*')
+        ->get();
+        return response()->json($user);
+    }
+
     function view_tpu(){
     	$tpu = Tpu::all();
         return response()->json($tpu);
@@ -77,6 +87,15 @@ class AdminPusatController extends Controller
     
     function view_role_tpu(){
         $role_tpu = Role_tpu::all();
+        return response()->json($role_tpu);
+    }
+
+    function view_tpu_doesnt_have_admin(){
+        $role_tpu = DB::table('role_tpu')
+        ->rightjoin('tpu', 'role_tpu.id_tpu', '=', 'tpu.id_tpu')
+        ->whereNull('role_tpu.id_role_tpu')
+        ->select('*')
+        ->get();
         return response()->json($role_tpu);
     }
 

@@ -25,6 +25,7 @@ Route::middleware('cors')->post('hash', 'AuthController@hash');
 
 //user
 Route::middleware('cors')->get('user/view', 'AdminPusatController@view');
+Route::middleware('cors')->get('user/view_admintpu_havent_given_access', 'AdminPusatController@view_admintpu_havent_given_access');
 Route::middleware('cors')->post('create_user', 'AdminPusatController@create_user');
 Route::middleware('cors')->put('update_user/{id_user}', 'AdminPusatController@update_user');
 Route::middleware('cors')->delete('delete_user/{id_user}', 'AdminPusatController@delete_user');
@@ -32,6 +33,7 @@ Route::middleware('cors')->get('constraint_user', 'AdminPusatController@constrai
 
 //tpu
 Route::middleware('cors')->get('tpu/view_byUser', 'AdminTPUController@view_tpu_byUser');
+Route::middleware('cors')->get('tpu/view_tpu_doesnt_have_admin', 'AdminPusatController@view_tpu_doesnt_have_admin');
 Route::middleware('cors')->get('tpu/view', 'AdminPusatController@view_tpu');
 Route::middleware('cors')->post('tpu/create', 'AdminPusatController@create_tpu');
 Route::middleware('cors')->put('tpu/edit/{id}', 'AdminPusatController@edit_tpu');
