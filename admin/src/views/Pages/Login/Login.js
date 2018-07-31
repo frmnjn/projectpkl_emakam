@@ -12,7 +12,7 @@ class Login extends Component {
       password: "",
       status: false,
       temp: [],
-      load: false
+      isLoaded: false
 
     };
   }
@@ -33,11 +33,11 @@ class Login extends Component {
         username: this.state.username,
         password: this.state.password
       })
-     }).then(
-       this.setState({
-         load:true
-       })
-     )
+    }).then(
+      this.setState({
+        isLoaded: true
+      })
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.length > 0) {
@@ -61,25 +61,30 @@ class Login extends Component {
             }
           },
           )
+        } else {
+          this.setState({
+            isLoaded: false
+          })
         }
       }
       );
+  }
 
+  load() {
+    return (
+      <div className='sweet-loading'>
+        <RingLoader
+          color={'#123abc'}
+        />
+      </div>
+    );
+  }
+
+  nothing() {
+    return (<div></div>)
   }
 
   render() {
-    if (this.state.load) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center',margin:300 }}>
-          <div className='sweet-loading'>
-            <RingLoader
-              color={'#123abc'}
-            />
-          </div>
-        </div>
-
-      );
-    }
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -96,8 +101,7 @@ class Login extends Component {
                     <input type="password" className="form-control" name="password" onChange={this.handleChange} value={this.state.activepassword}></input>
                     <br /><input type="submit" className="form-control btn btn-success" Value="Submit"></input>
                   </form>
-                  <p>{this.state.load}</p>
-                  {/* {this.state.load? } */}
+                      {this.state.isLoaded ? this.load() : this.nothing()}
                 </CardBody>
               </Card>
             </Col>
