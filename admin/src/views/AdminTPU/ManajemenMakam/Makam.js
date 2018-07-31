@@ -41,6 +41,8 @@ import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
 import GoogleMapReact from 'google-map-react';
 import { RingLoader } from 'react-spinners';
+import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
+
 
 import 'react-table/react-table.css'
 
@@ -68,7 +70,7 @@ class Makam extends Component {
     this.fetchmakam = this.fetchmakam.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
-
+    this.mapClicked = this.mapClicked.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
@@ -79,7 +81,8 @@ class Makam extends Component {
       items: [],
       blok: [],
 
-
+      lng:112.613468,
+      lat:-7.952229,
       idmakamaktif:null,
       nomoraktif:null,
       blokaktif:null,
@@ -182,6 +185,13 @@ class Makam extends Component {
         small:!this.state.small
       })
     )
+  }
+
+  mapClicked(mapProps, map, event) {
+    this.setState({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
+    })
   }
 
   
@@ -311,6 +321,39 @@ class Makam extends Component {
                                           <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
                                       </Col>
                                     </Row>
+                                    <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'95%'}}
+                                        >
+
+                                         {/* <Polygon
+                                          paths={triangleCoords}
+                                          strokeColor="#0000FF"
+                                          strokeOpacity={0.8}
+                                          strokeWeight={2}
+                                          fillColor="#0000FF"
+                                          fillOpacity={0.35} />  */}
+
+  
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                      </Col>
+                                    </Row>
                               </ModalBody>
                               <ModalFooter>
                                 <Button color="primary" onClick={this.handleCreate}>Buat</Button>{' '}
@@ -347,6 +390,40 @@ class Makam extends Component {
                                       </InputGroup>
                                       </Col>
                                     </Row>
+                                    <hr/>
+                                    <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'95%'}}
+                                        >
+
+                                         {/* <Polygon
+                                          paths={triangleCoords}
+                                          strokeColor="#0000FF"
+                                          strokeOpacity={0.8}
+                                          strokeWeight={2}
+                                          fillColor="#0000FF"
+                                          fillOpacity={0.35} />  */}
+
+  
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                      </Col>
+                                    </Row>
                               </ModalBody>
                               <ModalFooter>
                                 <Button color="success" onClick={() => this.handleEdit()}>edit</Button>{' '}
@@ -372,18 +449,27 @@ class Makam extends Component {
                                   className={'modal-large ' + this.props.className}>
                               <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
                               <ModalBody>
-                              <div style={{ height: '100vh', width: '100%' }}>
-                                <GoogleMapReact
-                                  defaultCenter={this.props.center}
-                                  defaultZoom={this.props.zoom}
-                                >
+                              <div >
+                                  <Row>
+                                    <Col style={{height:'50vh'}}>
+                                      <Map 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}     
+                                        style={{width:'95%'}}                                  
+                                      >
 
-                                  <AnyReactComponent
-                                    lat={-7.952229}
-                                    lng={112.613468}
-                                    text={'Lokasi Makam'}
-                                  />
-                                </GoogleMapReact>
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                      </Map>
+                                    </Col>
+                                  </Row>
                               </div>
                               </ModalBody>
                               <ModalFooter>
@@ -471,4 +557,6 @@ class Makam extends Component {
   }
 }
 
-export default Makam;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyBvJYFqE76O5qDoCengUAOJY9CRPfy1nio')
+})(Makam)
