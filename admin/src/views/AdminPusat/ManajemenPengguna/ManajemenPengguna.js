@@ -24,7 +24,7 @@ import {
 } from 'reactstrap';
 
 import ReactTable from "react-table";
-
+import { RingLoader } from 'react-spinners';
 
 import 'react-table/react-table.css'
 
@@ -33,6 +33,7 @@ class ManajemenPengguna extends Component {
     super(props);
 
     this.state = {
+      isLoaded: false,
       primary: false,
       large: false,
       modal: false,
@@ -49,7 +50,8 @@ class ManajemenPengguna extends Component {
       activepassword: "",
       activevalue: "",
       activevalueNum: "",
-      activetpu: ""
+      activetpu: "",
+      
     };
 
     this.toggle = this.toggle.bind(this);
@@ -75,7 +77,8 @@ class ManajemenPengguna extends Component {
       .then(
         (result) => {
           this.setState({
-            table_user: result
+            table_user: result,
+            isLoaded:true
           });
         },
     )
@@ -219,6 +222,15 @@ class ManajemenPengguna extends Component {
   }
 
   render() {
+    if (!this.state.isLoaded) {
+      return (<div style={{ display: 'flex', justifyContent: 'center',margin:100 }}>
+      <div className='sweet-loading'>
+        <RingLoader
+          color={'#123abc'}
+        />
+      </div>
+    </div>)
+    } else {
     if(sessionStorage.getItem('login_session') == 0){
       return (                   
         <div className="animated fadeIn">
@@ -349,6 +361,7 @@ class ManajemenPengguna extends Component {
       );
     }
   }
+}
 }
 
 export default ManajemenPengguna;

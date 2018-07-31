@@ -38,7 +38,7 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
-
+import { RingLoader } from 'react-spinners';
 
 import 'react-table/react-table.css'
 
@@ -71,7 +71,7 @@ class Search extends Component {
       dropdownOpen: false,
       radioSelected: 2,
       error: null,
-      isLoaded: true,
+      isLoaded: false,
       isFiltered: true,
       filter_keyword:'',
       items: [],
@@ -180,7 +180,13 @@ class Search extends Component {
   render() {
     // const {isLoaded, items} = this.state;
     if (!this.state.isLoaded) {
-      return (<div>loading...</div>)
+      return (<div style={{ display: 'flex', justifyContent: 'center', margin: 100 }}>
+        <div className='sweet-loading'>
+          <RingLoader
+            color={'#123abc'}
+          />
+        </div>
+      </div>)
     }else{
     return (
       <div className="animated fadeIn">

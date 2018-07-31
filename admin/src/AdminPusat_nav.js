@@ -10,6 +10,11 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
+      name: 'Manajemen TPU',
+      url: '/ManajemenTpu',
+      icon: 'icon-chart',
+    },
+    {
       name: 'Manajemen Pengguna',
       url: '/ManajemenPengguna',
       icon: 'icon-user',
@@ -18,11 +23,6 @@ export default {
       name: 'Manajemen Hak Akses',
       url: '/ManajemenHakAkses',
       icon: 'icon-pencil',
-    },
-    {
-      name: 'Manajemen TPU',
-      url: '/ManajemenTpu',
-      icon: 'icon-chart',
     },
     {
       name: 'Cari Data',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import usersData from '../../../views/Users/UsersData';
+import { RingLoader } from 'react-spinners';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -9,8 +10,9 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      msg: "",
-      temp: []
+      status: false,
+      temp: [],
+      load: false
 
     };
   }
@@ -31,13 +33,15 @@ class Login extends Component {
         username: this.state.username,
         password: this.state.password
       })
-    }).then((response) => response.json())
+     }).then(
+       this.setState({
+         load:true
+       })
+     )
+      .then((response) => response.json())
       .then((responseJson) => {
-
         if (responseJson.length > 0) {
-
           responseJson.map((items) => {
-
             this.setState({
               temp: items
             })
@@ -48,15 +52,13 @@ class Login extends Component {
             sessionStorage.setItem('id_user', this.state.temp.id_user);
             sessionStorage.setItem('username', this.state.temp.username);
 
-
             if (this.state.temp.role == 0) {
-              this.props.history.push('/ManajemenPengguna')
+              this.props.history.push('/ManajemenTPU')
             } else if (this.state.temp.role == 1) {
               this.props.history.push('/ManajemenBlokMakam')
             } else {
               this.props.history.push('/Search')
             }
-
           },
           )
         }
@@ -66,6 +68,18 @@ class Login extends Component {
   }
 
   render() {
+    if (this.state.load) {
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center',margin:300 }}>
+          <div className='sweet-loading'>
+            <RingLoader
+              color={'#123abc'}
+            />
+          </div>
+        </div>
+
+      );
+    }
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -80,8 +94,10 @@ class Login extends Component {
                     <input type="text" className="form-control" name="username" onChange={this.handleChange} value={this.state.activeusername}></input>
                     <label>password</label>
                     <input type="password" className="form-control" name="password" onChange={this.handleChange} value={this.state.activepassword}></input>
-                    <br/><input type="submit" className="form-control btn btn-success" Value="Submit"></input>
+                    <br /><input type="submit" className="form-control btn btn-success" Value="Submit"></input>
                   </form>
+                  <p>{this.state.load}</p>
+                  {/* {this.state.load? } */}
                 </CardBody>
               </Card>
             </Col>
