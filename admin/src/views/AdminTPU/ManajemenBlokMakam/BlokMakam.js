@@ -40,7 +40,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
 import { RingLoader } from 'react-spinners';
-
+import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
 import 'react-table/react-table.css'
 
 const brandPrimary = getStyle('--primary')
@@ -61,12 +61,14 @@ class BlokMakam extends Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
+    this.toggleLocation = this.toggleLocation.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchblok = this.fetchblok.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.fetchtpu = this.fetchtpu.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.mapClicked = this.mapClicked.bind(this);
 
     this.state = {
       dropdownOpen: false,
@@ -77,11 +79,16 @@ class BlokMakam extends Component {
       blok: [],
       tpu_role:[],
       tpu:[],
+      polygon:[],
+
 
       activename: null,
       activeqty: null,
       activesupplier: null,
 
+
+      lng:112.613468,
+      lat:-7.952229,
       idtpuaktif:null,
       idblokaktif: null,
       nomoraktif: null,
@@ -184,6 +191,14 @@ class BlokMakam extends Component {
     )
   }
 
+  mapClicked(mapProps, map, event) {
+    this.setState({
+      polygon:this.state.polygon.concat({lat:event.latLng.lat(),lng:event.latLng.lng()}),
+      lat:event.latLng.lat(),
+      lng:event.latLng.lng()
+    })
+
+  }
 
   handleKode = event => {
     this.setState({ kodeaktif: event.target.value });
@@ -242,7 +257,12 @@ class BlokMakam extends Component {
       create: !this.state.create,
     });
   }
-
+  
+  toggleLocation(){
+    this.setState({
+      location: !this.state.location,
+    })
+  }
 
 
 
@@ -321,7 +341,39 @@ class BlokMakam extends Component {
                         <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
                       </Col>
                     </Row>
-                    <br /><Button color="default" onClick=''>Pilih Area</Button>
+                    <hr/>
+                                    <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'95%'}}
+                                        >
+
+                                         <Polygon
+                                          paths={this.state.polygon}
+                                          strokeColor="#0000FF"
+                                          strokeOpacity={0.8}
+                                          strokeWeight={2}
+                                          fillColor="#0000FF"
+                                          fillOpacity={0.35} /> 
+
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                    </Col>
+                                  </Row>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="primary" onClick={this.handleCreate}>Buat</Button>
@@ -332,8 +384,7 @@ class BlokMakam extends Component {
                   className={'modal-sm ' + this.props.className}>
                   <ModalHeader toggle={this.toggleSmall}></ModalHeader>
                   <ModalBody>
-                    <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
-                    <br /><br /><br />
+-                    <br /><br /><br />
                     <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
                   </ModalBody>
                   <ModalFooter>
@@ -341,6 +392,49 @@ class BlokMakam extends Component {
                     <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
                   </ModalFooter>
                 </Modal>
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                                  className={'modal-large ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleLocation}>Poligon Blok Makam</ModalHeader>
+                              <ModalBody>
+                              <div >
+                                  <Row>
+                                    <Col style={{height:'50vh'}}>
+                                      <Map 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={15}     
+                                        style={{width:'95%'}}                                  
+                                      >
+
+                                        <Polygon
+                                          paths={[
+                                            {lat:-7.956273, lng:112.613289},
+                                            {lat:-7.954637, lng:112.611814},
+                                            {lat:-7.949469, lng:112.609006},
+                                            {lat:-7.947670, lng:112.613490},
+                                            {lat:-7.955008, lng:112.620526},
+                                            {lat:-7.956426, lng:112.617328}
+                                          ]}
+                                          strokeColor="#0000FF"
+                                          strokeOpacity={0.8}
+                                          strokeWeight={2}
+                                          fillColor="#0000FF"
+                                          fillOpacity={0.35} /> 
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                      </Map>
+                                    </Col>
+                                  </Row>
+                              </div>
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="secondary" onClick={this.toggleLocation}>Tutup</Button>
+                              </ModalFooter>
+                            </Modal>
                 <Card>
                   <CardHeader>
                     <Row>
@@ -379,7 +473,7 @@ class BlokMakam extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick='' block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
                                   <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
@@ -417,4 +511,6 @@ class BlokMakam extends Component {
   }
 }
 
-export default BlokMakam;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyBvJYFqE76O5qDoCengUAOJY9CRPfy1nio')
+})(BlokMakam)
