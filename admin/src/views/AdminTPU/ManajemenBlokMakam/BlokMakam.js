@@ -94,6 +94,7 @@ class BlokMakam extends Component {
       nomoraktif: null,
       blokaktif: null,
       kodeaktif: null,
+      kodetpuaktif: null,
 
       formqty: '1',
 
@@ -144,7 +145,7 @@ class BlokMakam extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        kode_blok: this.state.kodeaktif,
+        kode_blok: this.state.kodetpuaktif+'-'+this.state.kodeaktif,
         id_tpu: this.state.idtpuaktif,
       })
     }).then(
@@ -166,7 +167,7 @@ class BlokMakam extends Component {
       },
       body: JSON.stringify({
         id_tpu: this.state.idtpuaktif,
-        kode_blok: this.state.kodeaktif,
+        kode_blok: this.state.kodetpuaktif+'-'+this.state.kodeaktif,
 
       })
     }).then(
@@ -205,7 +206,8 @@ class BlokMakam extends Component {
   }
 
   handleChangeOption = event => {
-    this.setState({ idtpuaktif: event.target.value });
+    var tpu = event.target.value.split(',') 
+    this.setState({ idtpuaktif: tpu[0] , kodetpuaktif: tpu[1]});
   }
 
 
@@ -237,11 +239,12 @@ class BlokMakam extends Component {
   }
 
   toggleEdit(items) {
+    var blok=items.kode_blok.split('-')
     this.setState({
       edit: !this.state.edit,
       idblokaktif: items.id_blok,
       idtpuaktif: items.id_tpu,
-      kodeaktif: items.kode_blok,
+      kodeaktif: blok[1],
     });
   }
 
@@ -299,12 +302,12 @@ class BlokMakam extends Component {
                           <select class="form-control" onChange={this.handleChangeOption}>
                             {this.state.tpu.map((tpu) => {
                               return (
-                                <option value={tpu.id_tpu} selected={tpu.id_tpu==this.state.idtpuaktif}>{tpu.id_tpu} - {tpu.nama_tpu}</option>
+                                <option value={tpu.id_tpu+','+tpu.kode_tpu} selected={tpu.id_tpu==this.state.idtpuaktif}>{tpu.nama_tpu}</option>
                               )
                             })}
                           </select>    
                           <br/>
-                          <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
+                            <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
                           <hr/>
                           <Row>
                                       <Col style={{
@@ -362,7 +365,7 @@ class BlokMakam extends Component {
                             <option value=''>Pilih Tpu</option>
                             {this.state.tpu.map((tpu) => {
                               return (
-                                <option value={tpu.id_tpu}>{tpu.id_tpu} - {tpu.nama_tpu}</option>
+                                <option value={tpu.id_tpu+','+tpu.kode_tpu}>{tpu.nama_tpu}</option>
                               )
                             })}
                           </select>       
