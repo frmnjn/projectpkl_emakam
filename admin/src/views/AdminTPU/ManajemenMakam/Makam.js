@@ -72,6 +72,10 @@ class Makam extends Component {
     this.handleCreate = this.handleCreate.bind(this);
     this.mapClicked = this.mapClicked.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.fetchpenghuni = this.fetchpenghuni.bind(this);
+    this.status_penghuni = this.status_penghuni.bind(this);
+    this.status_terisi = this.status_terisi.bind(this);
+
 
     this.state = {
       dropdownOpen: false,
@@ -80,14 +84,15 @@ class Makam extends Component {
       isLoaded: false,
       items: [],
       blok: [],
+      penghuni:[],
+
 
       lng:112.613468,
       lat:-7.952229,
       idmakamaktif:null,
       nomoraktif:null,
       blokaktif:null,
-      kodeaktif:null,
-      
+      kodeaktif:null,      
       formqty:'1',
 
       
@@ -101,6 +106,7 @@ class Makam extends Component {
   componentDidMount() {
     
     this.fetchmakam()
+    this.fetchpenghuni()
     
     fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
@@ -129,6 +135,18 @@ class Makam extends Component {
           });
         },
       )
+  }
+
+  fetchpenghuni(){
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+      .then(response => response.json())
+      .then(
+        (result) => {
+          this.setState({
+            penghuni: result
+          }); //console.log(result);
+        },
+    )
   }
 
   handleEdit(items){
@@ -207,6 +225,37 @@ class Makam extends Component {
   handleBlok = event => {
     var blok=event.target.value.split(',')
     this.setState({ blokaktif: blok[0] , kodeaktif: blok[1]});
+  }
+
+  status_penghuni(data){
+    var item = this.state.penghuni
+    item = item.filter(function(item){
+      return item.id_makam.toString().search(data.toString())!== -1
+    })
+
+    var status='-'
+
+      item.map((items)=>{
+        status=items.status
+      })
+      
+
+    return status    
+  }
+
+  status_terisi(data){
+    var item = this.state.penghuni
+    item = item.filter(function(item){
+      return item.id_makam.toString().search(data.toString())!== -1
+    })
+
+    var status='Kosong'
+
+    item.map((items)=>{
+      status='Terisi'
+    })
+
+    return status    
   }
 
 
@@ -512,11 +561,15 @@ class Makam extends Component {
                         },
                         {
                           Header: 'Status Terisi',
-                          accessor: 'status_terisi', // String-based value accessors!
-
+                          Cell: row => (
+                            <div>{this.status_terisi(row.row.id_makam)}</div>
+                          )
                         },
                         {
                           Header: 'Status Penghuni',
+                          Cell: row => (
+                            <div>{this.status_penghuni(row.row.id_makam)}</div>
+                          )
                         },
                         {
                           Header: 'Actions',
