@@ -509,11 +509,14 @@ class Makam extends Component {
                         {
                           Header: 'TPU',
                           accessor: 'nama_tpu', // String-based value accessors!
-                          Cell: row => (
-                            <div>
-                              {row.row.nama_tpu}
-                            </div>
-                          )
+                        },
+                        {
+                          Header: 'Status Terisi',
+                          accessor: 'status_terisi', // String-based value accessors!
+
+                        },
+                        {
+                          Header: 'Status Penghuni',
                         },
                         {
                           Header: 'Actions',
