@@ -142,6 +142,7 @@ class Makam extends Component {
       body: JSON.stringify({
         id_blok: this.state.blokaktif,
         nomor_makam: this.state.nomoraktif,
+        kode_makam: this.state.kodeaktif+'-'+this.state.nomoraktif
       })
     }).then(
       this.fetchmakam
@@ -380,7 +381,7 @@ class Makam extends Component {
                                           <Input onChange={this.handleBlok} type="select" name="blok" id="blok" >
                                             {this.state.blok.map((items) =>{
                                                 return(
-                                                  <option value={items.id_blok} selected={items.id_blok==this.state.blokaktif}>blok {items.kode_blok}</option>
+                                                  <option value={items.id_blok+','+items.kode_blok} selected={items.id_blok==this.state.blokaktif}>{items.kode_blok}</option>
                                                 )
                                             })
                                             }
