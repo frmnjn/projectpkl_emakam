@@ -163,7 +163,7 @@ class Makam extends Component {
       body: JSON.stringify({
         id_blok: this.state.blokaktif,
         nomor_makam: this.state.nomoraktif,
-        kode_makam: this.state.kodeaktif,
+        kode_makam: this.state.kodeaktif+'-'+this.state.nomoraktif,
       })
     }).then(
       this.fetchmakam
@@ -204,7 +204,8 @@ class Makam extends Component {
   }
 
   handleBlok = event => {
-    this.setState({ blokaktif: event.target.value });
+    var blok=event.target.value.split(',')
+    this.setState({ blokaktif: blok[0] , kodeaktif: blok[1]});
   }
 
 
@@ -308,17 +309,16 @@ class Makam extends Component {
                                     <br/>
                                     <Row>
                                       <Col xs="12">
-                                          <Input onChange={this.handleBlok} type="select" name="blok" id="blok">
+                                          <Input onChange={this.handleBlok} type="select" name="" id="blok">
                                           <option>Pilih Blok</option>
                                             {this.state.blok.map((items) =>{
                                                 return(
-                                                  <option value={items.id_blok}>blok {items.kode_blok}</option>
+                                                  <option value={items.id_blok+','+items.kode_blok} >{items.kode_blok}</option>
                                                 )
                                             })
                                             }
                                           </Input><br/>
                                           <Input onChange={this.handleNomor} type="text" id="input1-group3" name="input1-group3" placeholder='Nomor Makam' /><br/>
-                                          <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
                                       </Col>
                                     </Row>
                                     <Row>
@@ -502,11 +502,15 @@ class Makam extends Component {
                           accessor: 'kode_makam' // String-based value accessors!
                         },
                         {
+                          Header: 'Kode Blok',
+                          accessor: 'kode_blok' // String-based value accessors!
+                        },
+                        {
                           Header: 'TPU',
                           accessor: 'nama_tpu', // String-based value accessors!
                           Cell: row => (
                             <div>
-                              {row.row.nama_tpu} | blok {row.row.kode_blok}
+                              {row.row.nama_tpu}
                             </div>
                           )
                         },
@@ -518,9 +522,11 @@ class Makam extends Component {
                             <div>
                               <Row>
                                 &emsp;
-                                <Button onClick={this.toggleLocation}   outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
-                                <Button onClick={()=>this.toggleEdit(row.row)}    outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
-                                <Button onClick={()=>this.toggleSmall(row.row)}    outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                                <Button onClick={this.toggleLocation}   outline color="primary"><i className="cui-location-pin icons text-left"></i> </Button>
+                                &emsp;
+                                <Button onClick={()=>this.toggleEdit(row.row)}    outline color="success"><i className="cui-pencil icons text-left"></i> </Button>
+                                &emsp;
+                                <Button onClick={()=>this.toggleSmall(row.row)}    outline color="danger"><i className="cui-circle-x icons text-left"></i> </Button>
                               <Col col="1"  xl className="">
                               </Col>
                               <Col col="1"  xl className="">

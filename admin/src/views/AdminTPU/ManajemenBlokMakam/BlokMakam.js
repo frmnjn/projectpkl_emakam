@@ -369,7 +369,7 @@ class BlokMakam extends Component {
                     <br/>
                     <Row>
                       <Col xs="12">
-                        <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Makam' />
+                        <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode Blok' />
                       </Col>
                     </Row>
                     <hr/>
@@ -492,7 +492,7 @@ class BlokMakam extends Component {
                           accessor: 'nama_tpu', // String-based value accessors!
                           Cell: row => (
                             <div>
-                              {row.row.nama_tpu} | blok {row.row.kode_blok}
+                              {row.row.nama_tpu}
                             </div>
                           )
                         },
