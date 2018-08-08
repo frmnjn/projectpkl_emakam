@@ -303,10 +303,41 @@ class BlokMakam extends Component {
                               )
                             })}
                           </select>    
-                        <InputGroup>
+                          <br/>
                           <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
-                          <br /><Button color="default" onClick=''>Pilih Area</Button>
-                        </InputGroup>
+                          <hr/>
+                          <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'90%'}}
+                                        >
+
+                                         <Polygon
+                                          paths={this.state.polygon}
+                                          strokeColor="#0000FF"
+                                          strokeOpacity={0.8}
+                                          strokeWeight={2}
+                                          fillColor="#0000FF"
+                                          fillOpacity={0.35} /> 
+
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                    </Col>
+                          </Row>
                       </Col>
                     </Row>
                   </ModalBody>
@@ -352,7 +383,7 @@ class BlokMakam extends Component {
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}
-                                        style={{width:'95%'}}
+                                        style={{width:'90%'}}
                                         >
 
                                          <Polygon
@@ -512,5 +543,5 @@ class BlokMakam extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyBvJYFqE76O5qDoCengUAOJY9CRPfy1nio')
+  apiKey: ('AIzaSyDTUAyUGbuCXiRX6ywsz4ZIAf_jDPPRwUM')
 })(BlokMakam)

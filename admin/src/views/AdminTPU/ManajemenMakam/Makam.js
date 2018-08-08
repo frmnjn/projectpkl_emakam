@@ -331,7 +331,7 @@ class Makam extends Component {
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}
-                                        style={{width:'95%'}}
+                                        style={{width:'90%'}}
                                         >
 
                                          {/* <Polygon
@@ -401,7 +401,7 @@ class Makam extends Component {
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}
-                                        style={{width:'95%'}}
+                                        style={{width:'90%'}}
                                         >
 
                                          {/* <Polygon
@@ -558,5 +558,5 @@ class Makam extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyBvJYFqE76O5qDoCengUAOJY9CRPfy1nio')
+  apiKey: ('AIzaSyDTUAyUGbuCXiRX6ywsz4ZIAf_jDPPRwUM')
 })(Makam)
