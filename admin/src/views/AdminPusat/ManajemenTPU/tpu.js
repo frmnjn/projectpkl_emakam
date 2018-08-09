@@ -39,8 +39,10 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
-
 import { RingLoader } from 'react-spinners';
+import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
+
+
 import 'react-table/react-table.css'
 
 const brandPrimary = getStyle('--primary')
@@ -65,6 +67,7 @@ class tpu extends Component {
     this.fetchdata = this.fetchdata.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
+    this.mapClicked = this.mapClicked.bind(this);
 
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
@@ -83,6 +86,9 @@ class tpu extends Component {
       idtpuaktif: null,
       namaaktif: null,
       alamataktif: null,
+      kodeaktif:null,
+      lat:-7.952229,
+      lng:112.613468,
 
       formqty: '1',
 
@@ -126,6 +132,7 @@ class tpu extends Component {
       body: JSON.stringify({
         nama_tpu: this.state.namaaktif,
         alamat_tpu: this.state.alamataktif,
+        kode_tpu: this.state.kodeaktif,
       })
     }).then(
       this.fetchdata
@@ -147,6 +154,7 @@ class tpu extends Component {
       body: JSON.stringify({
         nama_tpu: this.state.namaaktif,
         alamat_tpu: this.state.alamataktif,
+        kode_tpu: this.state.kodeaktif
       })
     }).then(
       this.fetchdata
@@ -170,6 +178,16 @@ class tpu extends Component {
     )
   }
 
+  mapClicked(mapProps, map, event) {
+    this.setState({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
+    })
+  }
+
+  handleKode = event => {
+    this.setState({ kodeaktif: event.target.value });
+  }
 
   handleNama = event => {
     this.setState({ namaaktif: event.target.value });
@@ -213,7 +231,9 @@ class tpu extends Component {
       idtpuaktif: items.id_tpu,
       namaaktif: items.nama_tpu,
       alamataktif: items.alamat_tpu,
+      kodeaktif: items.kode_tpu,
     });
+
   }
 
   toggleEditclose(items) {
@@ -261,9 +281,36 @@ class tpu extends Component {
                   <Col xs="12">
                     <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" value={this.state.namaaktif} />
                     <br />
+                    <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
+                    <br/>
                     <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
                     <br />
-                    <Button color="default" onClick=''>Pilih Area</Button>
+                    <hr/>
+                        <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'90%'}}
+                                        >
+  
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                      </Col>
+                        </Row>
+                      <hr/>
                   </Col>
                 </Row>
               </ModalBody>
@@ -290,10 +337,39 @@ class tpu extends Component {
                     <Input onChange={this.handleNama} type="text" id="input1-group3" name="input1-group3" placeholder='Nama TPU' />
                   </Col><br /><br />
                   <Col xs="12">
+                    <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode TPU' />
+                  </Col><br /><br />
+                  <Col xs="12">
                     <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" placeholder='Alamat TPU' />
                   </Col>
                 </Row>
-                <br /><Button color="default" onClick=''>Pilih Area</Button>
+                <hr/>
+                                    <Row>
+                                      <Col style={{
+                                          height:'50vh',
+                                          width:'5vw'
+                                        }}>
+                                       <Map 
+                                        onClick={this.mapClicked} 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}
+                                        style={{width:'90%'}}
+                                        >
+
+  
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                        </Map>
+                                      </Col>
+                                    </Row>
+                <hr/>
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={this.handleCreate}>Buat</Button>
@@ -332,6 +408,7 @@ class tpu extends Component {
                       filterable
                       columns={[
                         { accessor: 'id_tpu', show: false },
+                        { accessor: 'kode_tpu', show: false },
                         {
                           Header: 'Nama TPU',
                           accessor: 'nama_tpu' // String-based value accessors!
@@ -385,4 +462,7 @@ class tpu extends Component {
   }
 }
 
-export default tpu;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyDTUAyUGbuCXiRX6ywsz4ZIAf_jDPPRwUM')
+})(tpu)
+
