@@ -36,10 +36,11 @@ import ReactTable from "react-table";
 import { RingLoader } from 'react-spinners';
 import GoogleMapReact from 'google-map-react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
+import Select from 'react-select';
+
+
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-table/react-table.css'
-
-
 
 
 class ManajemenDataPenghuniMakam extends Component {
@@ -51,12 +52,16 @@ class ManajemenDataPenghuniMakam extends Component {
       // large: false,
       // modal: false,
 
+      selectedOption: null,
+
       startDate: moment(),
       isLoaded: false,
       lng:112.613468,
       lat:-7.952229,
       list: [],
       makam: [],
+      makamitems:[],
+
       nama: "",
       alamat_terakhir: "",
       tanggal_wafat: '',
@@ -81,9 +86,12 @@ class ManajemenDataPenghuniMakam extends Component {
       activenik_ahli_waris: "",
       activekontak_ahli_waris: "",
 
+      selectvalue:null,
 
 
     };
+
+    var newitem=[]
 
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
@@ -93,9 +101,14 @@ class ManajemenDataPenghuniMakam extends Component {
     this.toggleLocation = this.toggleLocation.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.fetchall = this.fetchall.bind(this);
+    this.makam_items = this.makam_items.bind(this);
 
+    
+
+  }
+
+  componentDidMount(){
     this.fetchall()
-
 
   }
 
@@ -119,7 +132,18 @@ class ManajemenDataPenghuniMakam extends Component {
             }); //console.log(result);
           },
       )
+       
+     
     )
+  }
+
+  makam_items(){
+    var newitem=[];
+    this.state.makam.map((items) => {
+      newitem=newitem.concat({value:items.id_makam,label:items.kode_makam})
+    })
+
+    return newitem
   }
 
   toggle(list) {
@@ -134,6 +158,7 @@ class ManajemenDataPenghuniMakam extends Component {
       activealamat_ahli_waris: list.alamat_ahli_waris,
       activenik_ahli_waris: list.nik_ahli_waris,
       activekontak_ahli_waris: list.kontak_ahli_waris,
+      activekode_makam: list.kode_makam,
       modal: !this.state.modal,
     });
   }
@@ -145,6 +170,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   toggleLarge(list) {
+
     this.setState({
       activeid_penghuni_makam: list.id_penghuni_makam,
       activenama: list.nama,
@@ -152,6 +178,7 @@ class ManajemenDataPenghuniMakam extends Component {
       activetanggal_wafat: moment(list.tanggal_wafat),
       activestatus: list.status,
       activeid_makam: list.id_makam,
+      activekode_makam: list.kode_makam,
       activenama_ahli_waris: list.nama_ahli_waris,
       activealamat_ahli_waris: list.alamat_ahli_waris,
       activenik_ahli_waris: list.nik_ahli_waris,
@@ -175,8 +202,6 @@ class ManajemenDataPenghuniMakam extends Component {
     });
   }
 
-  componentDidMount() {
-  }
 
   handleDate(date) {
     this.setState({
@@ -185,6 +210,9 @@ class ManajemenDataPenghuniMakam extends Component {
     });
   }
 
+  handleSelect = (selectedOption) =>{
+    this.setState({ selectedOption,activeid_makam: selectedOption.value,id_makam: selectedOption.value});
+  }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -277,6 +305,7 @@ class ManajemenDataPenghuniMakam extends Component {
         </div>
       </div>)
     } else {
+
       if (sessionStorage.getItem('login_session') == "1") {
         return (
           <div className="animated fadeIn">
@@ -315,15 +344,20 @@ class ManajemenDataPenghuniMakam extends Component {
                             <option value='Expired'>Expired</option>
                             <option value='Ditimpa'>Ditimpa</option>
                           </Input>
-                          <label>Pilih Nomor Makam (ID Makam)</label>
-                          <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
+                          <label>Pilih Nomor Makam (Kode Makam)</label>
+                          <Select
+                            value={this.state.selectedOption}
+                            onChange={this.handleSelect}
+                            options={this.makam_items()}
+                          />
+                          {/* <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
                             {this.state.makam.map((items) => {
                               return (
                                 <option value={items.id_makam}>{items.kode_makam}</option>
                               )
                             }
                             )}
-                          </Input>
+                          </Input> */}
                           <label>Nama Ahli Waris</label>
                           <input type="text" className="form-control" name="nama_ahli_waris" placeholder="Nama Ahli Waris" onChange={this.handleChange}></input>
                           <label>Alamat Ahli Waris</label>
@@ -343,8 +377,6 @@ class ManajemenDataPenghuniMakam extends Component {
                       <ModalHeader toggle={this.toggleclose}>Lihat Data Penghuni Makam</ModalHeader>
                       <ModalBody>
                         <form className="form-group" onSubmit=''>
-                          <label>ID</label>
-                          <input type="text" className="form-control" name="activeid_penghuni_makam" onChange={this.handleChange} value={this.state.activeid_penghuni_makam} disabled></input>
                           <label>Nama Penghuni Makam</label>
                           <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama} disabled></input>
                           <label>Alamat Terakhir</label>
@@ -353,8 +385,8 @@ class ManajemenDataPenghuniMakam extends Component {
                           <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat} disabled></input>
                           <label>Status</label>
                           <input type="text" className="form-control" name="activestatus" onChange={this.handleChange} value={this.state.activestatus} disabled></input>
-                          <label>ID Makam</label>
-                          <input type="text" className="form-control" name="activeid_makam" onChange={this.handleChange} value={this.state.activeid_makam} disabled></input>
+                          <label>Kode Makam</label>
+                          <input type="text" className="form-control" name="activeid_makam" onChange={this.handleChange} value={this.state.activekode_makam} disabled></input>
                           <label>Nama Ahli Waris</label>
                           <input type="text" className="form-control" name="activenama_ahli_waris" onChange={this.handleChange} value={this.state.activenama_ahli_waris} disabled></input>
                           <label>Alamat Ahli Waris</label>
@@ -371,8 +403,6 @@ class ManajemenDataPenghuniMakam extends Component {
                       <ModalHeader toggle={this.togglelargeclose}>Edit Data Penghuni Makam</ModalHeader>
                       <ModalBody>
                         <form className="form-group" onSubmit={this.handleSubmitEdit}>
-                          <label>ID</label>
-                          <input type="text" className="form-control" name="activeid_penghuni_makam" onChange={this.handleChange} value={this.state.activeid_penghuni_makam} disabled></input>
                           <label>Nama Penghuni Makam</label>
                           <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama}></input>
                           <label>Alamat Terakhir</label>
@@ -388,15 +418,14 @@ class ManajemenDataPenghuniMakam extends Component {
                             <option value='Expired'>Expired</option>
                             <option value='Ditimpa'>Ditimpa</option>
                           </Input>
-                          <label>Pilih Nomor Makam (ID Makam)</label>
-                          <Input type="select" className="form-control" name="id_makam" placeholder="dropdown" onChange={this.handleChange}>
-                            {this.state.makam.map((items) => {
-                              return (
-                                <option value={items.id_makam}>{items.kode_makam}</option>
-                              )
-                            }
-                            )}
-                          </Input>
+                          <label>Pilih Nomor Makam (Kode Makam)</label>
+                          <Select
+                            defaultInputValue={this.state.activekode_makam}
+                            defaultValue={this.state.activeid_makam}
+                            value={this.state.selectedOption}
+                            onChange={this.handleSelect}
+                            options={this.makam_items()}
+                          />
                           <label>Nama Ahli Waris</label>
                           <input type="text" className="form-control" name="activenama_ahli_waris" onChange={this.handleChange} value={this.state.activenama_ahli_waris}></input>
                           <label>Alamat Ahli Waris</label>
@@ -488,17 +517,17 @@ class ManajemenDataPenghuniMakam extends Component {
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button color="info" onClick={() => this.toggle(row.row)} className="mr-1">Lihat</Button>)
+                            Cell: row => (<Button outline color="info" onClick={() => this.toggle(row.row)} className="mr-1">Lihat</Button>)
                           },
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>)
+                            Cell: row => (<Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>)
                           },
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>)
+                            Cell: row => (<Button outline color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>)
                           },
                         ]}
                       />
