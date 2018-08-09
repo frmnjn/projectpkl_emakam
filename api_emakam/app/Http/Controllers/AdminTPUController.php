@@ -65,7 +65,7 @@ class AdminTPUController extends Controller{
 		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
 		->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
 		->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
-		->select('penghuni_makam.*', 'makam.*')
+		->select('penghuni_makam.*', 'makam.*','tpu.*')
 		->where('role_tpu.id_user','=',$id_user)
 		->get();
 		return response()->json($view);

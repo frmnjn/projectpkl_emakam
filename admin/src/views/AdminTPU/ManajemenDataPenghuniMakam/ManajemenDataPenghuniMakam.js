@@ -34,7 +34,8 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import ReactTable from "react-table";
 import { RingLoader } from 'react-spinners';
-
+import GoogleMapReact from 'google-map-react';
+import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-table/react-table.css'
 
@@ -52,6 +53,8 @@ class ManajemenDataPenghuniMakam extends Component {
 
       startDate: moment(),
       isLoaded: false,
+      lng:112.613468,
+      lat:-7.952229,
       list: [],
       makam: [],
       nama: "",
@@ -59,6 +62,7 @@ class ManajemenDataPenghuniMakam extends Component {
       tanggal_wafat: '',
       status: "",
       id_makam: "",
+      kode_makam: "",
       nama_ahli_waris: "",
       alamat_ahli_waris: "",
       nik_ahli_waris: "",
@@ -70,6 +74,7 @@ class ManajemenDataPenghuniMakam extends Component {
       activetanggal_wafat: '',
       activestatus: "",
       activeid_makam: "",
+      activekode_makam: "",
       splittanggalwafat: '',
       activenama_ahli_waris: "",
       activealamat_ahli_waris: "",
@@ -85,6 +90,7 @@ class ManajemenDataPenghuniMakam extends Component {
     this.togglelargeclose = this.togglelargeclose.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
     this.toggleclose = this.toggleclose.bind(this);
+    this.toggleLocation = this.toggleLocation.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.fetchall = this.fetchall.bind(this);
 
@@ -255,6 +261,12 @@ class ManajemenDataPenghuniMakam extends Component {
     alert("Data user dengan id " + this.state.activeid_penghuni_makam + " berhasil di hapus!");
   }
 
+  toggleLocation(){
+    this.setState({
+      location: !this.state.location,
+    })
+  }
+
   render() {
     if (!this.state.isLoaded) {
       return (<div style={{ display: 'flex', justifyContent: 'center', margin: 100 }}>
@@ -299,9 +311,9 @@ class ManajemenDataPenghuniMakam extends Component {
                           <br />
                           <label>Status</label>
                           <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
-                            <option value='2'>Pending</option>
-                            <option value='0'>Declined</option>
-                            <option value='1'>Accepted</option>
+                            <option value='Diperpanjang'>Diperpanjang</option>
+                            <option value='Expired'>Expired</option>
+                            <option value='Ditimpa'>Ditimpa</option>
                           </Input>
                           <label>Pilih Nomor Makam (ID Makam)</label>
                           <Input type="select" className="form-control" name="id_makam" placeholder="dropdown" onChange={this.handleChange}>
@@ -372,9 +384,9 @@ class ManajemenDataPenghuniMakam extends Component {
                           {/* <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat}></input> */}
                           <label>Status</label>
                           <Input type="select" className="form-control" name="activestatus" onChange={this.handleChange} defaultValue={this.state.activestatus}>
-                            <option value='2'>Pending</option>
-                            <option value='0'>Declined</option>
-                            <option value='1'>Accepted</option>
+                            <option value='Diperpanjang'>Diperpanjang</option>
+                            <option value='Expired'>Expired</option>
+                            <option value='Ditimpa'>Ditimpa</option>
                           </Input>
                           <label>Pilih Nomor Makam (ID Makam)</label>
                           <Input type="select" className="form-control" name="id_makam" placeholder="dropdown" onChange={this.handleChange}>
@@ -407,17 +419,44 @@ class ManajemenDataPenghuniMakam extends Component {
                         filterable
                         columns={[
                           {
-                            Header: 'Name',
+                            Header: 'Nama',
                             show: false,
                             accessor: 'id_penghuni_makam' // String-based value accessors!
                           },
                           {
-                            Header: 'Name',
+                            Header: 'Alamat Ahli Waris',
+                            show: false,
+                            accessor: 'alamat_ahli_waris' // String-based value accessors!
+                          },
+                          {
+                            Header: 'NIK Ahli Waris',
+                            show: false,
+                            accessor: 'nik_ahli_waris' // String-based value accessors!
+                          },
+                          {
+                            Header: 'NIK Ahli Waris',
+                            show: false,
+                            accessor: 'kontak_ahli_waris' // String-based value accessors!
+                          },
+                          {
+                            Header: 'Nama',
                             accessor: 'nama' // String-based value accessors!
                           },
                           {
                             Header: 'Alamat Terakhir',
                             accessor: 'alamat_terakhir' // String-based value accessors!
+                          },
+                          {
+                            Header: 'TPU',
+                            accessor: 'nama_tpu' // String-based value accessors!
+                          },
+                          {
+                            Header: 'Kode Makam',
+                            accessor: 'kode_makam' // String-based value accessors!
+                          },
+                          {
+                            Header: 'Ahli Waris',
+                            accessor: 'nama_ahli_waris' // String-based value accessors!
                           },
                           {
                             Header: 'Tanggal Wafat',
@@ -428,24 +467,23 @@ class ManajemenDataPenghuniMakam extends Component {
                             accessor: 'status' // String-based value accessors!
                           },
                           {
-                            Header: 'Makam',
-                            accessor: 'id_makam' // String-based value accessors!
-                          },
-                          {
-                            Header: 'Ahli Waris',
-                            accessor: 'nama_ahli_waris' // String-based value accessors!
-                          },
-                          {
-                            Header: 'Alamat',
-                            accessor: 'alamat_ahli_waris' // String-based value accessors!
-                          },
-                          {
-                            Header: 'NIK',
-                            accessor: 'nik_ahli_waris' // String-based value accessors!
-                          },
-                          {
-                            Header: 'Kontak',
-                            accessor: 'kontak_ahli_waris' // String-based value accessors!
+                            Header: '',
+                            accessor: 'id_blok', // String-based value accessors!
+                            filterable: false,
+                            Cell: row => (
+                              <div>
+                                <Row>
+                                  &emsp;
+                                  <Button onClick={this.toggleLocation} outline color="primary"><i className="cui-location-pin icons text-left"></i> </Button>
+                                  &emsp;
+
+                                <Col col="1" xl className="">
+                                  </Col>
+                                  <Col col="1" xl className="">
+                                  </Col>
+                                </Row>
+                              </div>
+                            )
                           },
                           {
                             Header: '',
@@ -470,6 +508,37 @@ class ManajemenDataPenghuniMakam extends Component {
                 </Card>
               </Col>
             </Row>
+            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+              className={'modal-large ' + this.props.className}>
+              <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
+              <ModalBody>
+                <div >
+                  <Row>
+                    <Col style={{ height: '50vh' }}>
+                      <Map
+                        google={this.props.google} zoom={14}
+                        initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
+                        zoom={18}
+                        style={{ width: '95%' }}
+                      >
+
+                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={this.onMarkerClick}
+                          name={'Current location'} />
+
+                        <InfoWindow onClose={this.onInfoWindowClose}>
+                          <div>
+                            <h1>Lalala</h1>
+                          </div>
+                        </InfoWindow>
+                      </Map>
+                    </Col>
+                  </Row>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={this.toggleLocation}>Tutup</Button>
+              </ModalFooter>
+            </Modal>
           </div>
         );
       } else if (sessionStorage.getItem('login_session') == "0") {
@@ -488,5 +557,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 }
 
-
-export default ManajemenDataPenghuniMakam;
+export default GoogleApiWrapper({
+  apiKey: ('AIzaSyDTUAyUGbuCXiRX6ywsz4ZIAf_jDPPRwUM')
+})(ManajemenDataPenghuniMakam)
+//export default ManajemenDataPenghuniMakam;

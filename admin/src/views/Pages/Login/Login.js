@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import usersData from '../../../views/Users/UsersData';
 import { RingLoader } from 'react-spinners';
+const center = {
+  marginLeft: '45%'
+};
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -72,7 +75,7 @@ class Login extends Component {
 
   load() {
     return (
-      <div className='sweet-loading'>
+      <div style={center} className='sweet-loading'>
         <RingLoader
           color={'#123abc'}
         />
@@ -101,7 +104,7 @@ class Login extends Component {
                     <input type="password" className="form-control" name="password" onChange={this.handleChange} value={this.state.activepassword}></input>
                     <br /><input type="submit" className="form-control btn btn-success" Value="Submit"></input>
                   </form>
-                      {this.state.isLoaded ? this.load() : this.nothing()}
+                    {this.state.isLoaded ? this.load() : this.nothing()}
                 </CardBody>
               </Card>
             </Col>
