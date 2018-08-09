@@ -68,6 +68,7 @@ class tpu extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.mapClicked = this.mapClicked.bind(this);
+    this.toggleLocation = this.toggleLocation.bind(this);
 
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
@@ -248,6 +249,12 @@ class tpu extends Component {
     });
   }
 
+  toggleLocation(){
+    this.setState({
+      location: !this.state.location,
+    })
+  }
+
 
 
 
@@ -265,6 +272,39 @@ class tpu extends Component {
       if (sessionStorage.getItem('login_session') == 0) {
         return (
           <div className="animated fadeIn">
+
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                                  className={'modal-large ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
+                              <ModalBody>
+                              <div >
+                                  <Row>
+                                    <Col style={{height:'50vh'}}>
+                                      <Map 
+                                        google={this.props.google} zoom={14}
+                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
+                                        zoom={18}     
+                                        style={{width:'95%'}}                                  
+                                      >
+
+                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                                                name={'Current location'} />
+
+                                        <InfoWindow onClose={this.onInfoWindowClose}>
+                                            <div>
+                                              <h1>Lalala</h1>
+                                            </div>
+                                        </InfoWindow>
+                                      </Map>
+                                    </Col>
+                                  </Row>
+                              </div>
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="secondary" onClick=''>Tutup</Button>
+                              </ModalFooter>
+                            </Modal>
+
             <Modal isOpen={this.state.edit} toggle={this.toggleEditclose}
               className={'modal-sm ' + this.props.className}>
               <ModalHeader toggle={this.toggleEditclose}>edit</ModalHeader>
@@ -425,7 +465,7 @@ class tpu extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick='' block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
                                   <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
