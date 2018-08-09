@@ -302,9 +302,9 @@ class ManajemenDataPenghuniMakam extends Component {
                       <ModalBody>
                         <form className="form-group" onSubmit={this.handleSubmitCreate}>
                           <label>Nama Penghuni Makam</label>
-                          <input type="text" className="form-control" name="nama" placeholder="nama" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="nama" placeholder="Nama Penghuni" onChange={this.handleChange}></input>
                           <label>Alamat Terakhir</label>
-                          <input type="text" className="form-control" name="alamat_terakhir" placeholder="Jl.abc" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
                           <br />
                           <label>Tanggal Wafat</label>
                           <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} />
@@ -316,7 +316,7 @@ class ManajemenDataPenghuniMakam extends Component {
                             <option value='Ditimpa'>Ditimpa</option>
                           </Input>
                           <label>Pilih Nomor Makam (ID Makam)</label>
-                          <Input type="select" className="form-control" name="id_makam" placeholder="dropdown" onChange={this.handleChange}>
+                          <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
                             {this.state.makam.map((items) => {
                               return (
                                 <option value={items.id_makam}>{items.kode_makam}</option>
@@ -325,13 +325,13 @@ class ManajemenDataPenghuniMakam extends Component {
                             )}
                           </Input>
                           <label>Nama Ahli Waris</label>
-                          <input type="text" className="form-control" name="nama_ahli_waris" placeholder="nama_ahli_waris" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="nama_ahli_waris" placeholder="Nama Ahli Waris" onChange={this.handleChange}></input>
                           <label>Alamat Ahli Waris</label>
-                          <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="jl.abc" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="Alamat Ahli Waris" onChange={this.handleChange}></input>
                           <label>NIK Ahli Waris</label>
-                          <input type="text" className="form-control" name="nik_ahli_waris" placeholder="1111111" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="nik_ahli_waris" placeholder="NIK Ahli Waris" onChange={this.handleChange}></input>
                           <label>Kontak Ahli Waris</label>
-                          <input type="text" className="form-control" name="kontak_ahli_waris" placeholder="+6219238719238" onChange={this.handleChange}></input>
+                          <input type="text" className="form-control" name="kontak_ahli_waris" placeholder="Kontak Ahli Waris" onChange={this.handleChange}></input>
                           <input type="submit" className="form-control btn btn-primary" value="Submit"></input>
                         </form>
                       </ModalBody>
