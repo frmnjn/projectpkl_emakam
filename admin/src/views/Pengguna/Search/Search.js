@@ -245,31 +245,18 @@ class Search extends Component {
                 <br/>
                 <ReactTable
                   data={this.state.showitems}
+                  resolveData={data => data.map(row => row)}
                   defaultPageSize={10}
-                  columns={[
-                    {accessor:'nama',show:false},
+                  columns={[                    
                     {accessor:'nomor_makam',show:false},
                     {accessor:'nama_ahli_waris',show:false},
-                    {accessor:'nik_ahli_waris',show:false},
-                    {
-                      Header: 'Informasi Makam',
-                      accessor: 'id_blok', // String-based value accessors!
-                      Cell: row => (
-                        <div>
-                          <div>Nomor : <strong>{row.row.nomor_makam}</strong></div>
-                          <span>Blok |</span> {row.row.id_blok}
-                        </div>
-                      )
-                    },
+                    {accessor:'nik_ahli_waris',show:false},                    
                     {
                       Header: 'Penghuni Makam',
-                      accessor: 'tanggal_wafat', // String-based value accessors!
+                      accessor: 'nama', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <div><strong>{row.row.nama}</strong></div>
-                          <div className="small text-muted">
-                            <span>Tgl Wafat |</span> {row.row.tanggal_wafat}
-                          </div>
+                          <div><strong>{row.row.nama}</strong></div>                          
                         </div>
                       )
                     },
@@ -278,31 +265,53 @@ class Search extends Component {
                       accessor: 'alamat_terakhir', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          {row.row.alamat_terakhir}
+                          <div>{row.row.alamat_terakhir}</div>                          
                         </div>
                       )
                     },
                     {
-                      Header: 'Ahli Waris',
-                      accessor: 'kontak_ahli_waris', // String-based value accessors!
-                      Cell: row => (
+                      Header: 'Nama TPU',
+                      show: false,
+                      accessor: 'nama_tpu', // String-based value accessors!
+                      Cell: row => (                       
                         <div>
-                          <div><strong>{row.row.nama_ahli_waris}</strong></div>
-                        <div className="small text-muted">
-                          <span>Nik |</span> {row.row.nik_ahli_waris}
-                        </div>
-                        <div className="small text-muted">
-                          <span>Kontak |</span> {row.row.kontak_ahli_waris}
-                        </div>
+                          {row.row.nama_tpu}
                         </div>
                       )
                     },
                     {
-                      Header: 'Alamat',
-                      accessor: 'alamat_ahli_waris', // String-based value accessors!
+                      Header: 'Kode Makam',
+                      accessor: 'kode_makam', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <div>{row.row.alamat_ahli_waris}</div>
+                          <div><strong>{row.row.kode_makam}</strong></div>                        
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Nama Ahli Waris',
+                      accessor: 'nama_ahli_waris', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <div>{row.row.nama_ahli_waris}</div>
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Tanggal Wafat',
+                      accessor: 'tanggal_wafat', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <div>{row.row.tanggal_wafat}</div>
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Status',
+                      accessor: 'status', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <div>{row.row.status}</div>
                         </div>
                       )
                     },
