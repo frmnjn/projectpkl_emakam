@@ -23,6 +23,9 @@ Route::middleware('cors')->post('login', 'AuthController@login');
 Route::middleware('cors')->post('signin', 'AuthController@signin');
 Route::middleware('cors')->post('hash', 'AuthController@hash');
 
+//change password
+Route::middleware('cors')->post('change_password', 'AuthController@change_password');
+
 //user
 Route::middleware('cors')->get('user/view', 'AdminPusatController@view');
 Route::middleware('cors')->post('create_user', 'AdminPusatController@create_user');

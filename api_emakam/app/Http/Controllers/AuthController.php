@@ -33,6 +33,34 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
+    function change_password(Request $request){
+        $oldpassword = $request->input('oldpassword');
+        $newpassword = $request->input('newpassword');
+        try {
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['token_expired'], $e->getStatusCode());
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['token_invalid'], $e->getStatusCode());
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['token_absent'], $e->getStatusCode());
+        }
+
+        if (Hash::check($oldpassword, $user->password)) {
+            $changepassword_status = User::findOrFail($user->id_user);
+            $changepassword_status->update(['password' => Hash::make($request->input('newpassword'))]);
+            if($changepassword_status){
+                return response()->json(['msg' => 'change password success','success' => true,'role' => $user->role]);
+            } else {
+                return response()->json(['msg' => 'change password failed','success' => false]);
+            }
+        } else {
+            return response()->json(['msg' => 'password doesnt match','success' => false]);
+        }
+    }
+
     public function signin(Request $request)
     {
         $credentials = [
@@ -73,25 +101,25 @@ class AuthController extends Controller
         if($user[0]->role == 1){
             $role_tpu = Role_tpu::where('id_user','=',$user[0]->id_user)->select('id_user')->get();
             $resp = [
-            [
-                'msg'=>'Login Berhasil !',
-                'success' => true, 
-                'token'=> $token,
-                'username' => $user[0]->username,
-                'role' => $user[0]->role,
-                'id_user' => $role_tpu[0]->id_user,
-                
-            ]
-        ];
+                [
+                    'msg'=>'Login Berhasil !',
+                    'success' => true, 
+                    'token'=> $token,
+                    'username' => $user[0]->username,
+                    'role' => $user[0]->role,
+                    'id_user' => $role_tpu[0]->id_user,
+
+                ]
+            ];
         } else {
             $resp = [
-            [
-                'msg'=>'Login Berhasil !',
-                'success' => true, 
-                'token'=> $token,
-                'role' => $user[0]->role
-            ]
-        ];
+                [
+                    'msg'=>'Login Berhasil !',
+                    'success' => true, 
+                    'token'=> $token,
+                    'role' => $user[0]->role
+                ]
+            ];
         }
 
         

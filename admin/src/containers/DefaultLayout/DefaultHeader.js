@@ -23,6 +23,10 @@ class DefaultHeader extends Component {
     // </Switch>
   }
 
+  change_password() {
+    <Redirect to="/ChangePassword" />
+  }
+
   render() {
 
     // eslint-disable-next-line
@@ -47,6 +51,7 @@ class DefaultHeader extends Component {
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
               {/* <DropdownItem href="#/users/1" ><i className="fa fa-user"></i> Profile</DropdownItem> */}
               {/* <DropdownItem onClick={() => this.logout()}><i className="fa fa-lock"></i> Logout</DropdownItem> */}
+              <DropdownItem><i className="fa fa-lock"></i> <a href="#/ChangePassword" onClick={() => this.change_password()}>Change Password</a></DropdownItem>
               <DropdownItem><i className="fa fa-lock"></i> <a href="/" onClick={() => this.logout()}>Log Out</a></DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

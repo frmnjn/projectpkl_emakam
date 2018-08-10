@@ -54,11 +54,17 @@ const ManajemenTPU = Loadable({
   loading: Loading,
 });
 
+const ChangePassword = Loadable({
+  loader: () => import('./views/Pengguna/ChangePassword/ChangePassword'),
+  loading: Loading,
+});
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
+  { path: '/ChangePassword', exact: true, name: 'Change Password', component: ChangePassword  },
   { path: '/Search', exact: true, name: 'Search', component: Search  },
   { path: '/ManajemenPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },
   { path: '/ManajemenMakam', exact: true, name: 'Manajemen Makam', component: ManajemenMakam  },
