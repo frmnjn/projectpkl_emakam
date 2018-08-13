@@ -67,6 +67,11 @@ Route::middleware('cors')->post('blok/create', 'AdminTPUController@create_blok')
 Route::middleware('cors')->put('blok/edit/{id}', 'AdminTPUController@edit_blok');
 Route::middleware('cors')->delete('blok/delete/{id}', 'AdminTPUController@delete_blok');
 
+//polygon
+Route::middleware('cors')->get('polygon/view', 'AdminTPUController@view_polygon');
+Route::middleware('cors')->post('polygon/create', 'AdminTPUController@create_polygon');
+Route::middleware('cors')->delete('polygon/delete/{id}', 'AdminTPUController@delete_polygon');
+
 
 //PENGGUNA
 //Search

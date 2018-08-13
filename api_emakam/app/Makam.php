@@ -8,7 +8,7 @@ class Makam extends Model
 {
     public $timestamps=false;
     public $table='makam';
-    protected $fillable = ['id_blok','nomor_makam','kode_makam'];
+    protected $fillable = ['id_blok','nomor_makam','kode_makam','lat','lng'];
     protected $primaryKey = 'id_makam';
 
     //

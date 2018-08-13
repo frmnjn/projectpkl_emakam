@@ -66,6 +66,7 @@ class Makam extends Component {
     this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.toggleLocation = this.toggleLocation.bind(this);
+    this.toggleLocationClose = this.toggleLocationClose.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchmakam = this.fetchmakam.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -87,8 +88,8 @@ class Makam extends Component {
       penghuni:[],
 
 
-      lng:112.613468,
-      lat:-7.952229,
+      lng:null,
+      lat:null,
       idmakamaktif:null,
       nomoraktif:null,
       blokaktif:null,
@@ -160,7 +161,9 @@ class Makam extends Component {
       body: JSON.stringify({
         id_blok: this.state.blokaktif,
         nomor_makam: this.state.nomoraktif,
-        kode_makam: this.state.kodeaktif+'-'+this.state.nomoraktif
+        kode_makam: this.state.kodeaktif+'-'+this.state.nomoraktif,
+        lat:this.state.lat,
+        lng:this.state.lng
       })
     }).then(
       this.fetchmakam
@@ -183,6 +186,8 @@ class Makam extends Component {
         id_blok: this.state.blokaktif,
         nomor_makam: this.state.nomoraktif,
         kode_makam: this.state.kodeaktif+'-'+this.state.nomoraktif,
+        lat:this.state.lat,
+        lng:this.state.lng,
       })
     }).then(
       this.fetchmakam
@@ -296,7 +301,10 @@ class Makam extends Component {
       edit: !this.state.edit,
       idmakamaktif:items.id_makam,
       nomoraktif:items.nomor_makam,
+      kodeaktif:items.kode_blok,
       blokaktif:items.id_blok,
+      lng:items.lng,
+      lat:items.lat,
     });
   }
 
@@ -308,11 +316,21 @@ class Makam extends Component {
 
   toggleCreate() {
     this.setState({
+      lng:'112.613468',
+      lat:'-7.952229',
       create: !this.state.create,
     });
   }
 
-  toggleLocation(){
+  toggleLocation(items){
+    this.setState({      
+      location: !this.state.location,
+      lng:items.lng,
+      lat:items.lat,
+    })
+  }
+
+  toggleLocationClose(){
     this.setState({
       location: !this.state.location,
     })
@@ -495,7 +513,7 @@ class Makam extends Component {
                               </ModalFooter>
                             </Modal>
 
-                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocationClose}
                                   className={'modal-large ' + this.props.className}>
                               <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
                               <ModalBody>
@@ -543,6 +561,8 @@ class Makam extends Component {
                       columns={[
                         {accessor:'id_makam',show:false},
                         {accessor:'kode_blok',show:false},
+                        {accessor:'lat',show:false},
+                        {accessor:'lng',show:false},
                         {
                           Header: 'Nomor Makam',
                           accessor: 'nomor_makam' // String-based value accessors!
@@ -579,7 +599,7 @@ class Makam extends Component {
                             <div>
                               <Row>
                                 &emsp;
-                                <Button onClick={this.toggleLocation}   outline color="primary"><i className="cui-location-pin icons text-left"></i> </Button>
+                                <Button onClick={()=>this.toggleLocation(row.row)}   outline color="primary"><i className="cui-location-pin icons text-left"></i> </Button>
                                 &emsp;
                                 <Button onClick={()=>this.toggleEdit(row.row)}    outline color="success"><i className="cui-pencil icons text-left"></i> </Button>
                                 &emsp;

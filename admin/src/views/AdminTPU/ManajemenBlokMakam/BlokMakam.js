@@ -62,13 +62,17 @@ class BlokMakam extends Component {
     this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.toggleLocation = this.toggleLocation.bind(this);
+    this.toggleLocationClose = this.toggleLocationClose.bind(this);
+
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchblok = this.fetchblok.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.fetchtpu = this.fetchtpu.bind(this);
+    this.fetchpolygon = this.fetchpolygon.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
     this.mapClicked = this.mapClicked.bind(this);
+    this.viewpolygon = this.viewpolygon.bind(this);
 
     this.state = {
       dropdownOpen: false,
@@ -79,7 +83,17 @@ class BlokMakam extends Component {
       blok: [],
       tpu_role:[],
       tpu:[],
-      polygon:[],
+      polygon:[
+        // {lat:-7.956273, lng:112.613289},
+        // {lat:-7.954637, lng:112.611814},
+        // {lat:-7.949469, lng:112.609006},
+        // {lat:-7.947670, lng:112.613490},
+        // {lat:-7.955008, lng:112.620526},
+        // {lat:-7.956426, lng:112.617328}
+      ],
+      newpolygon:[],
+
+      dummy:[],
 
 
       activename: null,
@@ -87,8 +101,8 @@ class BlokMakam extends Component {
       activesupplier: null,
 
 
-      lng:112.613468,
-      lat:-7.952229,
+      lng:112.61316118043442,
+      lat:-7.952687231547793,
       idtpuaktif:null,
       idblokaktif: null,
       nomoraktif: null,
@@ -105,10 +119,12 @@ class BlokMakam extends Component {
   }
 
   componentDidMount() {
-
     this.fetchblok()
     this.fetchtpu()    
+    this.fetchpolygon()
+
   }
+
   fetchtpu(){
     fetch('http://localhost:8000/api/tpu/view_byUser?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => response.json())
@@ -120,8 +136,8 @@ class BlokMakam extends Component {
         },
       )
   }
+
   fetchblok() {
-    
     fetch("http://localhost:8000/api/blok/view?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
@@ -136,7 +152,66 @@ class BlokMakam extends Component {
     )
   }
 
+  fetchpolygon() {
+    fetch('http://localhost:8000/api/polygon/view?token='+sessionStorage.getItem('token'))
+      .then(response => response.json())
+      .then(
+        (result) => {
+          this.setState({
+            dummy: result
+          });
+        },
+      )
+  }
+
+  viewpolygon(id_blok){
+    var raw=this.state.dummy
+
+    raw = raw.filter(function(item){
+      return item.id_blok.toString().search(id_blok.toString())!== -1
+    })
+
+    var data=[]
+
+    raw.map((items)=>{
+      data.push({lat:parseFloat(items.lat),lng:parseFloat(items.lng)})
+    })
+
+    console.log(data)
+    return data
+  }
+
+  createpolygon(items) {
+
+    fetch('http://localhost:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_blok: this.state.idblokaktif,
+        lat: items.lat,
+        lng: items.lng,
+      })
+    })
+  }
+
+  detelepolygon() {
+
+    fetch('http://localhost:8000/api/polygon/delete/'+this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
+      method: 'DELETE',
+    })
+  }
+
   handleEdit() {
+
+      this.detelepolygon()
+
+      this.state.newpolygon.map((items) => {
+        this.createpolygon(items)
+      })
+    
 
     fetch('http://localhost:8000/api/blok/edit/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
@@ -149,7 +224,8 @@ class BlokMakam extends Component {
         id_tpu: this.state.idtpuaktif,
       })
     }).then(
-      this.fetchblok
+      this.fetchblok,
+      this.fetchpolygon
     ).then(
       this.setState({
         edit: !this.state.edit
@@ -170,7 +246,25 @@ class BlokMakam extends Component {
         kode_blok: this.state.kodetpuaktif+'-'+this.state.kodeaktif,
 
       })
-    }).then(
+    }).then(response => response.json())
+    .then(
+      (result) => {
+        this.state.newpolygon.map((items) => {
+          fetch('http://localhost:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id_blok: result.id_blok,
+              lat: items.lat,
+              lng: items.lng,
+            })
+          })
+        })
+      },
+    ).then(
       this.fetchblok
     ).then(
       this.setState({
@@ -194,7 +288,7 @@ class BlokMakam extends Component {
 
   mapClicked(mapProps, map, event) {
     this.setState({
-      polygon:this.state.polygon.concat({lat:event.latLng.lat(),lng:event.latLng.lng()}),
+      newpolygon:this.state.newpolygon.concat({lat:event.latLng.lat(),lng:event.latLng.lng()}),
       lat:event.latLng.lat(),
       lng:event.latLng.lng()
     })
@@ -241,7 +335,9 @@ class BlokMakam extends Component {
   toggleEdit(items) {
     var blok=items.kode_blok.split('-')
     this.setState({
+      newpolygon: [],
       edit: !this.state.edit,
+      kodetpuaktif:items.kode_tpu,
       idblokaktif: items.id_blok,
       idtpuaktif: items.id_tpu,
       kodeaktif: blok[1],
@@ -257,11 +353,20 @@ class BlokMakam extends Component {
 
   toggleCreate() {
     this.setState({
+      newpolygon: [],
       create: !this.state.create,
     });
   }
   
-  toggleLocation(){
+  toggleLocation(items){
+    var data=this.viewpolygon(items.id_blok)
+    this.setState({
+      polygon: data,
+      location: !this.state.location,
+    })
+  }
+
+  toggleLocationClose(){
     this.setState({
       location: !this.state.location,
     })
@@ -323,7 +428,7 @@ class BlokMakam extends Component {
                                         >
 
                                          <Polygon
-                                          paths={this.state.polygon}
+                                          paths={this.state.newpolygon}
                                           strokeColor="#0000FF"
                                           strokeOpacity={0.8}
                                           strokeWeight={2}
@@ -390,7 +495,7 @@ class BlokMakam extends Component {
                                         >
 
                                          <Polygon
-                                          paths={this.state.polygon}
+                                          paths={this.state.newpolygon}
                                           strokeColor="#0000FF"
                                           strokeOpacity={0.8}
                                           strokeWeight={2}
@@ -426,7 +531,7 @@ class BlokMakam extends Component {
                     <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
                   </ModalFooter>
                 </Modal>
-                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocationClose}
                                   className={'modal-large ' + this.props.className}>
                               <ModalHeader toggle={this.toggleLocation}>Poligon Blok Makam</ModalHeader>
                               <ModalBody>
@@ -434,21 +539,14 @@ class BlokMakam extends Component {
                                   <Row>
                                     <Col style={{height:'50vh'}}>
                                       <Map 
-                                        google={this.props.google} zoom={14}
+                                        google={this.props.google} 
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={15}     
+                                        zoom={18}     
                                         style={{width:'95%'}}                                  
                                       >
 
                                         <Polygon
-                                          paths={[
-                                            {lat:-7.956273, lng:112.613289},
-                                            {lat:-7.954637, lng:112.611814},
-                                            {lat:-7.949469, lng:112.609006},
-                                            {lat:-7.947670, lng:112.613490},
-                                            {lat:-7.955008, lng:112.620526},
-                                            {lat:-7.956426, lng:112.617328}
-                                          ]}
+                                          paths={this.state.polygon}
                                           strokeColor="#0000FF"
                                           strokeOpacity={0.8}
                                           strokeWeight={2}
@@ -466,7 +564,7 @@ class BlokMakam extends Component {
                               </div>
                               </ModalBody>
                               <ModalFooter>
-                                <Button color="secondary" onClick={this.toggleLocation}>Tutup</Button>
+                                <Button color="secondary" onClick={this.toggleLocationClose}>Tutup</Button>
                               </ModalFooter>
                             </Modal>
                 <Card>
@@ -486,6 +584,7 @@ class BlokMakam extends Component {
                       columns={[
                         { accessor: 'id_blok', show: false },
                         { accessor: 'id_tpu', show: false },
+                        { accessor: 'kode_tpu', show: false },
                         {
                           Header: 'Kode Blok',
                           accessor: 'kode_blok' // String-based value accessors!
@@ -507,7 +606,7 @@ class BlokMakam extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                  <Button onClick={()=>this.toggleLocation(row.row)} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
                                   <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>

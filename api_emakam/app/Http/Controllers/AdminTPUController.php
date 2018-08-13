@@ -11,6 +11,8 @@ use App\Tpu;
 use App\Penghuni_makam;
 use App\Makam;
 use App\Blok_Makam;
+use App\Polygon;
+
 
 
 class AdminTPUController extends Controller{
@@ -159,13 +161,11 @@ class AdminTPUController extends Controller{
 		$penghuni_makam = DB::table('penghuni_makam')
 		->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
 		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
-            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
 		->where('blok_makam.id_blok','=',$id)
 		->delete();
 
 		$makam = DB::table('makam')
 		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
-            // ->select('blok_makam.*', 'tpu.*')
 		->where('blok_makam.id_blok','=',$id)
 		->delete();
 
@@ -188,7 +188,29 @@ class AdminTPUController extends Controller{
 		->get();
         return response()->json($view);
         
-    }
+	}
+	
+	function view_polygon(Request $request){
+		$table = DB::table('polygon')
+			->select('polygon.*')
+			->get();
+		return $table;
+	}
+
+	public function create_polygon(Request $request)
+	{
+		return Polygon::create($request->all());
+	}
+
+	public function delete_polygon(Request $request, $id)
+	{
+		$table = DB::table('polygon')
+			->where('polygon.id_blok','=',$id)
+			->delete();
+		return $table;
+	}
+	
+
 
 	
 
