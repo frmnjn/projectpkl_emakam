@@ -209,6 +209,27 @@ class AdminTPUController extends Controller{
 			->delete();
 		return $table;
 	}
+
+	function upload(Request $request){
+        $ktp_pewaris = $request->file('ktp_pewaris');
+        $surat_kematian = $request->file('surat_kematian');
+        $status1 = false; $status2 = false;
+
+        if(!empty($ktp_pewaris)) {
+        	$status1= true;
+            $path = $ktp_pewaris->store('public/files');
+        }
+        if(!empty($surat_kematian)) {
+        	$status2 = true;
+            $path = $surat_kematian->store('public/files');
+        }
+        if($status1 && $status2){
+        	return response()->json('upload sukses!');
+        } else{
+        	return response()->json('upload gagal!');
+        }
+        
+    }
 	
 
 

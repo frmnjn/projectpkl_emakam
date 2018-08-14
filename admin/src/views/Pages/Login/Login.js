@@ -58,7 +58,7 @@ class Login extends Component {
             if (this.state.temp.role == 0) {
               this.props.history.push('/ManajemenTPU')
             } else if (this.state.temp.role == 1) {
-              this.props.history.push('/ManajemenBlokMakam')
+              this.props.history.push('/RegistrasiPerijinanMakam')
             } else {
               this.props.history.push('/Search')
             }

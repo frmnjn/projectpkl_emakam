@@ -10,6 +10,11 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
+      name: 'Registrasi Perijinan',
+      url: '/RegistrasiPerijinanMakam',
+      icon: 'icon-chart',
+    },
+    {
       name: 'M. Blok Makam',
       url: '/ManajemenBlokMakam',
       icon: 'icon-chart',

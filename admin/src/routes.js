@@ -59,6 +59,11 @@ const ChangePassword = Loadable({
   loading: Loading,
 });
 
+const RegistrasiPerijinanMakam = Loadable({
+  loader: () => import('./views/AdminTPU/RegistrasiPerijinanMakam/RegistrasiPerijinanMakam'),
+  loading: Loading,
+});
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -70,6 +75,7 @@ const routes = [
   { path: '/ManajemenMakam', exact: true, name: 'Manajemen Makam', component: ManajemenMakam  },
   { path: '/ManajemenBlokMakam', exact: true, name: 'Manajemen Makam', component: ManajemenBlokMakam  },
   { path: '/ManajemenTpu', exact: true, name: 'Manajemen TPU', component: ManajemenTPU  },
+  { path: '/RegistrasiPerijinanMakam', exact: true, name: 'Registrasi Perijinan Makam', component: RegistrasiPerijinanMakam  },
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },
