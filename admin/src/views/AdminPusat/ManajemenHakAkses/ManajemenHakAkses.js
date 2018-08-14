@@ -136,7 +136,7 @@ class ManajemenHakAkses extends Component {
       this.state.activeid_user = table_constraint_user.id_user,
       this.state.activeusername = table_constraint_user.username,
       this.state.active_id_role_tpu = table_constraint_user.id_role_tpu,
-
+      alert(this.state.active_id_role_tpu);
       this.setState({
         large: !this.state.large,
       });
@@ -199,6 +199,7 @@ class ManajemenHakAkses extends Component {
   }
 
   handledelete(table_constraint_user) {
+    console.log(table_constraint_user);
     fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
@@ -330,11 +331,21 @@ class ManajemenHakAkses extends Component {
                         { accessor: 'id_user', show: false },
                         { accessor: 'id_tpu', show: false },
                         {
+                          Header: 'ID Role TPU',
+                          accessor: 'id_role_tpu', // String-based value accessors!
+                          show: false,
+                          Cell: row => (
+                            <div>
+                              {row.row.id_role_tpu}
+                            </div>
+                          )
+                        },
+                        {
                           Header: 'User',
                           accessor: 'username', // String-based value accessors!
                           Cell: row => (
                             <div>
-                              {row.row.username} | {row.row.id_user}
+                              {row.row.username}
                             </div>
                           )
                         },
@@ -343,13 +354,14 @@ class ManajemenHakAkses extends Component {
                           accessor: 'nama_tpu', // String-based value accessors!
                           Cell: row => (
                             <div>
-                              {row.row.nama_tpu} | ID {row.row.id_tpu}
+                              {row.row.nama_tpu}
                             </div>
                           )
                         },
                         {
                           Header: 'Role TPU',
                           accessor: 'role', // String-based value accessors!
+                          show: false
                         },
                         {
                           Header: 'Actions',
