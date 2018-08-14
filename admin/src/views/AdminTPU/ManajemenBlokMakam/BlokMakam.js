@@ -165,10 +165,13 @@ class BlokMakam extends Component {
   }
 
   viewpolygon(id_blok){
+    alert(id_blok)
     var raw=this.state.dummy
+    console.log(raw)
+
 
     raw = raw.filter(function(item){
-      return item.id_blok.toString().search(id_blok.toString())!== -1
+      return item.id_blok === id_blok
     })
 
     var data=[]
