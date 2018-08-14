@@ -220,7 +220,6 @@ class ManajemenDataPenghuniMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    console.log(this.state.list);
     fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {

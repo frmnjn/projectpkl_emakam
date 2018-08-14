@@ -238,6 +238,8 @@ class BlokMakam extends Component {
 
   handleCreate() {
 
+    this.detelepolygon()
+
     fetch('http://localhost:8000/api/blok/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
