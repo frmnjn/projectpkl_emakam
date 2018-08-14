@@ -238,8 +238,6 @@ class BlokMakam extends Component {
 
   handleCreate() {
 
-    this.detelepolygon()
-
     fetch('http://localhost:8000/api/blok/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
@@ -279,6 +277,8 @@ class BlokMakam extends Component {
   }
 
   handleDelete() {
+
+    this.detelepolygon();
 
     fetch('http://localhost:8000/api/blok/delete/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
