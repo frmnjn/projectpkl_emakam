@@ -41,14 +41,18 @@ class RegistrasiPerijinanMakam extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   onchange(e) {
     data.append(e.target.name, e.target.files[0]);
   }
 
-  handleSubmit() {
+  onchangeText = (e) => {
+    data.append(e.target.name, e.target.value);
+  }
+
+  handleSubmit = event =>  {
+    event.preventDefault();
     for (var value of data.values()) {
       console.log(value);
     }
@@ -57,29 +61,61 @@ class RegistrasiPerijinanMakam extends Component {
       method: 'POST',
       body: data
     }).then((response) => response.json())
-    .then((responseJson) => {
-      alert(responseJson);
-    })
+      .then((responseJson) => {
+        alert(responseJson);
+      })
 
   }
   render() {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col>
-            <div class="form-group">
-              <label for="ktp_pewaris">
-                KTP Pewaris:
+          <Col xs="12">
+            <Card>
+              <CardHeader>
+                <Row>
+                  <Col col="10" ><strong>Registrasi Perijinan Makam</strong></Col>
+                  <Col col="2" className="text-right">
+                    {/* <Button onClick={this.toggleCreate} outline color="primary">Create</Button> */}
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                {/* <hr></hr> */}
+                <Col xs="4">
+                <form onSubmit={this.handleSubmit}>
+                <div class="form-group">
+                  <label>
+                    Nama Almarhum:
+                  </label>
+                  <input type="text" onChange={this.onchangeText} class="form-control" name="nama_almarhum" placeholder="Nama Almarhum"/>
+                  <br />
+                  <label>
+                    Nama Pewaris:
+                  </label>
+                  <input type="text" onChange={this.onchangeText} class="form-control" name="nama_pewaris" placeholder="Nama Pewaris"/>
+                  <br />
+                  <label for="ktp_pewaris">
+                    KTP Pewaris:
                 <input type="file" onChange={this.onchange} class="form-control-file" name="ktp_pewaris" />
-              </label>
-              <br />
-              <label for="surat_kematian">
-                Surat Kematian:
+                  </label>
+                  <br />
+                  <label for="surat_kematian">
+                    Surat Kematian:
                 <input type="file" onChange={this.onchange} class="form-control-file" name="surat_kematian" />
-              </label>
-              <br />
-              <button type="submit" onClick={() => this.handleSubmit()}>Submit</button>
-            </div>
+                  </label>
+                  <br />
+                  <input type="submit" value="Submit"></input>
+                </div>
+                </form>
+                </Col>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+
           </Col>
         </Row>
       </div>

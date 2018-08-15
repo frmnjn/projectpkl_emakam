@@ -11,9 +11,8 @@ use App\Tpu;
 use App\Penghuni_makam;
 use App\Makam;
 use App\Blok_Makam;
+use App\Dokumen;
 use App\Polygon;
-
-
 
 class AdminTPUController extends Controller{
 	function __construct(){
@@ -186,14 +185,14 @@ class AdminTPUController extends Controller{
 		->join('role_tpu','tpu.id_tpu','=','role_tpu.id_tpu')
 		->where('role_tpu.id_user','=',$id)
 		->get();
-        return response()->json($view);
-        
+		return response()->json($view);
+
 	}
 	
 	function view_polygon(Request $request){
 		$table = DB::table('polygon')
-			->select('polygon.*')
-			->get();
+		->select('polygon.*')
+		->get();
 		return $table;
 	}
 
@@ -205,31 +204,39 @@ class AdminTPUController extends Controller{
 	public function delete_polygon(Request $request, $id)
 	{
 		$table = DB::table('polygon')
-			->where('polygon.id_blok','=',$id)
-			->delete();
+		->where('polygon.id_blok','=',$id)
+		->delete();
 		return $table;
 	}
 
 	function upload(Request $request){
-        $ktp_pewaris = $request->file('ktp_pewaris');
-        $surat_kematian = $request->file('surat_kematian');
-        $status1 = false; $status2 = false;
+		$ktp_pewaris = $request->file('ktp_pewaris');
+		$surat_kematian = $request->file('surat_kematian');
+		$status1 = false; $status2 = false;
 
-        if(!empty($ktp_pewaris)) {
-        	$status1= true;
-            $path = $ktp_pewaris->store('public/files');
-        }
-        if(!empty($surat_kematian)) {
-        	$status2 = true;
-            $path = $surat_kematian->store('public/files');
-        }
-        if($status1 && $status2){
-        	return response()->json('upload sukses!');
-        } else{
-        	return response()->json('upload gagal!');
-        }
-        
-    }
+		if(!empty($ktp_pewaris)) {
+			$status1= true;
+		}
+		if(!empty($surat_kematian)) {
+			$status2 = true;
+		}
+
+		if($status1 && $status2){
+			$path_ktp = $ktp_pewaris->store('public/files');
+			$path_kk = $surat_kematian->store('public/files');
+
+			Dokumen::create(array(
+				'nama_almarhum' => $request->input('nama_almarhum'),
+				'nama_pewaris' => $request->input('nama_pewaris'),
+				'file_ktp' => $path_ktp,
+				'file_kk' => $path_kk,
+			));
+			return response()->json('upload sukses!');
+		} else{
+			return response()->json('upload gagal!');
+		}
+
+	}
 	
 
 
