@@ -85,4 +85,5 @@ Route::middleware('cors')->get('penghuni_makam/view_search', 'PenggunaController
 Route::middleware('cors')->get('send', 'MailController@send');
 
 //Dokumen
-Route::middleware('cors')->get('dokumen/view', 'KepalaTPUController@view_dokumen');
+Route::middleware('cors')->get('dokumen/view_ktp', 'DocumentController@get_file_ktp');
+Route::middleware('cors')->get('dokumen/view_kk', 'DocumentController@get_file_kk');
