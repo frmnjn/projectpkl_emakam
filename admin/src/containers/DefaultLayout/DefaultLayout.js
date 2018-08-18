@@ -40,9 +40,8 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={
-              sessionStorage.getItem('login_session') == "0" ? 
-              navigationAdminPusat:
-                sessionStorage.getItem('login_session') == "1" ?
+              sessionStorage.getItem('login_session') == "0" ? navigationAdminPusat:
+              sessionStorage.getItem('login_session') == "1" ?
                  navigationAdminTPU:
                  navigationPengguna} {...this.props} />
             <AppSidebarFooter />
