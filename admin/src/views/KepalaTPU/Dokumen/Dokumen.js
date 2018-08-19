@@ -58,8 +58,8 @@ class Search extends Component {
     
     this.toggle = this.toggle.bind(this);
     this.toggleclose = this.toggleclose.bind(this);
-
-
+    this.modalkkclose = this.modalkkclose.bind(this);
+    this.modalktpclose = this.modalktpclose.bind(this);
 
     usersData.id = 7;
     usersData.name = 'fsgr';
@@ -86,6 +86,8 @@ class Search extends Component {
       formqty:'1',
 
       activedata:[],
+      activektp:null,
+      activekk:null,
       
     };
 
@@ -184,6 +186,31 @@ class Search extends Component {
     });
   }
 
+  modalkk(items){
+    this.setState({
+      activekk: items.file_kk.substring(6),
+      kkmodal: !this.state.kkmodal,
+    })
+  }
+
+  modalktp(items){
+    this.setState({
+      activektp: items.file_ktp.substring(6),
+      ktpmodal: !this.state.ktpmodal,
+    })
+  }
+
+  modalkkclose(){
+    this.setState({
+      kkmodal: !this.state.kkmodal,
+    });
+  }
+  modalktpclose(){
+    this.setState({
+      ktpmodal: !this.state.ktpmodal,
+    });
+  }
+
   toggleclose() {
     this.setState({
       modal: !this.state.modal,
@@ -204,30 +231,26 @@ class Search extends Component {
     }else{
     return (
       <div className="animated fadeIn">
-                  <Modal isOpen={this.state.modal} toggle={this.toggleclose}
-                    className={'modal-Large ' + this.props.className}>
+                  <Modal isOpen={this.state.modal} toggle={this.toggleclose}className={'modal-Large ' + this.props.className}>
                     <ModalHeader toggle={this.toggleclose}>Lihat Data Penghuni Makam</ModalHeader>
                     <ModalBody>
                       <form className="form-group" onSubmit=''>
                         <label>Nama Penghuni Makam</label>
                         <input type="text" className="form-control" name="activenama"  value={this.state.activedata.nama} disabled></input>
                         <label>Alamat Terakhir</label>
-                        <input type="text" className="form-control" name="activealamat_terakhir"  value={this.state.activedata.alamat_terakhir} disabled></input>
-                        <label>Tanggal Wafat</label>
-                        <input type="text" className="form-control" name="activetanggal_wafat"  value={this.state.activedata.tanggal_wafat} disabled></input>
-                        <label>Status</label>
-                        <input type="text" className="form-control" name="activestatus" value={this.state.activedata.status} disabled></input>
-                        <label>Nomor Makam</label>
-                        <input type="text" className="form-control" name="activeid_makam"  value={this.state.activedata.nomor_makam} disabled></input>
-                        <label>Nama Ahli Waris</label>
-                        <input type="text" className="form-control" name="activenama_ahli_waris" value={this.state.activedata.nama_ahli_waris} disabled></input>
-                        <label>Alamat Ahli Waris</label>
-                        <input type="text" className="form-control" name="activealamat_ahli_waris"  value={this.state.activedata.alamat_ahli_waris} disabled></input>
-                        <label>NIK Ahli Waris</label>
-                        <input type="text" className="form-control" name="activenik_ahli_waris" value={this.state.activedata.nik_ahli_waris} disabled></input>
-                        <label>Kontak Ahli Waris</label>
-                        <input type="text" className="form-control" name="activekontak_ahli_waris"  value={this.state.activedata.kontak_ahli_waris} disabled></input>
                       </form>
+                    </ModalBody>
+                  </Modal>
+                  <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
+                    <ModalHeader toggle={this.modalktpclose}>KTP</ModalHeader>
+                    <ModalBody>
+                      <img src={"http://localhost:8000"+this.state.activektp} class="img-fluid" alt="Responsive image"></img>
+                    </ModalBody>
+                  </Modal>
+                  <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
+                    <ModalHeader toggle={this.modalkkclose}>KTP</ModalHeader>
+                    <ModalBody>
+                      <img src={"http://localhost:8000"+this.state.activekk} class="img-fluid" alt="Responsive image"></img>
                     </ModalBody>
                   </Modal>
         <Row>
@@ -255,30 +278,31 @@ class Search extends Component {
                     },
                     {
                       Header: 'KTP Almarhum',
-                      accessor: 'ktp', // String-based value accessors!
+                      accessor: 'file_ktp', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">View</Button>
+                          <Button color="info" onClick={()=>this.modalktp(row.row)} className="mr-1">View</Button>
                         </div>
                       )
                     },
                     {
                       Header: 'KK Almarhum',
-                      accessor: 'kk', // String-based value accessors!
+                      accessor: 'file_kk', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">View</Button>
+                          <Button color="info" onClick={()=>this.modalkk(row.row)} className="mr-1">View</Button>
                         </div>
                       )
                     },
                     {
-                      Header: 'KK Almarhum',
-                      accessor: 'kk', // String-based value accessors!
-                      Cell: row => (
-                        <div>
-                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">View</Button>
-                        </div>
-                      )
+                      Header: 'Acceptance Kepala UPT',
+                      accessor: 'acc_kepalatpu', // String-based value accessors!
+
+                    },
+                    {
+                      Header: 'Acceptance Kepala Dinas',
+                      
+                      accessor: 'acc_kepaladinas', // String-based value accessors!
                     },
                     {
                       Header: 'Actions',
