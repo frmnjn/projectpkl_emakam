@@ -8,6 +8,6 @@ class Dokumen extends Model
 {
     public $timestamps=false;
     public $table='dokumen';
-    protected $fillable = ['nama_almarhum','nama_pewaris','file_ktp','file_kk'];
+    protected $fillable = ['nama_almarhum','nama_pewaris','file_ktp','file_kk','status','kelengkapan_dokumen'];
     protected $primaryKey = 'id';
 }

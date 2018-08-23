@@ -60,6 +60,12 @@ class Search extends Component {
     this.toggleclose = this.toggleclose.bind(this);
     this.modalkkclose = this.modalkkclose.bind(this);
     this.modalktpclose = this.modalktpclose.bind(this);
+    this.toggleproggress = this.toggleproggress.bind(this);
+    this.proggress = this.proggress.bind(this);
+
+    this.acc_dinas = this.acc_dinas.bind(this);
+    this.acc_kupt = this.acc_kupt.bind(this);
+    this.cek_kelengkapan = this.cek_kelengkapan.bind(this);
 
     usersData.id = 7;
     usersData.name = 'fsgr';
@@ -92,6 +98,65 @@ class Search extends Component {
     };
 
       
+  }
+
+  proggress(status){
+
+    return status=="Menunggu Persetujuan Kepala UPT" ? 30: 
+            status=="Menunggu Persetujuan Kepala Dinas" ? 70:
+            status=="Proses Selesai" ? 100:0
+
+  }
+
+  acc_dinas(id){
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id:id,
+        status:'Proses Selesai'
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        alert(responseJson);
+      })
+  }
+
+  acc_kupt(id){
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id:id,
+        status:'Menunggu Persetujuan Kepala Dinas'
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        alert(responseJson);
+      })
+  }
+
+  cek_kelengkapan(id){
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id:id,
+        kelengkapan_dokumen:'Lengkap'
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        alert(responseJson);
+      })
   }
 
   blokfilter =event=>{
@@ -217,6 +282,12 @@ class Search extends Component {
     });
   }
 
+  toggleproggress(){
+    this.setState({
+      modalprogress: !this.state.modalprogress,
+    });
+  }
+
 
   render() {
     // const {isLoaded, items} = this.state;
@@ -251,6 +322,11 @@ class Search extends Component {
                     <ModalHeader toggle={this.modalkkclose}>KTP</ModalHeader>
                     <ModalBody>
                       <img src={"http://localhost:8000"+this.state.activekk} class="img-fluid" alt="Responsive image"></img>
+                    </ModalBody>
+                  </Modal>
+                  <Modal isOpen={this.state.modalprogress} toggle={this.toggleproggress} className={'modal-Large ' + this.props.className}>
+                    <ModalHeader toggle={this.toggleproggress}>Progress Tracking</ModalHeader>
+                    <ModalBody>
                     </ModalBody>
                   </Modal>
         <Row>
@@ -295,21 +371,47 @@ class Search extends Component {
                       )
                     },
                     {
-                      Header: 'Acceptance Kepala UPT',
-                      accessor: 'acc_kepalatpu', // String-based value accessors!
+                      Header: 'Kelengkapan Dokumen',
+                      accessor: 'kelengkapan_dokumen', // String-based value accessors!
 
                     },
                     {
-                      Header: 'Acceptance Kepala Dinas',
-                      
-                      accessor: 'acc_kepaladinas', // String-based value accessors!
+                      Header: 'Status',
+                      accessor: 'status', // String-based value accessors!
                     },
                     {
-                      Header: 'Actions',
+                      Header: 'Track Proggression',
+                      Cell: row => (
+                        <div>
+                          <div className="text-center">{this.proggress(row.row.status)}%</div>
+                          <Progress value={this.proggress(row.row.status)} />
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Action K.Dinas',
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">Accept</Button>
+                          <Button color="info" onClick={()=>this.acc_dinas(row.row.id)} className="mr-1">Accept</Button>
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Actions K.UPT',
+                      accessor: 'status', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <Button color="info" onClick={()=>this.acc_kupt(row.row.id)} className="mr-1">Accept</Button>
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Actions Admin',
+                      accessor: 'status', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <Button color="info" onClick={()=>this.cek_kelengkapan(row.row.id)} className="mr-1">Accept</Button>
                         </div>
                       )
                     },
