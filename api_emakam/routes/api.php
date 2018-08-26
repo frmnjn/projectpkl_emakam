@@ -90,3 +90,5 @@ Route::middleware('cors')->post('dokumen/update', 'KepalaTPUController@update_do
 Route::middleware('cors')->get('dokumen/view_ktp', 'DocumentController@get_file_ktp');
 Route::middleware('cors')->get('dokumen/view_kk', 'DocumentController@get_file_kk');
 Route::middleware('cors')->get('dokumen/view_picture', 'KepalaTPUController@view_picture');
+
+Route::middleware('cors')->get('dokumen/cetak', 'DocumentController@cetak_dokumen');
