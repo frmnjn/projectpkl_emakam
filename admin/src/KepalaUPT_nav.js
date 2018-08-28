@@ -10,31 +10,10 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Registrasi Perijinan',
-      url: '/RegistrasiPerijinanMakam',
+      name: 'Dokumen',
+      url: '/Dokumen',
       icon: 'icon-chart',
-    },
-    {
-      name: 'M. Blok Makam',
-      url: '/ManajemenBlokMakam',
-      icon: 'icon-chart',
-    },
-    {
-      name: 'Manajemen Makam',
-      url: '/ManajemenMakam',
-      icon: 'icon-chart',
-    },
-    {
-      name: 'M. Penghuni Makam',
-      url: '/ManajemenPenghuniMakam',
-      icon: 'icon-chart',
-    },
-    {
-      name: 'Cari Data',
-      url: '/Search',
-      icon: 'icon-magnifier',
-    },
-    
+    },    
     // {
     //   name: 'Manajemen Hak Akses',
     //   url: '/ManajemenHakAkses',

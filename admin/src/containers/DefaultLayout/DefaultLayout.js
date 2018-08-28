@@ -17,6 +17,7 @@ import {
 // sidebar nav config
 import navigationAdminPusat from '../../AdminPusat_nav';
 import navigationAdminTPU from '../../AdminTPU_nav';
+import navigationkupt from '../../KepalaUPT_nav';
 import navigationPengguna from '../../Pengguna_nav';
 // routes config
 import routes from '../../routes';
@@ -41,9 +42,11 @@ class DefaultLayout extends Component {
             <AppSidebarForm />
             <AppSidebarNav navConfig={
               sessionStorage.getItem('login_session') == "0" ? navigationAdminPusat:
-              sessionStorage.getItem('login_session') == "1" ?
-                 navigationAdminTPU:
-                 navigationPengguna} {...this.props} />
+              sessionStorage.getItem('login_session') == "1" ? navigationAdminTPU:
+              sessionStorage.getItem('login_session') == "2" ? navigationkupt:
+              sessionStorage.getItem('login_session') == "3" ? navigationAdminTPU:
+              navigationPengguna} 
+                 {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -56,6 +59,10 @@ class DefaultLayout extends Component {
               <small class="text-muted">your role : Admin Pusat</small>:
               sessionStorage.getItem('login_session') == "1" ?
               <small class="text-muted">your role : Admin TPU</small>:
+              sessionStorage.getItem('login_session') == "2" ?
+              <small class="text-muted">your role : Kepala UPT</small>:
+              sessionStorage.getItem('login_session') == "3" ?
+              <small class="text-muted">your role : Dinas</small>:
               <small class="text-muted">your role : Guest</small>
             }
 

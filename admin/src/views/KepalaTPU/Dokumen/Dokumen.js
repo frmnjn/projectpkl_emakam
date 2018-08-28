@@ -66,6 +66,7 @@ class Search extends Component {
     this.acc_dinas = this.acc_dinas.bind(this);
     this.acc_kupt = this.acc_kupt.bind(this);
     this.cek_kelengkapan = this.cek_kelengkapan.bind(this);
+    this.rolefilter = this.rolefilter.bind(this);
 
     usersData.id = 7;
     usersData.name = 'fsgr';
@@ -200,8 +201,19 @@ class Search extends Component {
     this.setState({showitems: updatedList});
   }
 
-  componentDidMount() {
+  rolefilter(){
+    if (sessionStorage.getItem('login_session') == "2") {
+      var updateitem
+      updateitem = this.state.items
+      updateitem = updateitem.filter(function(item){
+        return item.nama_almarhum.toLowerCase().search("222") !== -1;
+      });
+      this.setState({showitems: updateitem});
+    }
+  }
 
+  componentDidMount() {
+    
     fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
@@ -215,6 +227,15 @@ class Search extends Component {
           });
         },
       )
+      
+      if (sessionStorage.getItem('login_session') == "2") {
+        var updateitem
+        updateitem = this.state.items
+        updateitem = updateitem.filter(function(item){
+          return item.nama_almarhum.toLowerCase().search("222") !== -1;
+        });
+        this.setState({showitems: updateitem});
+      }
 
     // fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
     //   .then(response => {
@@ -333,7 +354,7 @@ class Search extends Component {
           <Col>
             <Card>
               <CardHeader>
-                Manajemen Data Makam
+                Manajemen Dokumen
               </CardHeader>
               <CardBody>
                 <ReactTable
