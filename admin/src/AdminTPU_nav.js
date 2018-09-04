@@ -15,6 +15,11 @@ export default {
       icon: 'icon-chart',
     },
     {
+      name: 'Dokumen',
+      url: '/Dokumen',
+      icon: 'icon-chart',
+    },
+    {
       name: 'M. Blok Makam',
       url: '/ManajemenBlokMakam',
       icon: 'icon-chart',

@@ -27,6 +27,9 @@ class KepalaTPUController extends Controller{
         return $view;
     }
 
+    function create_dokumen(Request $request){
+		return Dokumen::create($request->all());
+    }
 
     function update_dokumen(Request $request){
         $id=$request->input('id');

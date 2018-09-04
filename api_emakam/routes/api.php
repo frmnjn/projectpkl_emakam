@@ -73,7 +73,7 @@ Route::middleware('cors')->post('polygon/create', 'AdminTPUController@create_pol
 Route::middleware('cors')->delete('polygon/delete/{id}', 'AdminTPUController@delete_polygon');
 
 //Registrasi
-Route::middleware('cors')->post('upload', 'AdminTPUController@upload');
+Route::middleware('cors')->post('dokumen/upload', 'AdminTPUController@upload');
 
 //PENGGUNA
 //Search
@@ -87,6 +87,7 @@ Route::middleware('cors')->get('send', 'MailController@send');
 //Dokumen
 Route::middleware('cors')->get('dokumen/view', 'KepalaTPUController@view_dokumen');
 Route::middleware('cors')->post('dokumen/update', 'KepalaTPUController@update_dokumen');
+Route::middleware('cors')->post('dokumen/create', 'KepalaTPUController@create_dokumen');
 Route::middleware('cors')->get('dokumen/view_ktp', 'DocumentController@get_file_ktp');
 Route::middleware('cors')->get('dokumen/view_kk', 'DocumentController@get_file_kk');
 Route::middleware('cors')->get('dokumen/view_picture', 'KepalaTPUController@view_picture');

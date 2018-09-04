@@ -210,26 +210,31 @@ class AdminTPUController extends Controller{
 	}
 
 	function upload(Request $request){
-		$ktp_pewaris = $request->file('ktp_pewaris');
-		$surat_kematian = $request->file('surat_kematian');
+		$ktp = $request->file('file_ktp');
+		$kk = $request->file('file_kk');
+		$progress= 'Menunggu Persetujuan Kepala UPT';
+		$dokumen= 'Dokumen Kurang';
 		$status1 = false; $status2 = false;
+		
 
-		if(!empty($ktp_pewaris)) {
+		if(!empty($ktp)) {
 			$status1= true;
 		}
-		if(!empty($surat_kematian)) {
+		if(!empty($kk)) {
 			$status2 = true;
 		}
 
 		if($status1 && $status2){
-			$path_ktp = $ktp_pewaris->store('public/files');
-			$path_kk = $surat_kematian->store('public/files');
+			$path_ktp = $ktp->store('public/files');
+			$path_kk = $kk->store('public/files');
 
 			Dokumen::create(array(
 				'nama_almarhum' => $request->input('nama_almarhum'),
 				'nama_pewaris' => $request->input('nama_pewaris'),
 				'file_ktp' => $path_ktp,
 				'file_kk' => $path_kk,
+				'status' => $progress ,
+				'kelengkapan_dokumen' => $dokumen,
 			));
 			return response()->json('upload sukses!');
 		} else{

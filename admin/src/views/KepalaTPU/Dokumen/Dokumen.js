@@ -66,7 +66,6 @@ class Search extends Component {
     this.acc_dinas = this.acc_dinas.bind(this);
     this.acc_kupt = this.acc_kupt.bind(this);
     this.cek_kelengkapan = this.cek_kelengkapan.bind(this);
-    this.rolefilter = this.rolefilter.bind(this);
 
     usersData.id = 7;
     usersData.name = 'fsgr';
@@ -160,58 +159,6 @@ class Search extends Component {
       })
   }
 
-  blokfilter =event=>{
-    var updatedList = this.state.items;
-    this.setState({blokfilter:false})
-    if (event.target.value!=''){
-      this.setState({
-        blokfilter:true
-      })
-      updatedList = updatedList.filter(function(item){
-        return item.id_blok.toString().search(event.target.value.toString())!== -1
-      })
-    }
-    this.setState({showitems: updatedList,itemblokfilter: updatedList});
-  }
-
-  filterList =event=>{
-    var updatedList;
-    if(this.state.blokfilter){
-      updatedList = this.state.itemblokfilter;
-    }else{
-      updatedList = this.state.items;
-    }
-    
-    if (event.target.value!=''){
-      updatedList = updatedList.filter(function(item){
-        return item.nama.toLowerCase().search(
-          event.target.value.toLowerCase())!== -1||
-          item.nama_ahli_waris.toLowerCase().search(
-            event.target.value.toLowerCase()) !== -1||
-          item.nik_ahli_waris.toString().search(
-            event.target.value.toLowerCase()) !== -1||
-          item.alamat_ahli_waris.toString().toLowerCase().search(
-            event.target.value.toLowerCase()) !== -1||
-          item.alamat_terakhir.toString().toLowerCase().search(
-            event.target.value.toLowerCase()) !== -1||
-          item.nomor_makam.toString().search(
-            event.target.value.toLowerCase()) !== -1;
-      });
-    }
-    this.setState({showitems: updatedList});
-  }
-
-  rolefilter(){
-    if (sessionStorage.getItem('login_session') == "2") {
-      var updateitem
-      updateitem = this.state.items
-      updateitem = updateitem.filter(function(item){
-        return item.nama_almarhum.toLowerCase().search("222") !== -1;
-      });
-      this.setState({showitems: updateitem});
-    }
-  }
-
   componentDidMount() {
     
     fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token'))
@@ -220,23 +167,36 @@ class Search extends Component {
       })
       .then(
         (json) => {
+
+          if (sessionStorage.getItem('login_session') == "2") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala upt") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else if (sessionStorage.getItem('login_session') == "3") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala dinas") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else {
+            this.setState({showitems: json});
+          }
+
+
+
           this.setState({
             isLoaded: true,
             items: json,
-            showitems: json
           });
         },
       )
       
-      if (sessionStorage.getItem('login_session') == "2") {
-        var updateitem
-        updateitem = this.state.items
-        updateitem = updateitem.filter(function(item){
-          return item.nama_almarhum.toLowerCase().search("222") !== -1;
-        });
-        this.setState({showitems: updateitem});
-      }
-
     // fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
     //   .then(response => {
     //     return response.json()
@@ -336,13 +296,13 @@ class Search extends Component {
                   <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
                     <ModalHeader toggle={this.modalktpclose}>KTP</ModalHeader>
                     <ModalBody>
-                      <img src={"http://localhost:8000"+this.state.activektp} class="img-fluid" alt="Responsive image"></img>
+                      <img src={"http://localhost:8000/storage"+this.state.activektp} class="img-fluid" alt="Responsive image"></img>
                     </ModalBody>
                   </Modal>
                   <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
                     <ModalHeader toggle={this.modalkkclose}>KTP</ModalHeader>
                     <ModalBody>
-                      <img src={"http://localhost:8000"+this.state.activekk} class="img-fluid" alt="Responsive image"></img>
+                      <img src={"http://localhost:8000/storage"+this.state.activekk} class="img-fluid" alt="Responsive image"></img>
                     </ModalBody>
                   </Modal>
                   <Modal isOpen={this.state.modalprogress} toggle={this.toggleproggress} className={'modal-Large ' + this.props.className}>
@@ -410,8 +370,9 @@ class Search extends Component {
                       )
                     },
                     {
-                      Header: 'Action K.Dinas',
+                      Header: 'Actions',
                       accessor: 'status', // String-based value accessors!
+                      show:sessionStorage.getItem('login_session') == "3" ? true:false,
                       Cell: row => (
                         <div>
                           <Button color="info" onClick={()=>this.acc_dinas(row.row.id)} className="mr-1">Accept</Button>
@@ -419,8 +380,9 @@ class Search extends Component {
                       )
                     },
                     {
-                      Header: 'Actions K.UPT',
+                      Header: 'Actions',
                       accessor: 'status', // String-based value accessors!
+                      show:sessionStorage.getItem('login_session') == "2" ? true:false,
                       Cell: row => (
                         <div>
                           <Button color="info" onClick={()=>this.acc_kupt(row.row.id)} className="mr-1">Accept</Button>
@@ -428,7 +390,8 @@ class Search extends Component {
                       )
                     },
                     {
-                      Header: 'Actions Admin',
+                      Header: 'Actions',
+                      show:sessionStorage.getItem('login_session') == "1" ? true:false,
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>

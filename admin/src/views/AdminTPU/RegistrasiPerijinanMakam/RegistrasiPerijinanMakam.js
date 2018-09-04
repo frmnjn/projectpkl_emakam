@@ -149,9 +149,9 @@ class RegistrasiPerijinanMakam extends Component {
     data.append('nama_almarhum',this.state.nama);
     data.append('nama_pewaris',this.state.nama_ahli_waris);
 
-    for (var value of data.values()) {
-      console.log(value);
-    }
+    // for (var value of data.values()) {
+    //   console.log(value);
+    // }
 
     fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
@@ -172,13 +172,15 @@ class RegistrasiPerijinanMakam extends Component {
       })
     })
 
-    fetch('http://localhost:8000/api/upload?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        alert(responseJson);
-      })
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          alert(responseJson);
+        })
+
+    
 
   }
   render() {
@@ -238,14 +240,14 @@ class RegistrasiPerijinanMakam extends Component {
                       <label>Kontak Ahli Waris</label>
                       <input type="text" className="form-control" name="kontak_ahli_waris" placeholder="Kontak Ahli Waris" onChange={this.handleChange}></input>
                       {/* <input type="submit" className="form-control btn btn-primary" value="Submit"></input> */}
-                      <label for="ktp_pewaris">
+                      <label for="file_ktp">
                         KTP Pewaris:
-                <input type="file" onChange={this.onchange} class="form-control-file" name="ktp_pewaris" />
+                <input type="file" onChange={this.onchange} class="form-control-file" name="file_ktp" />
                       </label>
                       <br />
-                      <label for="surat_kematian">
-                        Surat Kematian:
-                <input type="file" onChange={this.onchange} class="form-control-file" name="surat_kematian" />
+                      <label for="file_kk">
+                        KK Pewaris:
+                <input type="file" onChange={this.onchange} class="form-control-file" name="file_kk" />
                       </label>
                       <br />
                       <input type="submit" value="Submit"></input>
