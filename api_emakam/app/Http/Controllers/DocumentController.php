@@ -40,6 +40,7 @@ class DocumentController extends Controller{
 		$doc   = $phpWord->loadTemplate($file);
 		$doc -> setValue('nama_ahli_waris',$request->input('nama_ahli_waris'));
 		$doc -> setValue('tanggal',$request->input('tanggal'));
+		$doc -> setValue('tanggal_sekarang',$request->input('tanggal_sekarang'));
 		$doc -> setValue('nik_ahli_waris',$request->input('nik_ahli_waris'));
 		$doc -> setValue('kontak_ahli_waris',$request->input('kontak_ahli_waris'));
 		$doc -> saveAs($hasil);

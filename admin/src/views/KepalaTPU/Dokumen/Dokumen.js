@@ -62,7 +62,9 @@ class Search extends Component {
     this.modalktpclose = this.modalktpclose.bind(this);
     this.toggleproggress = this.toggleproggress.bind(this);
     this.proggress = this.proggress.bind(this);
-
+    
+    this.update_status = this.update_status.bind(this);
+    this.acc_kec = this.acc_kec.bind(this);
     this.acc_dinas = this.acc_dinas.bind(this);
     this.acc_kupt = this.acc_kupt.bind(this);
     this.cek_kelengkapan = this.cek_kelengkapan.bind(this);
@@ -102,13 +104,14 @@ class Search extends Component {
 
   proggress(status){
 
-    return status=="Menunggu Persetujuan Kepala UPT" ? 30: 
-            status=="Menunggu Persetujuan Kepala Dinas" ? 70:
+    return status=="Menunggu Persetujuan Kepala UPT" ? 25: 
+            status=="Menunggu Persetujuan Kepala Dinas" ? 50:
+            status=="Menunggu Persetujuan Kepala Kecamatan" ? 75:
             status=="Proses Selesai" ? 100:0
 
   }
 
-  acc_dinas(id){
+  update_status(id,newstatus){
     fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
@@ -117,29 +120,27 @@ class Search extends Component {
       },
       body: JSON.stringify({
         id:id,
-        status:'Proses Selesai'
+        status: newstatus
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson);
+        alert('responseJson');
       })
   }
 
+  acc_kec(id){
+    var status = 'Proses Selesai'
+    this.update_status(id,status)
+  }
+
+  acc_dinas(id){
+    var status = 'Menunggu Persetujuan Kepala Kecamatan'
+    this.update_status(id,status)
+  }
+
   acc_kupt(id){
-    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id:id,
-        status:'Menunggu Persetujuan Kepala Dinas'
-      })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        alert(responseJson);
-      })
+    var status = 'Menunggu Persetujuan Kepala Dinas'
+    this.update_status(id,status)
   }
 
   cek_kelengkapan(id){
@@ -184,7 +185,15 @@ class Search extends Component {
               item.status.toLowerCase().search("menunggu persetujuan kepala dinas") !== -1;
             });
             this.setState({showitems: updateitem});
-          }else {
+          }else if (sessionStorage.getItem('login_session') == "4") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala kecamatan") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else{
             this.setState({showitems: json});
           }
 
@@ -366,6 +375,16 @@ class Search extends Component {
                         <div>
                           <div className="text-center">{this.proggress(row.row.status)}%</div>
                           <Progress value={this.proggress(row.row.status)} />
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Actions kp.kecamatan',
+                      accessor: 'status', // String-based value accessors!
+                      show:sessionStorage.getItem('login_session') == "4" ? true:false,
+                      Cell: row => (
+                        <div>
+                          <Button color="info" onClick={()=>this.acc_kec(row.row.id)} className="mr-1">Accept</Button>
                         </div>
                       )
                     },

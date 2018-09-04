@@ -59,7 +59,7 @@ class Login extends Component {
               this.props.history.push('/ManajemenTPU')
             } else if (this.state.temp.role == 1) {
               this.props.history.push('/RegistrasiPerijinanMakam')
-            } else if (this.state.temp.role == 2||this.state.temp.role == 3) {
+            } else if (this.state.temp.role == 2||this.state.temp.role == 3||this.state.temp.role == 4) {
               this.props.history.push('/Dokumen')
             } else {
               this.props.history.push('/Search')

@@ -45,6 +45,7 @@ class DefaultLayout extends Component {
               sessionStorage.getItem('login_session') == "1" ? navigationAdminTPU:
               sessionStorage.getItem('login_session') == "2" ? navigationkupt:
               sessionStorage.getItem('login_session') == "3" ? navigationkupt:
+              sessionStorage.getItem('login_session') == "4" ? navigationkupt:
               navigationPengguna} 
                  {...this.props} />
             <AppSidebarFooter />
