@@ -17,6 +17,7 @@ import {
 // sidebar nav config
 import navigationAdminPusat from '../../AdminPusat_nav';
 import navigationAdminTPU from '../../AdminTPU_nav';
+import navigationAdminKecamatan from '../../AdminKecamatan_nav';
 import navigationkupt from '../../KepalaUPT_nav';
 import navigationPengguna from '../../Pengguna_nav';
 // routes config
@@ -46,6 +47,7 @@ class DefaultLayout extends Component {
               sessionStorage.getItem('login_session') == "2" ? navigationkupt:
               sessionStorage.getItem('login_session') == "3" ? navigationkupt:
               sessionStorage.getItem('login_session') == "4" ? navigationkupt:
+              sessionStorage.getItem('login_session') == "5" ? navigationAdminKecamatan:
               navigationPengguna} 
                  {...this.props} />
             <AppSidebarFooter />
@@ -64,7 +66,12 @@ class DefaultLayout extends Component {
               <small class="text-muted">your role : Kepala UPT</small>:
               sessionStorage.getItem('login_session') == "3" ?
               <small class="text-muted">your role : Dinas</small>:
+              sessionStorage.getItem('login_session') == "4" ?
+              <small class="text-muted">your role : Kecamatan</small>:
+              sessionStorage.getItem('login_session') == "5" ?
+              <small class="text-muted">your role : Admin Kecamatan</small>:
               <small class="text-muted">your role : Guest</small>
+
             }
 
 

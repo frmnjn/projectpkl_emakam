@@ -61,6 +61,8 @@ class Login extends Component {
               this.props.history.push('/RegistrasiPerijinanMakam')
             } else if (this.state.temp.role == 2||this.state.temp.role == 3||this.state.temp.role == 4) {
               this.props.history.push('/Dokumen')
+            } else if (this.state.temp.role == 5) {
+              this.props.history.push('/CetakDokumen')
             } else {
               this.props.history.push('/Search')
             }

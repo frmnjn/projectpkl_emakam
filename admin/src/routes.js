@@ -69,12 +69,18 @@ const Dokumen = Loadable({
   loading: Loading,
 });
 
+const CetakDokumen = Loadable({
+  loader: () => import('./views/AdminKecamatan/CetakDokumen/CetakDokumen'),
+  loading: Loading,
+});
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/Dokumen', exact: true, name: 'Dokumen', component: Dokumen  },
+  { path: '/CetakDokumen', exact: true, name: 'Dokumen', component: CetakDokumen  },
   { path: '/ChangePassword', exact: true, name: 'Change Password', component: ChangePassword  },
   { path: '/Search', exact: true, name: 'Search', component: Search  },
   { path: '/ManajemenPenghuniMakam', exact: true, name: 'Penghuni Makam', component: ManajemenPenghuniMakam  },

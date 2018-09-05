@@ -88,8 +88,7 @@ Route::middleware('cors')->get('send', 'MailController@send');
 Route::middleware('cors')->get('dokumen/view', 'KepalaTPUController@view_dokumen');
 Route::middleware('cors')->post('dokumen/update', 'KepalaTPUController@update_dokumen');
 Route::middleware('cors')->post('dokumen/create', 'KepalaTPUController@create_dokumen');
-Route::middleware('cors')->get('dokumen/view_ktp', 'DocumentController@get_file_ktp');
-Route::middleware('cors')->get('dokumen/view_kk', 'DocumentController@get_file_kk');
 Route::middleware('cors')->get('dokumen/view_picture', 'KepalaTPUController@view_picture');
 
-Route::middleware('cors')->get('dokumen/cetak', 'DocumentController@cetak_dokumen');
+Route::middleware('cors')->get('dokumen/view_siap_cetak', 'AdminKecamatan@view_dokumen_siap_cetak');
+Route::middleware('cors')->get('dokumen/cetak', 'AdminKecamatan@cetak_dokumen');

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import axios from 'axios';
-import usersData from '../../../views/Users/UsersData';
 import {
   Badge,
   Button,
@@ -42,14 +40,6 @@ import { RingLoader } from 'react-spinners';
 
 import 'react-table/react-table.css'
 
-const brandPrimary = getStyle('--primary')
-const brandSuccess = getStyle('--success')
-const brandInfo = getStyle('--info')
-const brandWarning = getStyle('--warning')
-const brandDanger = getStyle('--danger')
-
-
-
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -68,12 +58,6 @@ class Search extends Component {
     this.acc_dinas = this.acc_dinas.bind(this);
     this.acc_kupt = this.acc_kupt.bind(this);
     this.cek_kelengkapan = this.cek_kelengkapan.bind(this);
-
-    usersData.id = 7;
-    usersData.name = 'fsgr';
-    usersData.username = 'fsgr';
-    usersData.password = 'fsgr';
-
 
     this.state = {
       dropdownOpen: false,
