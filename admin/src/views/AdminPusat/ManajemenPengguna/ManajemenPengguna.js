@@ -250,12 +250,13 @@ class ManajemenPengguna extends Component {
                         <div class="form-group">
                           <label>Role</label>
                           <select class="form-control" onChange={this.handleChangeOption}>
+                            <option>Pilih Role</option>
                             <option value="0">Admin Pusat</option>
                             <option value="1">Admin TPU</option>
-                            <option value="2">Admin Kelurahan</option>
-                            <option value="3">Kepala UPT Pemakaman</option>
-                            <option value="4">Kepala Dinas Perkim</option>
-                            <option value="5">Camat</option>
+                            <option value="2">Kepala UPT</option>
+                            <option value="3">Kepala Dinas</option>
+                            <option value="4">Kepala Kecamatan</option>
+                            <option value="5">Admin Kecamatan</option>
                             <option value="6">Pengguna</option>
                           </select>
                         </div>
