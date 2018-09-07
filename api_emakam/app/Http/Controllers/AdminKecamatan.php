@@ -51,6 +51,10 @@ class AdminKecamatan extends Controller{
 	}
 
 	function cetak_pdf(Request $request){
+		$nama_ahli_waris = $request->input('nama_ahli_waris');
+		$tanggal_wafat = $request->input('tanggal_wafat');
+		$nik_ahli_waris = $request->input('nama_ahli_waris');
+		$kontak_ahli_waris = $request->input('kontak_ahli_waris');
 
 		$source   = storage_path('app\hello.html');
 
@@ -62,11 +66,12 @@ class AdminKecamatan extends Controller{
 <h3><center>MASA PRAKTIK KERJA LAPANGAN (PKL)</center></h3>
 <br>
 <br>
+<div style='margin-left:80px'>
 <p>Yang bertanda tangan di bawah ini:</p>
-<p>Nama Ahli Waris	:   </p>
-<p>Tanggal Wafat		:   </p>
-<p>NIK Ahli Waris		:   </p>
-<p>Kontak Ahli Waris	:   </p>
+<p>Nama Ahli Waris	:  ${nama_ahli_waris} </p>
+<p>Tanggal Wafat		:   ${tanggal_wafat}</p>
+<p>NIK Ahli Waris		:   ${nik_ahli_waris}</p>
+<p>Kontak Ahli Waris	:   ${kontak_ahli_waris}</p>
 <br>
 <p>Dengan ini mengajukan permohonan untuk perizinan makam.</p>
 <table style='width:100%'>
@@ -101,6 +106,7 @@ class AdminKecamatan extends Controller{
 	<td>&nbsp;</td>
   </tr>
 </table>
+</div>
 <p>	</p>
 		");
 
