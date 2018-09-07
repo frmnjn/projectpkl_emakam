@@ -192,6 +192,7 @@ class AdminTPUController extends Controller{
 	function view_polygon(Request $request){
 		$table = DB::table('polygon')
 		->select('polygon.*')
+		->orderBy('id_polygon', 'asc')
 		->get();
 		return $table;
 	}

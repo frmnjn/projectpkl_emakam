@@ -18,7 +18,7 @@ class AuthController extends Controller
         //$user = DB::table('users')->where($request->all())->get();
         $user = DB::table('user')
         ->join('role_tpu', 'user.id_user', '=', 'role_tpu.id_user')
-        ->where($request->all())->select('user.*', 'role_tpu.*')
+        ->where($request->all())->select('user.*')
         ->get();
 
         return response()->json($user);
@@ -111,7 +111,8 @@ class AuthController extends Controller
                     'success' => true, 
                     'token'=> $token,
                     'username' => $user[0]->username,
-                    'role' => $user[0]->role
+                    'role' => $user[0]->role,
+                    'id_user' => $user[0]->id_user,
                 ]
             ];
         }

@@ -48,8 +48,7 @@ class Login extends Component {
             this.setState({
               temp: items
             })
-
-            usersData.role = this.state.temp.role;
+            // usersData.role = this.state.temp.role;
             sessionStorage.setItem('login_session', this.state.temp.role);
             sessionStorage.setItem('token', this.state.temp.token);
             sessionStorage.setItem('id_user', this.state.temp.id_user);

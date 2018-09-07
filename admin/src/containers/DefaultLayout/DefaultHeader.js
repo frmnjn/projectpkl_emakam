@@ -16,12 +16,68 @@ const defaultProps = {};
 
 class DefaultHeader extends Component {
 
+
+  constructor(props) {
+    super(props);
+    this.fetchnotif = this.fetchnotif.bind(this);
+    this.notifread = this.notifread.bind(this);
+    this.state = {
+      datanotif:null,
+      newnotif:null,
+    }
+    
+  }
+
   logout() {
     sessionStorage.clear();
     // <Switch>
     // <Redirect to="/" />
     // </Switch>
   }
+
+  componentDidMount(){
+    this.fetchnotif()
+  }
+
+  fetchnotif(){
+    fetch('http://localhost:8000/api/notifikasi/view?token='+ sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+      .then(response => {
+        return response.json()
+      })
+      .then(
+        (result) => {
+          console.log(result)
+          this.setState({
+            datanotif: result,
+            newnotif: false
+          },()=>{
+            console.log(this.state.datanotif)
+          });
+        },
+      )
+  }
+
+  notifread(){
+    fetch('http://localhost:8000/api/notifikasi/update?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'), {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+      })
+    }).then(
+      this.fetchnotif
+    )
+    alert(this.state.newnotif)
+  }
+
+  bellnotif=()=>{
+    if(this.state.newnotif){
+      return(<span class="badge badge-pill badge-danger">New</span>)
+    }
+  }
+
 
   change_password() {
     <Redirect to="/ChangePassword" />
@@ -31,6 +87,7 @@ class DefaultHeader extends Component {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    // alert(sessionStorage.getItem('id_user'))
 
     return (
       <React.Fragment>
@@ -42,7 +99,44 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="ml-auto" navbar>
-
+          <AppHeaderDropdown direction="down">
+            <DropdownToggle nav >
+              <i class="icon-bell"></i>
+              {this.bellnotif()}
+              {/* {this.state.newnotif?<span class="badge badge-pill badge-danger">New</span>:null} */}
+            </DropdownToggle>
+            <DropdownMenu right style={{ right: 'auto' }}>
+              <DropdownItem header tag="div" className="text-center"><strong>Notifications</strong></DropdownItem>
+              {
+                this.state.datanotif != null ? 
+                this.state.datanotif.map((items)=>{    
+                  if (items.status==="Unread"){
+                    if(!this.state.newnotif){
+                      this.setState({
+                        newnotif: true
+                      })
+                    }
+                    return(
+                      <DropdownItem>
+                        <i className="icons-danger cui-user-follow"></i><a>{items.content}</a>
+                        <span class="badge badge-pill badge-danger">New</span>
+                      </DropdownItem>
+                    )
+                  }else{
+                    return(
+                      <DropdownItem>
+                        <i className="icons-danger cui-user-follow"></i><a>{items.content}</a>
+                      </DropdownItem>
+                    ) 
+                  }
+                
+                }):<DropdownItem>
+                  <a class="small text-muted">No notifiaction</a>
+                </DropdownItem>
+              }
+            <DropdownItem footer tag="div" className="text-center" onClick={this.notifread}><strong class="small text-muted">Mark all as read</strong></DropdownItem>
+            </DropdownMenu>
+          </AppHeaderDropdown>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
               <img src={'assets/img/avatars/placeholder.png'} className="img-avatar" alt="admin@bootstrapmaster.com" />
