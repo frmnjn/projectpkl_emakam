@@ -92,6 +92,8 @@ Route::middleware('cors')->get('dokumen/view_picture', 'KepalaTPUController@view
 
 Route::middleware('cors')->get('dokumen/view_siap_cetak', 'AdminKecamatan@view_dokumen_siap_cetak');
 Route::middleware('cors')->get('dokumen/cetak', 'AdminKecamatan@cetak_dokumen');
+Route::middleware('cors')->get('dokumen/pdf', 'AdminKecamatan@cetak_pdf');
+
 
 //Notifikasi
 Route::middleware('cors')->get('notifikasi/view', 'NotifikasiController@view_notifikasi');
