@@ -36,25 +36,77 @@ class DefaultHeader extends Component {
   }
 
   componentDidMount(){
-    this.fetchnotif()
-  }
+    // this.fetchnotif()
 
-  fetchnotif(){
-    fetch('http://localhost:8000/api/notifikasi/view?token='+ sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
       .then(
-        (result) => {
-          console.log(result)
+        (json) => {
+
+          if (sessionStorage.getItem('login_session') == "2") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala upt") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else if (sessionStorage.getItem('login_session') == "3") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala dinas") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else if (sessionStorage.getItem('login_session') == "4") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("menunggu persetujuan kepala kecamatan") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else if (sessionStorage.getItem('login_session') == "5") {
+            var updateitem;
+            updateitem = json;
+            updateitem = updateitem.filter(function(item){
+              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+              item.status.toLowerCase().search("Proses Selesai") !== -1;
+            });
+            this.setState({showitems: updateitem});
+          }else{
+            this.setState({showitems: json});
+          }
+
           this.setState({
-            datanotif: result,
-            newnotif: false
-          },()=>{
-            console.log(this.state.datanotif)
+            isLoaded: true,
+            items: json,
           });
         },
       )
+  }
+
+  fetchnotif(){
+    // fetch('http://localhost:8000/api/notifikasi/view?token='+ sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    //   .then(response => {
+    //     return response.json()
+    //   })
+    //   .then(
+    //     (result) => {
+    //       console.log(result)
+    //       this.setState({
+    //         datanotif: result,
+    //         newnotif: false
+    //       },()=>{
+    //         console.log(this.state.datanotif)
+    //       });
+    //     },
+    //   )
+
+    
   }
 
   notifread(){
@@ -108,24 +160,24 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Notifications</strong></DropdownItem>
               {
-                this.state.datanotif != null ? 
-                this.state.datanotif.map((items)=>{    
+                this.state.showitems != null ? 
+                this.state.showitems.map((items)=>{    
                   if (items.status==="Unread"){
-                    if(!this.state.newnotif){
-                      this.setState({
-                        newnotif: true
-                      })
-                    }
+                    // if(!this.state.newnotif){
+                    //   this.setState({
+                    //     newnotif: true
+                    //   })
+                    // }
                     return(
                       <DropdownItem>
-                        <i className="icons-danger cui-user-follow"></i><a>{items.content}</a>
+                        <i className="icons-danger cui-user-follow"></i><a>A new Entry need to be confirmed</a>
                         <span class="badge badge-pill badge-danger">New</span>
                       </DropdownItem>
                     )
                   }else{
                     return(
                       <DropdownItem>
-                        <i className="icons-danger cui-user-follow"></i><a>{items.content}</a>
+                        <i className="icons-danger cui-user-follow"></i><a>A new Entry need to be confirmed</a>
                       </DropdownItem>
                     ) 
                   }

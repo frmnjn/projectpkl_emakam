@@ -181,8 +181,6 @@ class Search extends Component {
             this.setState({showitems: json});
           }
 
-
-
           this.setState({
             isLoaded: true,
             items: json,
