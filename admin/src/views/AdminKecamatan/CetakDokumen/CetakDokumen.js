@@ -85,11 +85,8 @@ class CetakDokumen extends Component {
   }
 
   cetak_dokumen(row) {
-    const url = 'http://localhost:8000/api/dokumen/pdf?token=' + sessionStorage.getItem('token') +
-      '&nama_ahli_waris=' + row.nama_pewaris +
-      '&tanggal_wafat=' + row.tanggal_wafat +
-      '&nik_ahli_waris=' + row.nik_ahli_waris +
-      '&kontak_ahli_waris=' + row.kontak_ahli_waris;
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token') +
+      '&nama_almarhum=' + row.nama_almarhum;
     window.location = url;
   }
 

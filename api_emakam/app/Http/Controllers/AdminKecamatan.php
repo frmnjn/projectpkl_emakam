@@ -49,7 +49,7 @@ class AdminKecamatan extends Controller{
 		return response()->download($hasil)->deleteFileAfterSend(true);
 	}
 
-	function cetak_surat_permohonan(){
+	function cetak_surat_permohonan(Request $request){
 		Fpdf::AddPage();
 		Fpdf::Image( storage_path('app/logo_kota_malang.png'),30,8,20,25);
 		Fpdf::Cell(45);
@@ -163,11 +163,11 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(70,5,'Pembina Tingkat I',0,1,'C');
 		Fpdf::Cell(107);
 		Fpdf::Cell(70,5,'NIP.19640919 199003 2 005',0,1,'C');
-
-		Fpdf::Output('D','Surat_Permohonan.pdf');
+		$nama_almarhum = $request->input('nama_almarhum');
+		Fpdf::Output('D',"Surat_Permohonan_$nama_almarhum.pdf");
 	}
 
-	function cetak_surat_perizinan(){
+	function cetak_surat_perizinan(Request $request){
 		Fpdf::AddPage();
 		Fpdf::Image(storage_path('app/logo_kota_malang.png'),30,4.5,20,25);
 		Fpdf::Cell(45);
@@ -330,7 +330,8 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(4,4.5,'3. ',0,0,'L');
 		Fpdf::Cell(84,4.5,'Kepala Satuan Polisi Pamong Praja Kota Malang.',0,1,'L');
 
-		Fpdf::Output('D','Surat_Izin.pdf');
+		$nama_almarhum = $request->input('nama_almarhum');
+		Fpdf::Output('D',"Surat_Izin_$nama_almarhum.pdf");
 	}
 
 }

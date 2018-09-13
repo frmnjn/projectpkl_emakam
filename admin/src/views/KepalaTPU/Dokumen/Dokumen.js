@@ -117,9 +117,12 @@ class Search extends Component {
     this.update_status(id,status)
   }
 
-  acc_dinas(id){
-    var status = 'Menunggu Persetujuan Kepala Kecamatan'
-    this.update_status(id,status)
+  acc_dinas(row){
+    var status = 'Menunggu Persetujuan Kepala Kecamatan';
+    this.update_status(row.id,status);
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token') +
+                '&nama_almarhum='+row.nama_almarhum;
+    window.location = url;
   }
 
   acc_kupt(id){
@@ -376,7 +379,7 @@ class Search extends Component {
                       show:sessionStorage.getItem('login_session') == "3" ? true:false,
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.acc_dinas(row.row.id)} className="mr-1">Accept</Button>
+                          <Button color="info" onClick={()=>this.acc_dinas(row.row)} className="mr-1">Keluarkan Surat Permohonan</Button>
                         </div>
                       )
                     },
