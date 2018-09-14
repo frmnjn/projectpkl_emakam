@@ -16,7 +16,6 @@ const defaultProps = {};
 
 class DefaultHeader extends Component {
 
-
   constructor(props) {
     super(props);
     this.fetchnotif = this.fetchnotif.bind(this);
@@ -24,6 +23,7 @@ class DefaultHeader extends Component {
     this.state = {
       datanotif:null,
       newnotif:null,
+      showitems:[]
     }
     
   }
@@ -153,7 +153,7 @@ class DefaultHeader extends Component {
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav >
-              <i class="icon-bell"></i>
+              <i class="icon-bell"></i><Badge pill color="danger">{this.state.showitems.length}</Badge>
               {this.bellnotif()}
               {/* {this.state.newnotif?<span class="badge badge-pill badge-danger">New</span>:null} */}
             </DropdownToggle>
@@ -161,7 +161,7 @@ class DefaultHeader extends Component {
               <DropdownItem header tag="div" className="text-center"><strong>Notifications</strong></DropdownItem>
               {
                 this.state.showitems != null ? 
-                this.state.showitems.map((items)=>{    
+                this.state.showitems.map((items)=>{   
                   if (items.status==="Unread"){
                     // if(!this.state.newnotif){
                     //   this.setState({
@@ -177,7 +177,7 @@ class DefaultHeader extends Component {
                   }else{
                     return(
                       <DropdownItem>
-                        <i className="icons-danger cui-user-follow"></i><a>A new Entry need to be confirmed</a>
+                        <i className="icons-danger cui-user-follow"></i><a>Berkas perlu dikonfirmasi atas nama {items.nama_almarhum}</a>
                       </DropdownItem>
                     ) 
                   }
