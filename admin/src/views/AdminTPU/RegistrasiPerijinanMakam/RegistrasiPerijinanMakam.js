@@ -45,7 +45,6 @@ class RegistrasiPerijinanMakam extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.makam_items = this.makam_items.bind(this);
-    this.handleDate = this.handleDate.bind(this);
 
     this.state = {
       startDate: moment(),
@@ -57,13 +56,20 @@ class RegistrasiPerijinanMakam extends Component {
       nama: "",
       alamat_terakhir: "",
       tanggal_wafat: '',
+      jenis_kelamin:'',
+      tanggal_lahir_alm: '',
+      tanggal_pemakaman: '',
+      tgllhr_ahli_waris: '',
       status: "",
+      pekerjaan:'',
       id_makam: "",
       kode_makam: "",
       nama_ahli_waris: "",
       alamat_ahli_waris: "",
       nik_ahli_waris: "",
+      email:'',
       kontak_ahli_waris: "",
+      
       activetanggal_wafat: '',
 
       selectvalue: null,
@@ -113,8 +119,11 @@ class RegistrasiPerijinanMakam extends Component {
       },
       body: JSON.stringify({
         nama: this.state.nama,
+        jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
         tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
+        tanggal_lahir_alm: this.state.tanggal_lahir_alm.format().substring(0, 10),
+        tanggal_pemakaman: this.state.tanggal_pemakaman.format().substring(0, 10),
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -133,10 +142,27 @@ class RegistrasiPerijinanMakam extends Component {
     alert("Data penghuni baru berhasil ditambahkan!");
   }
 
-  handleDate(date) {
+  handleDateWafat =(date)=> {
     this.setState({
-      activetanggal_wafat: date,
       tanggal_wafat: date,
+    });
+  }
+
+  handleDateLhrAlm =(date)=> {
+    this.setState({
+      tanggal_lahir_alm: date,
+    });
+  }
+
+  handleDatePemakaman =(date)=> {
+    this.setState({
+      tanggal_pemakaman: date,
+    });
+  }
+
+  handleDateLhrWrs =(date)=> {
+    this.setState({
+      tgllhr_ahli_waris: date,
     });
   }
 
@@ -148,6 +174,11 @@ class RegistrasiPerijinanMakam extends Component {
     event.preventDefault();
     data.append('nama_almarhum',this.state.nama);
     data.append('nama_pewaris',this.state.nama_ahli_waris);
+    data.append('email',this.state.email);
+    data.append('tgllhr_ahli_waris',this.state.tgllhr_ahli_waris.format().substring(0, 10));
+    data.append('pekerjaan_ahli_waris',this.state.pekerjaan);
+
+
 
     // for (var value of data.values()) {
     //   console.log(value);
@@ -161,8 +192,11 @@ class RegistrasiPerijinanMakam extends Component {
       },
       body: JSON.stringify({
         nama: this.state.nama,
+        jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
         tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
+        tanggal_lahir_alm: this.state.tanggal_lahir_alm.format().substring(0, 10),
+        tanggal_pemakaman: this.state.tanggal_pemakaman.format().substring(0, 10),
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -179,9 +213,6 @@ class RegistrasiPerijinanMakam extends Component {
         .then((responseJson) => {
           alert(responseJson);
         })
-
-    
-
   }
   render() {
     return (
@@ -195,62 +226,94 @@ class RegistrasiPerijinanMakam extends Component {
                   <Col col="2" className="text-right">
                     {/* <Button onClick={this.toggleCreate} outline color="primary">Create</Button> */}
                   </Col>
-                </Row>
-              </CardHeader>
+                </Row></CardHeader>
+              
               <CardBody>
                 {/* <hr></hr> */}
                 <Col xs="4">
                   <form onSubmit={this.handleSubmit}>
                     <div class="form-group">
+                      <a4><strong>Form Ahli Waris</strong></a4><br/><br/>
+                        <label>Nama</label>
+                        <input type="text" className="form-control" name="nama_ahli_waris" placeholder="Nama Ahli Waris" onChange={this.handleChange}></input>
+                        <label>Alamat</label>
+                        <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="Alamat Ahli Waris" onChange={this.handleChange}></input>
+                        <label>Tanggal Lahir</label>
+                        <DatePicker name="tgllhr_ahli_waris" dateFormat="DD/MM/YYYY" selected={this.state.tgllhr_ahli_waris} onChange={this.handleDateLhrWrs} />
+                        <label>NIK</label>
+                        <input type="text" className="form-control" name="nik_ahli_waris" placeholder="NIK Ahli Waris" onChange={this.handleChange}></input>
+                        <label>Kontak</label>
+                        <input type="text" className="form-control" name="kontak_ahli_waris" placeholder="Kontak Ahli Waris" onChange={this.handleChange}></input>
+                        {/* <input type="submit" className="form-control btn btn-primary" value="Submit"></input> */}                      
+                        <label>Email</label>
+                        <input type="text" className="form-control" name="email" placeholder="Email Ahli Waris" onChange={this.handleChange}></input>
+                        {/* <input type="submit" className="form-control btn btn-primary" value="Submit"></input> */}                      
+                        <label>Pekerjaan</label>
+                        <input type="text" className="form-control" name="pekerjaan" placeholder="Pekerjaan Ahli Waris" onChange={this.handleChange}></input>
 
-                      <label>Nama Penghuni Makam</label>
-                      <input type="text" className="form-control" name="nama" placeholder="Nama Penghuni" onChange={this.handleChange}></input>
-                      <label>Alamat Terakhir</label>
-                      <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
-                      <br />
-                      <label>Tanggal Wafat</label>
-                      <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} />
-                      <br />
-                      <label>Status</label>
-                      <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
-                        <option value='Diperpanjang'>Diperpanjang</option>
-                        <option value='Expired'>Expired</option>
-                        <option value='Ditimpa'>Ditimpa</option>
-                      </Input>
-                      <label>Pilih Nomor Makam (Kode Makam)</label>
-                      <Select
-                        value={this.state.selectedOption}
-                        onChange={this.handleSelect}
-                        options={this.makam_items()}
-                      />
-                      {/* <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
-                            {this.state.makam.map((items) => {
-                              return (
-                                <option value={items.id_makam}>{items.kode_makam}</option>
-                              )
-                            }
-                            )}
-                          </Input> */}
-                      <label>Nama Ahli Waris</label>
-                      <input type="text" className="form-control" name="nama_ahli_waris" placeholder="Nama Ahli Waris" onChange={this.handleChange}></input>
-                      <label>Alamat Ahli Waris</label>
-                      <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="Alamat Ahli Waris" onChange={this.handleChange}></input>
-                      <label>NIK Ahli Waris</label>
-                      <input type="text" className="form-control" name="nik_ahli_waris" placeholder="NIK Ahli Waris" onChange={this.handleChange}></input>
-                      <label>Kontak Ahli Waris</label>
-                      <input type="text" className="form-control" name="kontak_ahli_waris" placeholder="Kontak Ahli Waris" onChange={this.handleChange}></input>
-                      {/* <input type="submit" className="form-control btn btn-primary" value="Submit"></input> */}
-                      <label for="file_ktp">
-                        KTP Pewaris:
-                <input type="file" onChange={this.onchange} class="form-control-file" name="file_ktp" />
-                      </label>
-                      <br />
-                      <label for="file_kk">
-                        KK Pewaris:
-                <input type="file" onChange={this.onchange} class="form-control-file" name="file_kk" />
-                      </label>
-                      <br />
-                      <input type="submit" value="Submit"></input>
+                        <hr/>
+                      <a4><strong>Form Almarhum</strong></a4><br/><br/>
+                        <label>Nama Penghuni Makam</label>
+                        <input type="text" className="form-control" name="nama" placeholder="Nama Penghuni" onChange={this.handleChange}></input>
+                        <br />
+                        <label>Jenis Kelamin</label>
+                        <Input type="select" className="form-control" name="jenis_kelamin" onChange={this.handleChange}>
+                          <option value=''>Pilih</option>
+                          <option value='Laki-Laki'>Laki-Laki</option>
+                          <option value='Perempuan'>Perempuan</option>
+                        </Input><br/>
+                        <label>Alamat Terakhir</label>
+                        <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
+                        <br />
+                        <label>Tanggal Lahir</label>
+                        <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} />
+                        <br />
+                        <label>Tanggal Wafat</label>
+                        <DatePicker name="tanggal_wafat" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDateWafat} />
+                        <br />
+                        <label>Tanggal Pemakaman</label>
+                        <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} />
+                        <br />
+                        <label>Status</label>
+                        <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
+                          <option value=''>pilih</option>
+                          <option value='Diperpanjang'>Diperpanjang</option>
+                          <option value='Expired'>Expired</option>
+                          <option value='Ditimpa'>Ditimpa</option>
+                        </Input><br/>
+                        <label>Pilih Nomor Makam (Kode Makam)</label>
+                        <Select
+                          value={this.state.selectedOption}
+                          onChange={this.handleSelect}
+                          options={this.makam_items()}
+                        />
+                        {/* <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
+                              {this.state.makam.map((items) => {
+                                return (
+                                  <option value={items.id_makam}>{items.kode_makam}</option>
+                                )
+                              }
+                              )}
+                            </Input> */}
+                      <hr/>
+                      <a4><strong>File Scan</strong></a4><br/><br/>
+                        <label for="file_ktp">
+                          KTP Almarhum:
+                        <input type="file" onChange={this.onchange} class="form-control-file" name="file_ktp" />
+                        </label>
+                        <br />
+                        <label for="file_kk">
+                          KK Almarhum:
+                        <input type="file" onChange={this.onchange} class="form-control-file" name="file_kk" />
+                        </label>
+                        <br />
+                        <label for="file_kk">
+                          Scan Surat ijin:
+                        <input type="file" onChange={this.onchange} class="form-control-file" name="file_surat_izin" />
+                        </label>
+                        <br />
+                        <br /><hr/>
+                        <input  type="submit" value="Submit"></input>
                     </div>
                   </form>
                 </Col>

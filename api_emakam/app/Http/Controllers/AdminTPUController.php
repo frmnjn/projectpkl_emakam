@@ -83,27 +83,30 @@ class AdminTPUController extends Controller{
 
 	function create_penghunimakam(Request $request){
 
-		$nama = $request->input('nama');
-		$alamat_terakhir = $request->input('alamat_terakhir');
-		$tanggal_wafat = $request->input('tanggal_wafat');
-		$status = $request->input('status');
-		$id_makam = $request->input('id_makam');
-		$nama_ahli_waris = $request->input('nama_ahli_waris');
-		$alamat_ahli_waris = $request->input('alamat_ahli_waris');
-		$nik_ahli_waris = $request->input('nik_ahli_waris');
-		$kontak_ahli_waris = $request->input('kontak_ahli_waris');
+		// $nama = $request->input('nama');
+		// $alamat_terakhir = $request->input('alamat_terakhir');
+		// $tanggal_wafat = $request->input('tanggal_wafat');
+		// $status = $request->input('status');
+		// $id_makam = $request->input('id_makam');
+		// $nama_ahli_waris = $request->input('nama_ahli_waris');
+		// $alamat_ahli_waris = $request->input('alamat_ahli_waris');
+		// $nik_ahli_waris = $request->input('nik_ahli_waris');
+		// $kontak_ahli_waris = $request->input('kontak_ahli_waris');
 
-		return Penghuni_Makam::create(array(
-			'nama' => $nama,
-			'alamat_terakhir' => $alamat_terakhir,
-			'tanggal_wafat' => $tanggal_wafat,
-			'status' => $status,
-			'id_makam' => $id_makam,
-			'nama_ahli_waris' => $nama_ahli_waris,
-			'alamat_ahli_waris' => $alamat_ahli_waris,
-			'nik_ahli_waris' => $nik_ahli_waris,
-			'kontak_ahli_waris' => $kontak_ahli_waris,
-		));
+		// return Penghuni_Makam::create(array(
+		// 	'nama' => $nama,
+		// 	'alamat_terakhir' => $alamat_terakhir,
+		// 	'tanggal_wafat' => $tanggal_wafat,
+		// 	'status' => $status,
+		// 	'id_makam' => $id_makam,
+		// 	'nama_ahli_waris' => $nama_ahli_waris,
+		// 	'alamat_ahli_waris' => $alamat_ahli_waris,
+		// 	'nik_ahli_waris' => $nik_ahli_waris,
+		// 	'kontak_ahli_waris' => $kontak_ahli_waris,
+		// ));
+
+		return $penghuni_makam = Penghuni_makam::create($request->all());
+
 
 	}
 
@@ -213,9 +216,10 @@ class AdminTPUController extends Controller{
 	function upload(Request $request){
 		$ktp = $request->file('file_ktp');
 		$kk = $request->file('file_kk');
+		$surat_izin = $request->file('file_surat_izin');
 		$progress= 'Menunggu Persetujuan Kepala UPT';
 		$dokumen= 'Dokumen Kurang';
-		$status1 = false; $status2 = false;
+		$status1 = false; $status2 = false; $status3 = false;
 		
 
 		if(!empty($ktp)) {
@@ -224,16 +228,25 @@ class AdminTPUController extends Controller{
 		if(!empty($kk)) {
 			$status2 = true;
 		}
-
-		if($status1 && $status2){
+		if(!empty($surat_izin)) {
+			$status3 = true;
+		}
+		if($status1 && $status2 && $status3){
 			$path_ktp = $ktp->store('public/files');
 			$path_kk = $kk->store('public/files');
+			$path_surat_izin = $surat_izin->store('public/files');
+
 
 			Dokumen::create(array(
+				
 				'nama_almarhum' => $request->input('nama_almarhum'),
 				'nama_pewaris' => $request->input('nama_pewaris'),
+				'email' => $request->input('email'),
+				'pekerjaan_ahli_waris' => $request->input('pekerjaan_ahli_waris'),
+				'tgllhr_ahli_waris' => $request->input('tgllhr_ahli_waris'),
 				'file_ktp' => $path_ktp,
 				'file_kk' => $path_kk,
+				'file_surat_izin' => $path_surat_izin,
 				'status' => $progress ,
 				'kelengkapan_dokumen' => $dokumen,
 			));

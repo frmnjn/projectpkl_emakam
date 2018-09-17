@@ -50,6 +50,8 @@ class Search extends Component {
     this.toggleclose = this.toggleclose.bind(this);
     this.modalkkclose = this.modalkkclose.bind(this);
     this.modalktpclose = this.modalktpclose.bind(this);
+    this.modalsuratclose = this.modalsuratclose.bind(this);
+
     this.toggleproggress = this.toggleproggress.bind(this);
     this.proggress = this.proggress.bind(this);
     
@@ -108,13 +110,14 @@ class Search extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert('responseJson');
+        alert('Update Success');
       })
   }
 
-  acc_kec(id){
+  acc_kec(row){
     var status = 'Proses Selesai'
-    this.update_status(id,status)
+    fetch('http://localhost:8000/api/send?to='+row.email+'&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan')
+    this.update_status(row.id,status)  
   }
 
   acc_dinas(row){
@@ -240,6 +243,13 @@ class Search extends Component {
     })
   }
 
+  modalsurat(items){
+    this.setState({
+      activesurat: items.file_surat_izin.substring(6),
+      suratmodal: !this.state.suratmodal,
+    });
+  }
+
   modalkkclose(){
     this.setState({
       kkmodal: !this.state.kkmodal,
@@ -248,6 +258,11 @@ class Search extends Component {
   modalktpclose(){
     this.setState({
       ktpmodal: !this.state.ktpmodal,
+    });
+  }
+  modalsuratclose(){
+    this.setState({
+      suratmodal: !this.state.suratmodal,
     });
   }
 
@@ -294,9 +309,15 @@ class Search extends Component {
                     </ModalBody>
                   </Modal>
                   <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
-                    <ModalHeader toggle={this.modalkkclose}>KTP</ModalHeader>
+                    <ModalHeader toggle={this.modalkkclose}>KK</ModalHeader>
                     <ModalBody>
                       <img src={"http://localhost:8000/storage"+this.state.activekk} class="img-fluid" alt="Responsive image"></img>
+                    </ModalBody>
+                  </Modal>
+                  <Modal isOpen={this.state.suratmodal} toggle={this.modalsuratclose} className={'modal-Large ' + this.props.className}>
+                    <ModalHeader toggle={this.modalsuratclose}>Surat Permohonan</ModalHeader>
+                    <ModalBody>
+                      <img src={"http://localhost:8000/storage"+this.state.activesurat} class="img-fluid" alt="Responsive image"></img>
                     </ModalBody>
                   </Modal>
                   <Modal isOpen={this.state.modalprogress} toggle={this.toggleproggress} className={'modal-Large ' + this.props.className}>
@@ -328,6 +349,10 @@ class Search extends Component {
                       accessor: 'nama_pewaris', // String-based value accessors!
                     },
                     {
+                      Header: 'Email Pewaris',
+                      accessor: 'email', // String-based value accessors!
+                    },
+                    {
                       Header: 'KTP Almarhum',
                       accessor: 'file_ktp', // String-based value accessors!
                       Cell: row => (
@@ -342,6 +367,15 @@ class Search extends Component {
                       Cell: row => (
                         <div>
                           <Button color="info" onClick={()=>this.modalkk(row.row)} className="mr-1">View</Button>
+                        </div>
+                      )
+                    },
+                    {
+                      Header: 'Surat Permohonan',
+                      accessor: 'file_surat_izin', // String-based value accessors!
+                      Cell: row => (
+                        <div>
+                          <Button color="info" onClick={()=>this.modalsurat(row.row)} className="mr-1">View</Button>
                         </div>
                       )
                     },
@@ -369,7 +403,7 @@ class Search extends Component {
                       show:sessionStorage.getItem('login_session') == "4" ? true:false,
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.acc_kec(row.row.id)} className="mr-1">Accept</Button>
+                          <Button color="info" onClick={()=>this.acc_kec(row.row)} className="mr-1">Accept</Button>
                         </div>
                       )
                     },
@@ -389,7 +423,7 @@ class Search extends Component {
                       show:sessionStorage.getItem('login_session') == "2" ? true:false,
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.acc_kupt(row.row.id)} className="mr-1">Accept</Button>
+                          <Button color="info" onClick={()=>this.acc_kupt(row.row.id)} className="mr-1">Rekomendasi</Button>
                         </div>
                       )
                     },
