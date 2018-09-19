@@ -29,6 +29,11 @@ const ManajemenHakAkses = Loadable({
   loading: Loading,
 });
 
+const ManajemenHakAksesKec = Loadable({
+  loader: () => import('./views/AdminPusat/ManajemenHakAksesKec/ManajemenHakAksesKec'),
+  loading: Loading,
+});
+
 const Search = Loadable({
   loader: () => import('./views/Pengguna/Search/Search'),
   loading: Loading,
@@ -91,6 +96,7 @@ const routes = [
   { path: '/login', name: 'Home', component: Login },
   { path: '/ManajemenPengguna', name: 'Manajemen Pengguna', component: ManajemenPengguna },
   { path: '/ManajemenHakAkses', name: 'Manajemen Hak Akses', component: ManajemenHakAkses },
+  { path: '/ManajemenHakAksesKec', name: 'Manajemen Hak Akses Kecamatan', component: ManajemenHakAksesKec },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
 ];

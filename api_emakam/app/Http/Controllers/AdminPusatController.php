@@ -11,6 +11,8 @@ use App\Tpu;
 use App\Penghuni_makam;
 use App\Makam;
 use App\Blok_Makam;
+use App\Role_kecamatan;
+
 
 
 class AdminPusatController extends Controller
@@ -95,6 +97,16 @@ class AdminPusatController extends Controller
         return response()->json(['msg' => "Hak Akses Berhasil dibuat!"]);
     }
 
+    function create_role_kecamatan(Request $request)
+    {
+        $id_tpu = $request->input('id_tpu');
+        $id_user = $request->input('id_user');
+
+        $role = Role_kecamatan::create($request->all());
+
+        return response()->json(['msg' => "Hak Akses Berhasil dibuat!"]);
+    }
+
     function update_role_tpu(Request $request, $id_role_tpu)
     {
         $role_tpu = Role_tpu::findOrFail($id_role_tpu);
@@ -104,10 +116,27 @@ class AdminPusatController extends Controller
         return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
     }
 
+    function update_role_kecamatan(Request $request, $id_role)
+    {
+        $role = Role_kecamatan::findOrFail($id_role);
+        
+        $role->update($request->all());
+
+        return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
+    }
+
     function delete_role_tpu(Request $request, $id_role_tpu)
     {
         $role_tpu = Role_tpu::findOrFail($id_role_tpu);
         $role_tpu->delete();
+
+        return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
+    }
+
+    function delete_role_kecamatan(Request $request, $id_role)
+    {
+        $role = Role_kecamatan::findOrFail($id_role);
+        $role ->delete();
 
         return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
     }
@@ -178,6 +207,15 @@ class AdminPusatController extends Controller
             }
         }
         return response()->json($msg);
+    }
+
+    function constraint_user_kecamatan(){
+        $user = DB::table('user')
+        ->join('role_kecamatan', 'user.id_user', '=', 'role_kecamatan.id_user')
+        ->join('kecamatan', 'role_kecamatan.id_kecamatan', '=', 'kecamatan.id_kecamatan')
+        ->select('user.*', 'role_kecamatan.*','kecamatan.*')
+        ->get();
+        return response()->json($user);
     }
 
     function constraint_user(){

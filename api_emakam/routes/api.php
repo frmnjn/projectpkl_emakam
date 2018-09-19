@@ -33,6 +33,14 @@ Route::middleware('cors')->put('update_user/{id_user}', 'AdminPusatController@up
 Route::middleware('cors')->delete('delete_user/{id_user}', 'AdminPusatController@delete_user');
 Route::middleware('cors')->get('constraint_user', 'AdminPusatController@constraint_user');
 
+//kecamatan
+Route::middleware('cors')->get('kecamatan/constraint_user', 'AdminPusatController@constraint_user_kecamatan');
+Route::middleware('cors')->get('kecamatan/view', 'AdminKecamatan@view_kecamatan');
+Route::middleware('cors')->post('kecamatan/create_role', 'AdminPusatController@create_role_kecamatan');
+Route::middleware('cors')->put('kecamatan/update_role/{id_role}', 'AdminPusatController@update_role_kecamatan');
+Route::middleware('cors')->delete('kecamatan/delete_role/{id_role}', 'AdminPusatController@delete_role_kecamatan');
+
+
 //tpu
 Route::middleware('cors')->get('tpu/view_byUser', 'AdminTPUController@view_tpu_byUser');
 Route::middleware('cors')->get('tpu/view', 'AdminPusatController@view_tpu');

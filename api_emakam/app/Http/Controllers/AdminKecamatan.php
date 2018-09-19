@@ -23,6 +23,13 @@ class AdminKecamatan extends Controller{
 	function __construct(){
 	}
 
+	function view_kecamatan(){
+		$view = DB::table('kecamatan')
+		->select('kecamatan.*')
+		->get();
+		return response()->json($view);
+	}
+
 	function view_dokumen_siap_cetak(){
 		$view = DB::table('dokumen')
 		->join('penghuni_makam', 'dokumen.nama_almarhum', '=', 'penghuni_makam.nama')
