@@ -243,6 +243,8 @@ class AdminTPUController extends Controller{
 				'nama_pewaris' => $request->input('nama_pewaris'),
 				'email' => $request->input('email'),
 				'pekerjaan_ahli_waris' => $request->input('pekerjaan_ahli_waris'),
+				'id_tpu' => $request->input('id_tpu'),
+				'id_kecamatan' => $request->input('id_kecamatan'),
 				'tgllhr_ahli_waris' => $request->input('tgllhr_ahli_waris'),
 				'file_ktp' => $path_ktp,
 				'file_kk' => $path_kk,

@@ -103,7 +103,7 @@ class RegistrasiPerijinanMakam extends Component {
   makam_items() {
     var newitem = [];
     this.state.makam.map((items) => {
-      newitem = newitem.concat({ value: items.id_makam, label: items.kode_makam })
+      newitem = newitem.concat({ value: items.id_makam+"-"+items.id_tpu+"-"+items.id_kecamatan, label: items.kode_makam})
     })
 
     return newitem
@@ -167,7 +167,15 @@ class RegistrasiPerijinanMakam extends Component {
   }
 
   handleSelect = (selectedOption) =>{
-    this.setState({ selectedOption,activeid_makam: selectedOption.value,id_makam: selectedOption.value});
+    var split = selectedOption.value.split('-');
+    // alert(split[0]+" - "+split[1]+" - "+split[2])
+    this.setState({ 
+      selectedOption,
+      activeid_makam: split[0],
+      id_makam: split[0],
+      id_tpu:split[1],
+      id_kecamatan:split[2]
+    });
   }
 
   handleSubmit = event => {
@@ -175,6 +183,8 @@ class RegistrasiPerijinanMakam extends Component {
     data.append('nama_almarhum',this.state.nama);
     data.append('nama_pewaris',this.state.nama_ahli_waris);
     data.append('email',this.state.email);
+    data.append('id_tpu',this.state.id_tpu);
+    data.append('id_kecamatan',this.state.id_kecamatan);
     data.append('tgllhr_ahli_waris',this.state.tgllhr_ahli_waris.format().substring(0, 10));
     data.append('pekerjaan_ahli_waris',this.state.pekerjaan);
 

@@ -37,20 +37,19 @@ class DefaultHeader extends Component {
 
   componentDidMount(){
     // this.fetchnotif()
-
-    fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token'))
+    if(sessionStorage.getItem('id_user')!=null&&sessionStorage.getItem('login_session')!=null){
+      fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
       .then(
         (json) => {
-
           if (sessionStorage.getItem('login_session') == "2") {
             var updateitem;
             updateitem = json;
             updateitem = updateitem.filter(function(item){
               return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
-              item.status.toLowerCase().search("menunggu persetujuan kepala upt") !== -1;
+              item.status.toLowerCase().search("menunggu persetujuan kepala UPT") !== -1;
             });
             this.setState({showitems: updateitem});
           }else if (sessionStorage.getItem('login_session') == "3") {
@@ -72,10 +71,10 @@ class DefaultHeader extends Component {
           }else if (sessionStorage.getItem('login_session') == "5") {
             var updateitem;
             updateitem = json;
-            updateitem = updateitem.filter(function(item){
-              return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
-              item.status.toLowerCase().search("Proses Selesai") !== -1;
-            });
+            // updateitem = updateitem.filter(function(item){
+            //   return item.kelengkapan_dokumen.toLowerCase().search("lengkap") !== -1&&
+            //   item.status.toLowerCase().search("Proses Selesai") !== -1;
+            // });
             this.setState({showitems: updateitem});
           }else{
             this.setState({showitems: json});
@@ -87,6 +86,8 @@ class DefaultHeader extends Component {
           });
         },
       )
+
+    } 
   }
 
   fetchnotif(){

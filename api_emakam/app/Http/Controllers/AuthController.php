@@ -11,6 +11,8 @@ use JWTAuth;
 use JWTAuthException;
 use App\User;
 use App\Role_tpu;
+use App\Role_kecamatan;
+
 
 class AuthController extends Controller
 {

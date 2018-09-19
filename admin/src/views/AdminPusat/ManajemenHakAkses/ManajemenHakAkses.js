@@ -77,7 +77,8 @@ class ManajemenHakAkses extends Component {
       .then(
         (result) => {
           result = result.filter(function (item) {
-            return item.role.toString().search('1') !== -1;
+            return item.role.toString().search('1') !== -1||
+            item.role.toString().search('2') !== -1;
           })
           this.setState({
             table_user: result
@@ -110,7 +111,8 @@ class ManajemenHakAkses extends Component {
       .then(
         (result) => {
           result = result.filter(function (item) {
-            return item.role.toString().search('1') !== -1;
+            return item.role.toString().search('1') !== -1||
+            item.role.toString().search('2') !== -1;
           })
           this.setState({
             table_constraint_user: result,

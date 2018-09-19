@@ -146,13 +146,13 @@ class Search extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson);
+        alert('Update Sukses');
       })
   }
 
   componentDidMount() {
     
-    fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/dokumen/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })

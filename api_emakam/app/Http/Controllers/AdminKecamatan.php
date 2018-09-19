@@ -24,17 +24,23 @@ class AdminKecamatan extends Controller{
 	}
 
 	function view_kecamatan(){
-		$view = DB::table('kecamatan')
-		->select('kecamatan.*')
-		->get();
-		return response()->json($view);
+		$view = DB::table('dokumen')
+            ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
+            ->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
+            ->where('role_kecamatan.id_user','=',$id_user)
+            ->select('*')
+            ->get();
+
+            return $view;
 	}
 
-	function view_dokumen_siap_cetak(){
+	function view_dokumen_siap_cetak(Request $request){
+		$id_user=$request->input('id_user');
 		$view = DB::table('dokumen')
-		->join('penghuni_makam', 'dokumen.nama_almarhum', '=', 'penghuni_makam.nama')
-		->where('dokumen.kelengkapan_dokumen','=','Lengkap','AND','dokumen.status','=','Proses Selesai')
-		->select('dokumen.*','penghuni_makam.*')
+		->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
+		->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
+		->where('role_kecamatan.id_user','=',$id_user)
+		->select('*')
 		->get();
 		return response()->json($view);
 	}
