@@ -83,30 +83,7 @@ class AdminTPUController extends Controller{
 
 	function create_penghunimakam(Request $request){
 
-		// $nama = $request->input('nama');
-		// $alamat_terakhir = $request->input('alamat_terakhir');
-		// $tanggal_wafat = $request->input('tanggal_wafat');
-		// $status = $request->input('status');
-		// $id_makam = $request->input('id_makam');
-		// $nama_ahli_waris = $request->input('nama_ahli_waris');
-		// $alamat_ahli_waris = $request->input('alamat_ahli_waris');
-		// $nik_ahli_waris = $request->input('nik_ahli_waris');
-		// $kontak_ahli_waris = $request->input('kontak_ahli_waris');
-
-		// return Penghuni_Makam::create(array(
-		// 	'nama' => $nama,
-		// 	'alamat_terakhir' => $alamat_terakhir,
-		// 	'tanggal_wafat' => $tanggal_wafat,
-		// 	'status' => $status,
-		// 	'id_makam' => $id_makam,
-		// 	'nama_ahli_waris' => $nama_ahli_waris,
-		// 	'alamat_ahli_waris' => $alamat_ahli_waris,
-		// 	'nik_ahli_waris' => $nik_ahli_waris,
-		// 	'kontak_ahli_waris' => $kontak_ahli_waris,
-		// ));
-
 		return $penghuni_makam = Penghuni_makam::create($request->all());
-
 
 	}
 

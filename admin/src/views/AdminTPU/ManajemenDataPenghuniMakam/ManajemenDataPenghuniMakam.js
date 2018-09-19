@@ -63,8 +63,12 @@ class ManajemenDataPenghuniMakam extends Component {
       makamitems:[],
 
       nama: "",
+      jenis_kelamin:'',
       alamat_terakhir: "",
       tanggal_wafat: '',
+      tanggal_lahir_alm: '',
+      tanggal_pemakaman: '',
+
       status: "",
       id_makam: "",
       kode_makam: "",
@@ -75,12 +79,14 @@ class ManajemenDataPenghuniMakam extends Component {
 
       activeid_penghuni_makam: "",
       activenama: "",
+      activejenis_kelamin:'',
       activealamat_terakhir: "",
       activetanggal_wafat: '',
+      activetanggal_lahir_alm: '',
+      activetanggal_pemakaman: '',
       activestatus: "",
       activeid_makam: "",
       activekode_makam: "",
-      splittanggalwafat: '',
       activenama_ahli_waris: "",
       activealamat_ahli_waris: "",
       activenik_ahli_waris: "",
@@ -150,8 +156,11 @@ class ManajemenDataPenghuniMakam extends Component {
     this.setState({
       activeid_penghuni_makam: list.id_penghuni_makam,
       activenama: list.nama,
+      activejenis_kelamin: list.jenis_kelamin,
       activealamat_terakhir: list.alamat_terakhir,
       activetanggal_wafat: list.tanggal_wafat.substring(0, 10),
+      activetanggal_lahir_alm: list.tanggal_lahir_alm.substring(0, 10),
+      activetanggal_pemakaman: list.tanggal_pemakaman.substring(0, 10),
       activestatus: list.status,
       activeid_makam: list.id_makam,
       activenama_ahli_waris: list.nama_ahli_waris,
@@ -170,12 +179,14 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   toggleLarge(list) {
-
     this.setState({
       activeid_penghuni_makam: list.id_penghuni_makam,
       activenama: list.nama,
+      activejenis_kelamin: list.jenis_kelamin,
       activealamat_terakhir: list.alamat_terakhir,
       activetanggal_wafat: moment(list.tanggal_wafat),
+      activetanggal_lahir_alm: moment(list.tanggal_lahir_alm),
+      activetanggal_pemakaman: moment(list.tanggal_pemakaman),
       activestatus: list.status,
       activeid_makam: list.id_makam,
       activekode_makam: list.kode_makam,
@@ -198,6 +209,8 @@ class ManajemenDataPenghuniMakam extends Component {
   togglePrimary() {
     this.setState({
       tanggal_wafat: this.state.startDate,
+      tanggal_lahir_alm: this.state.startDate,
+      tanggal_pemakaman: this.state.startDate,
       primary: !this.state.primary,
     });
   }
@@ -207,6 +220,20 @@ class ManajemenDataPenghuniMakam extends Component {
     this.setState({
       activetanggal_wafat: date,
       tanggal_wafat: date,
+    });
+  }
+
+  handleDateLhrAlm = (date) => {
+    this.setState({
+      activetanggal_lahir_alm: date,
+      tanggal_lahir_alm: date,
+    });
+  }
+
+  handleDatePemakaman = (date) => {
+    this.setState({
+      activetanggal_pemakaman: date,
+      tanggal_pemakaman: date,
     });
   }
 
@@ -228,8 +255,11 @@ class ManajemenDataPenghuniMakam extends Component {
       },
       body: JSON.stringify({
         nama: this.state.nama,
+        jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
         tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
+        tanggal_lahir_alm: this.state.tanggal_wafat.format().substring(0, 10),
+        tanggal_pemakaman: this.state.tanggal_wafat.format().substring(0, 10),
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -258,14 +288,17 @@ class ManajemenDataPenghuniMakam extends Component {
       },
       body: JSON.stringify({
         nama: this.state.activenama,
+        jenis_kelamin: this.state.activejenis_kelamin,
         alamat_terakhir: this.state.activealamat_terakhir,
         tanggal_wafat: this.state.activetanggal_wafat.format().substring(0, 10),
+        tanggal_lahir_alm: this.state.activetanggal_lahir_alm.format().substring(0, 10),
+        tanggal_pemakaman: this.state.activetanggal_pemakaman.format().substring(0, 10),
         status: this.state.activestatus,
         id_makam: this.state.activeid_makam,
         nama_ahli_waris: this.state.activenama_ahli_waris,
         alamat_ahli_waris: this.state.activealamat_ahli_waris,
         nik_ahli_waris: this.state.activenik_ahli_waris,
-        kontak_ahli_waris: this.state.activekontak_ahli_waris
+        kontak_ahli_waris: this.state.activekontak_ahli_waris,
       })
     }).then(
       this.fetchall
@@ -331,11 +364,23 @@ class ManajemenDataPenghuniMakam extends Component {
                         <form className="form-group" onSubmit={this.handleSubmitCreate}>
                           <label>Nama Penghuni Makam</label>
                           <input type="text" className="form-control" name="nama" placeholder="Nama Penghuni" onChange={this.handleChange}></input>
+                          <label>Jenis Kelamin</label>
+                          <Input type="select" className="form-control" name="jenis_kelamin" onChange={this.handleChange}>
+                            <option value=''>Pilih</option>
+                            <option value='Laki-Laki'>Laki-Laki</option>
+                            <option value='Perempuan'>Peremuan</option>
+                          </Input>
                           <label>Alamat Terakhir</label>
                           <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
                           <br />
+                          <label>Tanggal Lahir</label>
+                          <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} />
+                          <br />
                           <label>Tanggal Wafat</label>
                           <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} />
+                          <br />
+                          <label>Tanggal Pemakaman</label>
+                          <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} />
                           <br />
                           <label>Status</label>
                           <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
@@ -349,14 +394,6 @@ class ManajemenDataPenghuniMakam extends Component {
                             onChange={this.handleSelect}
                             options={this.makam_items()}
                           />
-                          {/* <Input type="select" className="form-control" name="id_makam" onChange={this.handleChange}>
-                            {this.state.makam.map((items) => {
-                              return (
-                                <option value={items.id_makam}>{items.kode_makam}</option>
-                              )
-                            }
-                            )}
-                          </Input> */}
                           <label>Nama Ahli Waris</label>
                           <input type="text" className="form-control" name="nama_ahli_waris" placeholder="Nama Ahli Waris" onChange={this.handleChange}></input>
                           <label>Alamat Ahli Waris</label>
@@ -378,10 +415,16 @@ class ManajemenDataPenghuniMakam extends Component {
                         <form className="form-group" onSubmit=''>
                           <label>Nama Penghuni Makam</label>
                           <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama} disabled></input>
+                          <label>Jenis Kelamin</label>
+                          <input type="text" className="form-control" name="activejenis_kelamin" onChange={this.handleChange} value={this.state.activejenis_kelamin} disabled></input>
                           <label>Alamat Terakhir</label>
                           <input type="text" className="form-control" name="activealamat_terakhir" onChange={this.handleChange} value={this.state.activealamat_terakhir} disabled></input>
+                          <label>Tanggal Lahir</label>
+                          <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_lahir_alm} disabled></input>
                           <label>Tanggal Wafat</label>
                           <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat} disabled></input>
+                          <label>Tanggal Pemakaman</label>
+                          <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_pemakaman} disabled></input>
                           <label>Status</label>
                           <input type="text" className="form-control" name="activestatus" onChange={this.handleChange} value={this.state.activestatus} disabled></input>
                           <label>Kode Makam</label>
@@ -404,11 +447,22 @@ class ManajemenDataPenghuniMakam extends Component {
                         <form className="form-group" onSubmit={this.handleSubmitEdit}>
                           <label>Nama Penghuni Makam</label>
                           <input type="text" className="form-control" name="activenama" onChange={this.handleChange} value={this.state.activenama}></input>
+                          <label>Jenis Kelamin</label>
+                          <Input type="select" className="form-control" name="activejenis_kelamin" onChange={this.handleChange} defaultValue={this.state.activejenis_kelamin}>
+                            <option value='Laki-Laki'>Laki-Laki</option>
+                            <option value='Perempuan'>Peremuan</option>
+                          </Input>
                           <label>Alamat Terakhir</label>
                           <input type="text" className="form-control" name="activealamat_terakhir" onChange={this.handleChange} value={this.state.activealamat_terakhir}></input>
                           <br />
+                          <label>Tanggal Lahir</label>
+                          <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.activetanggal_lahir_alm} onChange={this.handleDateLhrAlm} />
+                          <br />
                           <label>Tanggal Wafat</label>
                           <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.activetanggal_wafat} onChange={this.handleDate} />
+                          <br />
+                          <label>Tanggal Pemakaman</label>
+                          <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.activetanggal_pemakaman} onChange={this.handleDatePemakaman} />
                           <br />
                           {/* <input type="text" className="form-control" name="activetanggal_wafat" onChange={this.handleChange} value={this.state.activetanggal_wafat}></input> */}
                           <label>Status</label>
@@ -447,7 +501,7 @@ class ManajemenDataPenghuniMakam extends Component {
                         filterable
                         columns={[
                           {
-                            Header: 'Nama',
+                            Header: 'id_penghuni_makam',
                             show: false,
                             accessor: 'id_penghuni_makam' // String-based value accessors!
                           },
@@ -479,19 +533,37 @@ class ManajemenDataPenghuniMakam extends Component {
                             accessor: 'nama_tpu' // String-based value accessors!
                           },
                           {
+                            Header: 'Jenis Kelamin',
+                            show: false,
+                            accessor: 'jenis_kelamin' // String-based value accessors!
+                          },
+                          {
                             Header: 'Kode Makam',
                             accessor: 'kode_makam' // String-based value accessors!
                           },
                           {
                             Header: 'Ahli Waris',
+                            show: false,
                             accessor: 'nama_ahli_waris' // String-based value accessors!
                           },
                           {
                             Header: 'Tanggal Wafat',
+                            show: false,
                             accessor: 'tanggal_wafat' // String-based value accessors!
                           },
                           {
+                            Header: 'Tanggal Lahir',
+                            show: false,
+                            accessor: 'tanggal_lahir_alm' // String-based value accessors!
+                          },
+                          {
+                            Header: 'Tanggal Pemakaman',
+                            show: false,
+                            accessor: 'tanggal_pemakaman' // String-based value accessors!
+                          },
+                          {
                             Header: 'Status',
+                            show: false,
                             accessor: 'status' // String-based value accessors!
                           },
                           {

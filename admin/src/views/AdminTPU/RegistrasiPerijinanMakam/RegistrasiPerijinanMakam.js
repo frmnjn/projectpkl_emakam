@@ -130,7 +130,6 @@ class RegistrasiPerijinanMakam extends Component {
         alamat_ahli_waris: this.state.alamat_ahli_waris,
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris,
-        activetanggal_wafat: '',
       })
     }).then(
       this.fetchall
