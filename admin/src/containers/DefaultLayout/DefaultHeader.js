@@ -126,8 +126,12 @@ class DefaultHeader extends Component {
   }
 
   bellnotif=()=>{
-    if(this.state.newnotif){
-      return(<span class="badge badge-pill badge-danger">New</span>)
+    if(sessionStorage.getItem('login_session')!=0&&sessionStorage.getItem('login_session')!=1&&sessionStorage.getItem('login_session')!=5){
+      return(
+        <div>
+          <i class="icon-bell"></i><Badge pill color="danger">{this.state.showitems.length}</Badge>
+        </div>
+      )
     }
   }
 
@@ -154,7 +158,6 @@ class DefaultHeader extends Component {
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav >
-              <i class="icon-bell"></i><Badge pill color="danger">{this.state.showitems.length}</Badge>
               {this.bellnotif()}
               {/* {this.state.newnotif?<span class="badge badge-pill badge-danger">New</span>:null} */}
             </DropdownToggle>
@@ -178,7 +181,7 @@ class DefaultHeader extends Component {
                   }else{
                     return(
                       <DropdownItem>
-                        <i className="icons-danger cui-user-follow"></i><a>Berkas perlu dikonfirmasi atas nama {items.nama_almarhum}</a>
+                        <i className="icons-danger cui-user-follow"></i><a>Berkas perlu atas nama {items.nama_almarhum} perlu diproses</a>
                       </DropdownItem>
                     ) 
                   }

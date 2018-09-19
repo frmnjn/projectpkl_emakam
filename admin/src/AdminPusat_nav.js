@@ -10,6 +10,11 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
+      name: 'Dokumen',
+      url: '/Dokumen',
+      icon: 'icon-magnifier',
+    },
+    {
       name: 'Manajemen TPU',
       url: '/ManajemenTpu',
       icon: 'icon-chart',
