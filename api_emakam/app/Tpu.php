@@ -8,6 +8,6 @@ class Tpu extends Model
 {
     public $timestamps = false;
     public $table = 'tpu';
-    protected $fillable = ['nama_tpu','kode_tpu','alamat_tpu'];
+    protected $fillable = ['nama_tpu','kode_tpu','id_kecamatan'];
     protected $primaryKey = 'id_tpu';    
 }

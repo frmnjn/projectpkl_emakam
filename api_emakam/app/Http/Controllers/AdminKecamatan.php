@@ -25,6 +25,14 @@ class AdminKecamatan extends Controller{
 	function __construct(){
 	}
 
+	function view_all_kecamatan(){
+		$view = DB::table('kecamatan')
+		->select('*')
+		->get();
+
+		return $view;
+	}
+
 	function view_kecamatan(){
 		$view = DB::table('dokumen')
             ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')

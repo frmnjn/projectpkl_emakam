@@ -28,8 +28,12 @@ class AdminPusatController extends Controller
     }
 
     function view_tpu(){
-    	$tpu = Tpu::all();
-        return response()->json($tpu);
+        $view = DB::table('tpu')
+        ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'tpu.id_kecamatan')
+		->select('*')
+		->get();
+
+		return $view;
         
     }
 

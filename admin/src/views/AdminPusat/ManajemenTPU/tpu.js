@@ -78,6 +78,7 @@ class tpu extends Component {
       error: null,
       isLoaded: false,
       items: [],
+      kecamatan: [],
       blok: [],
 
       activename: null,
@@ -86,7 +87,7 @@ class tpu extends Component {
 
       idtpuaktif: null,
       namaaktif: null,
-      alamataktif: null,
+      kecamatanaktif: null,
       kodeaktif:null,
       lat:-7.952229,
       lng:112.613468,
@@ -119,7 +120,20 @@ class tpu extends Component {
             items: json
           });
         },
+    ).then(
+    fetch("http://localhost:8000/api/kecamatan/viewall?token=" + sessionStorage.getItem('token'))
+      .then(response => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+          this.setState({
+            isLoaded: true,
+            kecamatan: json
+          });
+        },
     )
+  )
   }
 
   handleEdit() {
@@ -132,7 +146,7 @@ class tpu extends Component {
       },
       body: JSON.stringify({
         nama_tpu: this.state.namaaktif,
-        alamat_tpu: this.state.alamataktif,
+        id_kecamatan: this.state.kecamatanaktif,
         kode_tpu: this.state.kodeaktif,
       })
     }).then(
@@ -154,7 +168,7 @@ class tpu extends Component {
       },
       body: JSON.stringify({
         nama_tpu: this.state.namaaktif,
-        alamat_tpu: this.state.alamataktif,
+        id_kecamatan: this.state.kecamatanaktif,
         kode_tpu: this.state.kodeaktif
       })
     }).then(
@@ -194,8 +208,8 @@ class tpu extends Component {
     this.setState({ namaaktif: event.target.value });
   }
 
-  handleAlamat = event => {
-    this.setState({ alamataktif: event.target.value });
+  handleKecamatan = event => {
+    this.setState({ kecamatanaktif: event.target.value });
   }
 
 
@@ -231,7 +245,7 @@ class tpu extends Component {
       edit: !this.state.edit,
       idtpuaktif: items.id_tpu,
       namaaktif: items.nama_tpu,
-      alamataktif: items.alamat_tpu,
+      kecamatanaktif: items.id_kecamatan,
       kodeaktif: items.kode_tpu,
     });
 
@@ -323,8 +337,15 @@ class tpu extends Component {
                     <br />
                     <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" value={this.state.kodeaktif} />
                     <br/>
-                    <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" value={this.state.alamataktif} />
-                    <br />
+                    <Input onChange={this.handleKecamatan} type="select" name="" id="blok">
+                      <option>Pilih Kecamatan</option>
+                          {this.state.kecamatan.map((items) =>{
+                              return(
+                                <option value={items.id_kecamatan} selected={items.id_kecamatan==this.state.kecamatanaktif}>{items.nama}</option>
+                              )
+                            })
+                          }
+                    </Input><br/>
                     <hr/>
                         <Row>
                                       <Col style={{
@@ -380,7 +401,15 @@ class tpu extends Component {
                     <Input onChange={this.handleKode} type="text" id="input1-group3" name="input1-group3" placeholder='Kode TPU' />
                   </Col><br /><br />
                   <Col xs="12">
-                    <Input onChange={this.handleAlamat} type="text" id="input1-group3" name="input1-group3" placeholder='Alamat TPU' />
+                    <Input onChange={this.handleKecamatan} type="select" name="" id="blok">
+                      <option>Pilih Kecamatan</option>
+                          {this.state.kecamatan.map((items) =>{
+                              return(
+                                <option value={items.id_kecamatan} >{items.nama}</option>
+                              )
+                            })
+                          }
+                    </Input><br/>                  
                   </Col>
                 </Row>
                 <hr/>
@@ -449,13 +478,14 @@ class tpu extends Component {
                       columns={[
                         { accessor: 'id_tpu', show: false },
                         { accessor: 'kode_tpu', show: false },
+                        { accessor: 'id_kecamatan', show: false },
                         {
                           Header: 'Nama TPU',
                           accessor: 'nama_tpu' // String-based value accessors!
                         },
                         {
-                          Header: 'Alamat TPU',
-                          accessor: 'alamat_tpu', // String-based value accessors!
+                          Header: 'Kecamatan',
+                          accessor: 'nama', // String-based value accessors!
                         },
                         {
                           Header: 'Actions',
