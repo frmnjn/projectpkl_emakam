@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpWord\PhpWord;
 use Dompdf\Dompdf;
 use Fpdf;
+use Carbon\Carbon;
+use datetime;
 
 use File;
 use App\User;
@@ -32,11 +34,41 @@ class AdminKecamatan extends Controller{
 
 	function view_dokumen_siap_cetak(){
 		$view = DB::table('dokumen')
-		->join('penghuni_makam', 'dokumen.nama_almarhum', '=', 'penghuni_makam.nama')
-		->where('dokumen.kelengkapan_dokumen','=','Lengkap','AND','dokumen.status','=','Proses Selesai')
-		->select('dokumen.*','penghuni_makam.*')
-		->get();
+		->join('penghuni_makam', 'dokumen.nama_pewaris', '=', 'penghuni_makam.nama_ahli_waris')
+        ->join('makam','penghuni_makam.id_makam','=','makam.id_makam')
+        ->join('blok_makam','makam.id_blok','=','blok_makam.id_blok')
+        ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
+        ->where('dokumen.kelengkapan_dokumen','=','Lengkap','AND','dokumen.status','=','Proses Selesai')
+        ->select('dokumen.id','dokumen.nama_almarhum','dokumen.nama_pewaris','dokumen.tgllhr_ahli_waris','dokumen.email','dokumen.pekerjaan_ahli_waris','dokumen.file_ktp','dokumen.file_kk','dokumen.file_surat_izin','dokumen.kelengkapan_dokumen','dokumen.status','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
+        ->get();
 		return response()->json($view);
+	}
+
+	public function get_age(String $ttl){
+		$mentah = explode('-', $ttl);
+		$age = Carbon::createFromDate((int)$mentah[0], (int)$mentah[1], (int)$mentah[2])->age;
+		return $age;
+	}
+
+	public function tgl_indo($tanggal){
+		$tanggal = explode(' ',$tanggal);
+		$bulan = array (
+			'Januari',
+			'Februari',
+			'Maret',
+			'April',
+			'Mei',
+			'Juni',
+			'Juli',
+			'Agustus',
+			'September',
+			'Oktober',
+			'November',
+			'Desember'
+		);
+		$pecahkan = explode('-', $tanggal[0]);
+
+		return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 	}
 
 	function cetak_dokumen(Request $request){
@@ -57,6 +89,21 @@ class AdminKecamatan extends Controller{
 	}
 
 	function cetak_surat_permohonan(Request $request){
+		$tanggal_sekarang = $request->input('tanggal_sekarang');
+		$nama_ahli_waris = $request->input('nama_ahli_waris');
+		$alamat_ahli_waris = $request->input('alamat_ahli_waris');
+		$ttl_ahli_waris = $this->tgl_indo($request->input('ttl_ahli_waris')); 
+
+		$tanggal_wafat = $this->tgl_indo($request->input('tanggal_wafat')); 
+		$nama_almarhum = $request->input('nama_almarhum');
+		$ttl_almarhum = $this->tgl_indo($request->input('ttl_almarhum'));  
+		$umur_almarhum = $this->get_age($request->input('ttl_almarhum'));
+		$jenis_kelamin_almarhum = $request->input('jenis_kelamin_almarhum');
+		$tpu_almarhum = $request->input('tpu_almarhum');
+		$alamat_almarhum = $request->input('alamat_almarhum');
+		$tanggal_pemakaman = $this->tgl_indo($request->input('tanggal_pemakaman')); 
+		$blok_almarhum = $request->input('blok_almarhum');
+
 		Fpdf::AddPage();
 		Fpdf::Image( storage_path('app/logo_kota_malang.png'),30,8,20,25);
 		Fpdf::Cell(45);
@@ -80,7 +127,7 @@ class AdminKecamatan extends Controller{
 
 		Fpdf::Cell(27);
 		Fpdf::SetFont('Times','','10');
-		Fpdf::Cell(150,12,'Malang, 31 Agustus 2018',0,1,'R');
+		Fpdf::Cell(150,12,"Malang, $tanggal_sekarang",0,1,'R');
 		Fpdf::Cell(10);
 		Fpdf::Cell(15,5,'Nomor',0,0,'L');
 		Fpdf::Cell(2,5,':',0,0,'L');
@@ -102,15 +149,15 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'1.',0,0,'L');
 		Fpdf::Cell(40,5,'Tanggal',0,0,'L');
-		Fpdf::Cell(20,5,': 28 Januari 2018',0,1,'L');
+		Fpdf::Cell(20,5,": $ttl_ahli_waris",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'2.',0,0,'L');
 		Fpdf::Cell(40,5,'Nama',0,0,'L');
-		Fpdf::Cell(20,5,': Ngatinem',0,1,'L');
+		Fpdf::Cell(20,5,": $nama_ahli_waris",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'3.',0,0,'L');
 		Fpdf::Cell(40,5,'Alamat',0,0,'L');
-		Fpdf::Cell(0,5,': Jl. Sudanco Supriadi Gang VIII No 23 Kota Malang',0,1,'L');
+		Fpdf::Cell(0,5,": $alamat_ahli_waris",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'4.',0,0,'L');
 		Fpdf::Cell(40,5,'Perihal',0,0,'L');
@@ -122,35 +169,35 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'1.',0,0,'L');
 		Fpdf::Cell(40,5,'Nama',0,0,'L');
-		Fpdf::Cell(20,5,': Yudhoyono',0,1,'L');
+		Fpdf::Cell(20,5,": $nama_almarhum",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'2.',0,0,'L');
-		Fpdf::Cell(40,5,'Tempat Tanggal Lahir',0,0,'L');
-		Fpdf::Cell(20,5,': Jakarta, 18 September 1930',0,1,'L');
+		Fpdf::Cell(40,5,'Tanggal Lahir',0,0,'L');
+		Fpdf::Cell(20,5,": $ttl_almarhum",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'3.',0,0,'L');
 		Fpdf::Cell(40,5,'Umur',0,0,'L');
-		Fpdf::Cell(0,5,': 54 Tahun',0,1,'L');
+		Fpdf::Cell(0,5,": $umur_almarhum Tahun",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'4.',0,0,'L');
 		Fpdf::Cell(40,5,'Jenis Kelamin',0,0,'L');
-		Fpdf::Cell(0,5,': Laki-laki',0,1,'L');
+		Fpdf::Cell(0,5,": $jenis_kelamin_almarhum",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'5.',0,0,'L');
 		Fpdf::Cell(40,5,'Alamat',0,0,'L');
-		Fpdf::Cell(0,5,': Cirebon, Jawa Barat',0,1,'L');
+		Fpdf::Cell(0,5,": $alamat_almarhum",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'6.',0,0,'L');
 		Fpdf::Cell(40,5,'Tanggal Pemakaman',0,0,'L');
-		Fpdf::Cell(0,5,': 24-09-2005',0,1,'L');
+		Fpdf::Cell(0,5,": $tanggal_pemakaman",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'7.',0,0,'L');
 		Fpdf::Cell(40,5,'Lokasi Pemakaman',0,0,'L');
-		Fpdf::Cell(0,5,': TPU. Sukorejo',0,1,'L');
+		Fpdf::Cell(0,5,": $tpu_almarhum",0,1,'L');
 		Fpdf::Cell(27);
 		Fpdf::Cell(5,5,'8.',0,0,'L');
 		Fpdf::Cell(40,5,'Blok',0,0,'L');
-		Fpdf::Cell(0,5,': --',0,1,'L');
+		Fpdf::Cell(0,5,": $blok_almarhum",0,1,'L');
 		Fpdf::Cell(0,4,'',0,1,'L');
 		Fpdf::Cell(0,6,'',0,1,'L');
 		Fpdf::Cell(27);
@@ -170,11 +217,21 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(70,5,'Pembina Tingkat I',0,1,'C');
 		Fpdf::Cell(107);
 		Fpdf::Cell(70,5,'NIP.19640919 199003 2 005',0,1,'C');
-		$nama_almarhum = $request->input('nama_almarhum');
 		Fpdf::Output('D',"Surat_Permohonan_$nama_almarhum.pdf");
 	}
 
 	function cetak_surat_perizinan(Request $request){
+		$tanggal_sekarang = $request->input('tanggal_sekarang');
+		$nama_ahli_waris = $request->input('nama_ahli_waris');
+		$alamat_ahli_waris = $request->input('alamat_ahli_waris');
+
+		$nama_almarhum = $request->input('nama_almarhum');
+		$ttl_almarhum = $this->tgl_indo($request->input('ttl_almarhum'));  
+		$jenis_kelamin_almarhum = $request->input('jenis_kelamin_almarhum');
+		$tpu_almarhum = $request->input('tpu_almarhum');
+		$tanggal_pemakaman = $this->tgl_indo($request->input('tanggal_pemakaman')); 
+		$blok_almarhum = $request->input('blok_almarhum');
+
 		Fpdf::AddPage();
 		Fpdf::Image(storage_path('app/logo_kota_malang.png'),30,4.5,20,25);
 		Fpdf::Cell(45);
@@ -266,37 +323,37 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Nama',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'Maria',0,1,'L');
+		Fpdf::Cell(5,4.5,"$nama_ahli_waris",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Alamat',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'Jl. Klayatan 47 Kota Malang',0,1,'L');
+		Fpdf::Cell(5,4.5,"$alamat_ahli_waris",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Untuk Makam Jenazah : ',0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Nama',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'Temu',0,1,'L');
+		Fpdf::Cell(5,4.5,"$nama_almarhum",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Jenis Kelamin',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'Perempuan',0,1,'L');
+		Fpdf::Cell(5,4.5,"$jenis_kelamin_almarhum",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Tanggal Lahir',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'Tahun 1901',0,1,'L');
+		Fpdf::Cell(5,4.5,"$ttl_almarhum",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Tanggal Pemakaman',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'29-06-1987',0,1,'L');
+		Fpdf::Cell(5,4.5,"$tanggal_pemakaman",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Di Tempat Pemakaman',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'TPU. SUKUN NASRANI',0,1,'L');
+		Fpdf::Cell(5,4.5,"$tpu_almarhum",0,1,'L');
 		Fpdf::Cell(35);
 		Fpdf::Cell(40,4.5,'Blok',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
-		Fpdf::Cell(5,4.5,'XIII/11425',0,1,'L');
+		Fpdf::Cell(5,4.5,"$blok_almarhum",0,1,'L');
 		Fpdf::Cell(10);
 		Fpdf::Cell(20,4.5,'KEDUA',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
@@ -310,7 +367,7 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(115);
 		Fpdf::Cell(70,4.5,'Ditetapkan di Malang,',0,1,'L');
 		Fpdf::Cell(115);
-		Fpdf::MultiCell(70,4.5,'Pada Tanggal, 16 Juli 2017',0,'L',false);
+		Fpdf::MultiCell(70,4.5,"Pada Tanggal, $tanggal_sekarang",0,'L',false);
 		Fpdf::Cell(115);
 		Fpdf::MultiCell(70,4.5,'CAMAT SUKUN KOTA MALANG,',0,'L',false);
 		Fpdf::Cell(115);

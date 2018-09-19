@@ -72,6 +72,7 @@ class Search extends Component {
       showitems:[],
       itemsperblok:[],
       blok:[],
+      details_almarhum:[],
       blokfilter:false,
       itemblokfilter:[],
       activename:null,
@@ -95,6 +96,19 @@ class Search extends Component {
             status=="Menunggu Persetujuan Kepala Kecamatan" ? 75:
             status=="Proses Selesai" ? 100:0
 
+  }
+
+  get_tanggal_sekarang() {
+    var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    // var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth();
+    // var thisDay = date.getDay(),
+    //   thisDay = myDays[thisDay];
+    var yy = date.getYear();
+    var year = (yy < 1000) ? yy + 1900 : yy;
+    return(day + ' ' + months[month] + ' ' + year);
   }
 
   update_status(id,newstatus){
@@ -123,8 +137,20 @@ class Search extends Component {
   acc_dinas(row){
     var status = 'Menunggu Persetujuan Kepala Kecamatan';
     this.update_status(row.id,status);
-    const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token') +
-                '&nama_almarhum='+row.nama_almarhum;
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+    +'&tanggal_sekarang='+this.get_tanggal_sekarang()            
+    +'&nama_ahli_waris='+row.nama_pewaris
+    +'&alamat_ahli_waris='+row.alamat_ahli_waris
+    +'&tanggal_wafat='+row.tanggal_wafat
+    +'&nama_almarhum='+row.nama_almarhum
+    +'&ttl_almarhum='+row.tanggal_lahir_alm
+    +'&ttl_ahli_waris='+row.tgllhr_ahli_waris
+    +'&jenis_kelamin_almarhum='+row.jenis_kelamin
+    +'&tpu_almarhum='+row.nama_tpu
+    +'&alamat_almarhum='+row.alamat_terakhir
+    +'&tanggal_pemakaman='+row.tanggal_pemakaman
+    +'&blok_almarhum='+row.kode_blok
+    
     window.location = url;
   }
 
@@ -336,10 +362,19 @@ class Search extends Component {
                   data={this.state.showitems}
                   resolveData={data => data.map(row => row)}
                   defaultPageSize={10}
-                  columns={[                    
+                  columns={[                 
                     {accessor:'id',show:false},
                     {accessor:'nama_almarhum',show:false},
-                    {accessor:'nik_ahli_waris',show:false},                    
+                    {accessor:'nik_ahli_waris',show:false},              
+                    {accessor:'alamat_ahli_waris',show:false},      
+                    {accessor:'tanggal_wafat',show:false},  
+                    {accessor:'tanggal_lahir_alm',show:false}, 
+                    {accessor:'tanggal_pemakaman',show:false}, 
+                    {accessor:'tgllhr_ahli_waris',show:false}, 
+                    {accessor:'jenis_kelamin',show:false}, 
+                    {accessor:'nama_tpu',show:false}, 
+                    {accessor:'alamat_terakhir',show:false}, 
+                    {accessor:'kode_blok',show:false}, 
                     {
                       Header: 'Nama Almarhum',
                       accessor: 'nama_almarhum', // String-based value accessors!

@@ -81,12 +81,20 @@ class CetakDokumen extends Component {
     //   thisDay = myDays[thisDay];
     var yy = date.getYear();
     var year = (yy < 1000) ? yy + 1900 : yy;
-    return(day + ' ' + months[month] + ' ' + year);
+    return (day + ' ' + months[month] + ' ' + year);
   }
 
   cetak_dokumen(row) {
-    const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token') +
-      '&nama_almarhum=' + row.nama_almarhum;
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token')
+    +'&tanggal_sekarang='+this.get_tanggal_sekarang()            
+    +'&nama_ahli_waris='+row.nama_pewaris
+    +'&alamat_ahli_waris='+row.alamat_ahli_waris
+    +'&nama_almarhum='+row.nama_almarhum
+    +'&ttl_almarhum='+row.tanggal_lahir_alm
+    +'&jenis_kelamin_almarhum='+row.jenis_kelamin
+    +'&tpu_almarhum='+row.nama_tpu
+    +'&tanggal_pemakaman='+row.tanggal_pemakaman
+    +'&blok_almarhum='+row.kode_blok
     window.location = url;
   }
 
@@ -118,7 +126,15 @@ class CetakDokumen extends Component {
                       { accessor: 'id', show: false },
                       { accessor: 'nama_almarhum', show: false },
                       { accessor: 'nik_ahli_waris', show: false },
-                      { accessor: 'kontak_ahli_waris', show: false },
+                      { accessor: 'alamat_ahli_waris', show: false },
+                      { accessor: 'tanggal_wafat', show: false },
+                      { accessor: 'tanggal_lahir_alm', show: false },
+                      { accessor: 'tanggal_pemakaman', show: false },
+                      { accessor: 'tgllhr_ahli_waris', show: false },
+                      { accessor: 'jenis_kelamin', show: false },
+                      { accessor: 'nama_tpu', show: false },
+                      { accessor: 'alamat_terakhir', show: false },
+                      { accessor: 'kode_blok', show: false },
                       {
                         Header: 'Nama Almarhum',
                         accessor: 'nama_almarhum', // String-based value accessors!
