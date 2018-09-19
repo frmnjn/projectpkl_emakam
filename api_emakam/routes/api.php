@@ -108,3 +108,4 @@ Route::middleware('cors')->get('notifikasi/view', 'NotifikasiController@view_not
 Route::middleware('cors')->put('notifikasi/update', 'NotifikasiController@update_notifikasi');
 
 
+
