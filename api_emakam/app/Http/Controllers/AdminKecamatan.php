@@ -106,6 +106,7 @@ class AdminKecamatan extends Controller{
 	}
 
 	function cetak_surat_permohonan(Request $request){
+		$no_surat_permohonan = $request->input('no_surat_permohonan');
 		$tanggal_sekarang = $request->input('tanggal_sekarang');
 		$nama_ahli_waris = $request->input('nama_ahli_waris');
 		$alamat_ahli_waris = $request->input('alamat_ahli_waris');
@@ -148,7 +149,7 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(10);
 		Fpdf::Cell(15,5,'Nomor',0,0,'L');
 		Fpdf::Cell(2,5,':',0,0,'L');
-		Fpdf::Cell(40,5,'469/4059/35.73.304/2018',0,1,'L');
+		Fpdf::Cell(40,5,"$no_surat_permohonan",0,1,'L');
 		Fpdf::Cell(10);
 		Fpdf::Cell(15,5,'Sifat',0,0,'L');
 		Fpdf::Cell(2,5,':',0,0,'L');

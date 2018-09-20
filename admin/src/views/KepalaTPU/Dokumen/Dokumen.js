@@ -84,7 +84,9 @@ class Search extends Component {
       activedata: [],
       activektp: null,
       activekk: null,
+      activenosurat:[],
 
+      no_surat:null
     };
 
 
@@ -129,7 +131,7 @@ class Search extends Component {
       })
   }
 
-  update_status_acc_dinas(id, newstatus, nosurat, tanggal) {
+  update_status_acc_dinas(id, newstatus) {
     fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
@@ -139,8 +141,8 @@ class Search extends Component {
       body: JSON.stringify({
         id: id,
         status: newstatus,
-        no_surat_permohonan: nosurat,
-        tanggal_surat_permohonan: tanggal
+        no_surat_permohonan: this.state.no_surat,
+        tanggal_surat_permohonan: this.get_tanggal_sekarang()
       })
     }).then((response) => response.json())
       .then((responseJson) => {
@@ -154,24 +156,27 @@ class Search extends Component {
     this.update_status(row.id, status)
   }
 
-  acc_dinas(row) {
+  acc_dinas = event => {
+    event.preventDefault();
     var status = 'Menunggu Persetujuan Kepala Kecamatan';
-    this.update_status_acc_dinas(row.id, status, '1', '');
+    this.update_status_acc_dinas(this.state.activenosurat.id, status);
     const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + this.get_tanggal_sekarang()
-      + '&nama_ahli_waris=' + row.nama_pewaris
-      + '&alamat_ahli_waris=' + row.alamat_ahli_waris
-      + '&tanggal_wafat=' + row.tanggal_wafat
-      + '&nama_almarhum=' + row.nama_almarhum
-      + '&ttl_almarhum=' + row.tanggal_lahir_alm
-      + '&ttl_ahli_waris=' + row.tgllhr_ahli_waris
-      + '&jenis_kelamin_almarhum=' + row.jenis_kelamin
-      + '&tpu_almarhum=' + row.nama_tpu
-      + '&alamat_almarhum=' + row.alamat_terakhir
-      + '&tanggal_pemakaman=' + row.tanggal_pemakaman
-      + '&blok_almarhum=' + row.kode_blok
+      + '&nama_ahli_waris=' + this.state.activenosurat.nama_pewaris
+      + '&alamat_ahli_waris=' + this.state.activenosurat.alamat_ahli_waris
+      + '&tanggal_wafat=' + this.state.activenosurat.tanggal_wafat
+      + '&nama_almarhum=' + this.state.activenosurat.nama_almarhum
+      + '&ttl_almarhum=' + this.state.activenosurat.tanggal_lahir_alm
+      + '&ttl_ahli_waris=' + this.state.activenosurat.tgllhr_ahli_waris
+      + '&jenis_kelamin_almarhum=' + this.state.activenosurat.jenis_kelamin
+      + '&tpu_almarhum=' + this.state.activenosurat.nama_tpu
+      + '&alamat_almarhum=' + this.state.activenosurat.alamat_terakhir
+      + '&tanggal_pemakaman=' + this.state.activenosurat.tanggal_pemakaman
+      + '&blok_almarhum=' + this.state.activenosurat.kode_blok
+      + '&no_surat_permohonan=' + this.state.no_surat
 
     window.location = url;
+    this.modalnosuratclose();
   }
 
   acc_kupt(id) {
@@ -239,34 +244,11 @@ class Search extends Component {
           });
         },
     )
-
-    // fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
-    //   .then(response => {
-    //     return response.json()
-    //   })
-    //   .then(
-    //     (json) => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         items: json,
-    //         showitems: json
-    //       });
-    //     },
-    //   )
-
-    //   fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
-    //   .then(response => {
-    //     return response.json()
-    //   })
-    //   .then(
-    //     (json) => {
-    //       this.setState({
-    //         blok: json,
-    //       });
-    //     },
-    //   )
   }
 
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   toggle(items) {
     this.setState({
@@ -284,6 +266,7 @@ class Search extends Component {
 
   nosuratmodal(items) {
     this.setState({
+      activenosurat: items,
       nosuratmodal: !this.state.nosuratmodal,
     })
   }
@@ -366,13 +349,14 @@ class Search extends Component {
           <Modal isOpen={this.state.nosuratmodal} toggle={this.modalnosuratclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalnosuratclose}>No Surat</ModalHeader>
             <ModalBody>
-              <form className="form-group" onSubmit=''>
+              <form className="form-group" onSubmit={this.acc_dinas}>
+                <div class="form-group">
                 <label>No Surat</label>
-                <input type="text" className="form-control" name="no_surat"></input>
+                <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input>
+                </div>
+                <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
               </form>
             </ModalBody>
-            <ModalFooter>
-            </ModalFooter>
           </Modal>
 
           <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
