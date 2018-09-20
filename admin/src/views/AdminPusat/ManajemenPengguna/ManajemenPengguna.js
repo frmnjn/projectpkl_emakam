@@ -213,7 +213,7 @@ class ManajemenPengguna extends Component {
   }
 
   handledelete(table_user) {
-    fetch('http://localhost:8000/api/delete_user/' + table_user.id_user+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/delete_user/' + table_user.id_user+"?token="+sessionStorage.getItem('token')+ '&role=' + sessionStorage.getItem('login_session'), {
       method: 'DELETE'
     })
     .then(

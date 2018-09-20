@@ -192,24 +192,48 @@ class AdminPusatController extends Controller
 
     function delete_user(Request $request, $id_user)
     {
+        $role = $request->input('role');
         $user = DB::table('user')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
-        $role_tpu = DB::table('role_tpu')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
         if(empty($user)){
             $msg = ([
                 'msg' => "Data User tidak ditemukan !"
             ]);
         } else {
-            if(empty($role_tpu)){
+            if($role==1||$role==2){
+                $role_tpu = DB::table('role_tpu')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
+                if(empty($role_tpu)){
+                    $user = User::findOrFail($id_user);
+                    $user->delete();
+                    $msg = ([
+                        'msg' => "User berhasil dihapus"
+                    ]);
+                } else {
+                    $msg = ([
+                        'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
+                    ]);
+                }
+            }else if($role==5||$role==4){
+                $role_kecamatan = DB::table('role_kecamatan')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
+                if(empty($role_kecamatan)){
+                    $user = User::findOrFail($id_user);
+                    $user->delete();
+                    $msg = ([
+                        'msg' => "User berhasil dihapus"
+                    ]);
+                } else {
+                    $msg = ([
+                        'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
+                    ]);
+                }
+            }else{
                 $user = User::findOrFail($id_user);
-                $user->delete();
-                $msg = ([
-                    'msg' => "User berhasil dihapus"
-                ]);
-            } else {
-                $msg = ([
-                    'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
-                ]);
+                    $user->delete();
+                    $msg = ([
+                        'msg' => "User berhasil dihapus"
+                    ]);
             }
+
+            
         }
         return response()->json($msg);
     }
