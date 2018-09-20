@@ -83,7 +83,7 @@ class ManajemenHakAksesKec extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/kecamatan/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/kecamatan/viewall?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {

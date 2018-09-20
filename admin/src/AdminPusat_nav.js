@@ -30,6 +30,11 @@ export default {
       icon: 'icon-pencil',
     },
     {
+      name: 'M. Akses Kecamatan',
+      url: '/ManajemenHakAksesKec',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'Cari Data',
       url: '/Search',
       icon: 'icon-magnifier',
