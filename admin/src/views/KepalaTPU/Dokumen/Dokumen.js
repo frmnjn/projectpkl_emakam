@@ -158,6 +158,7 @@ class Search extends Component {
   }
 
   acc_kec(row) {
+    alert('system are sending email, and processing the data. please wait...')
     var status = 'Proses Selesai'
     fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
