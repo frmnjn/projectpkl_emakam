@@ -56,6 +56,8 @@ class Search extends Component {
     this.toggleproggress = this.toggleproggress.bind(this);
     this.proggress = this.proggress.bind(this);
 
+    this.fetchdata = this.fetchdata.bind(this);
+
     this.update_status = this.update_status.bind(this);
     this.acc_kec = this.acc_kec.bind(this);
     this.acc_dinas = this.acc_dinas.bind(this);
@@ -67,6 +69,7 @@ class Search extends Component {
       radioSelected: 2,
       error: null,
       isLoaded: false,
+      isSend: false,
       isFiltered: true,
       filter_keyword: '',
       items: [],
@@ -84,12 +87,12 @@ class Search extends Component {
       activedata: [],
       activektp: null,
       activekk: null,
-      activenosurat:[],
+      activenosurat: [],
 
-      no_surat:null
+      no_surat: null
     };
 
-
+    this.fetchdata();
   }
 
   proggress(status) {
@@ -128,7 +131,9 @@ class Search extends Component {
     }).then((response) => response.json())
       .then((responseJson) => {
         alert('Update Success');
-      })
+      }).then(
+        this.fetchdata
+      )
   }
 
   update_status_acc_dinas(id, newstatus) {
@@ -147,12 +152,21 @@ class Search extends Component {
     }).then((response) => response.json())
       .then((responseJson) => {
         alert('Update Success');
-      })
+      }).then(
+        this.fetchdata
+      )
   }
 
   acc_kec(row) {
     var status = 'Proses Selesai'
-    fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan')
+    fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
+      isSend: true
+    })).then(console.log("sending"))
+
+    // if (this.state.isSend) {
+    //   alert("Notification Sent")
+    // }
+     
     this.update_status(row.id, status)
   }
 
@@ -203,6 +217,10 @@ class Search extends Component {
 
   componentDidMount() {
 
+
+  }
+
+  fetchdata() {
     fetch("http://localhost:8000/api/dokumen/view?token=" + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user') + '&role=' + sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
@@ -351,8 +369,8 @@ class Search extends Component {
             <ModalBody>
               <form className="form-group" onSubmit={this.acc_dinas}>
                 <div class="form-group">
-                <label>No Surat</label>
-                <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input>
+                  <label>No Surat</label>
+                  <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input>
                 </div>
                 <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
               </form>
