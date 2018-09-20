@@ -289,10 +289,10 @@ class ManajemenPengguna extends Component {
                       <select class="form-control"  onChange={this.handleChangeOptionActiveValue}>
                         <option value="0" selected={this.state.activevalueNum==0}>Admin Pusat</option>
                         <option value="1" selected={this.state.activevalueNum==1}>Admin TPU</option>
-                        <option value="2" selected={this.state.activevalueNum==2}>Admin Kelurahan</option>
-                        <option value="3" selected={this.state.activevalueNum==3}>Kepala UPT Pemakaman</option>
-                        <option value="4" selected={this.state.activevalueNum==4}>Kepala Dinas Perkim</option>
-                        <option value="5" selected={this.state.activevalueNum==5}>Camat</option>
+                        <option value="2" selected={this.state.activevalueNum==2}>Kepala UPT</option>
+                        <option value="3" selected={this.state.activevalueNum==3}>Kepala Dinas</option>
+                        <option value="4" selected={this.state.activevalueNum==4}>Kepala Kecamatan</option>
+                        <option value="5" selected={this.state.activevalueNum==5}>Admin Kecamatan</option>
                         <option value="6" selected={this.state.activevalueNum==6}>Pengguna</option>
                       </select>
                     </div>
