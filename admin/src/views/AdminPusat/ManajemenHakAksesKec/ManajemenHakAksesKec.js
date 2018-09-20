@@ -160,7 +160,8 @@ class ManajemenHakAksesKec extends Component {
       .then(
         this.setState({
           primary: !this.state.primary
-        })
+        }),
+        alert('update sukses'),
       );
   }
 
@@ -182,7 +183,9 @@ class ManajemenHakAksesKec extends Component {
         .then(
           this.setState({
             large: !this.state.large
-          })
+          }),
+          alert("Update sukses"),
+
         );
     
   }

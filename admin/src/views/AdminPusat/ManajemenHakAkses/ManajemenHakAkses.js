@@ -138,7 +138,7 @@ class ManajemenHakAkses extends Component {
       this.state.activeid_user = table_constraint_user.id_user,
       this.state.activeusername = table_constraint_user.username,
       this.state.active_id_role_tpu = table_constraint_user.id_role_tpu,
-      alert(this.state.active_id_role_tpu);
+      // alert(this.state.active_id_role_tpu);
       this.setState({
         large: !this.state.large,
       });
@@ -162,7 +162,7 @@ class ManajemenHakAkses extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      }, 
       body: JSON.stringify({
         id_tpu: this.state.value_tpu,
         id_user: this.state.value_user
@@ -171,6 +171,7 @@ class ManajemenHakAkses extends Component {
       this.fetchall
     )
       .then(
+        alert('update sukses'),
         this.setState({
           primary: !this.state.primary
         })
@@ -195,7 +196,9 @@ class ManajemenHakAkses extends Component {
         .then(
           this.setState({
             large: !this.state.large
-          })
+          }),
+          alert('update sukses'),
+
         );
     }
   }
