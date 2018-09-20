@@ -117,6 +117,25 @@ class CetakDokumen extends Component {
   nomor_surat = event => {
     event.preventDefault();
     this.update_no_surat_perizinan(this.state.activenosurat.id);
+<<<<<<< HEAD
+=======
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token')
+    +'&tanggal_sekarang='+this.get_tanggal_sekarang()            
+    +'&nama_ahli_waris='+this.state.activenosurat.nama_pewaris
+    +'&alamat_ahli_waris='+this.state.activenosurat.alamat_ahli_waris
+    +'&nama_almarhum='+this.state.activenosurat.nama_almarhum
+    +'&ttl_almarhum='+this.state.activenosurat.tanggal_lahir_alm
+    +'&jenis_kelamin_almarhum='+this.state.activenosurat.jenis_kelamin
+    +'&tpu_almarhum='+this.state.activenosurat.nama_tpu
+    +'&tanggal_pemakaman='+this.state.activenosurat.tanggal_pemakaman
+    +'&blok_almarhum='+this.state.activenosurat.kode_blok
+    +'&no_surat_perizinan='+this.state.no_surat
+    +'&no_surat_permohonan='+this.state.activenosurat.no_surat_permohonan
+    +'&tanggal_surat_permohonan='+this.state.activenosurat.tanggal_surat_permohonan
+    +'&id_kecamatan='+this.state.activenosurat.id_kecamatan
+    window.location = url;
+
+>>>>>>> e7ff35ef6641201567841778bdfd875caced6bf0
     this.modalnosuratclose();
   }
 
@@ -175,6 +194,7 @@ class CetakDokumen extends Component {
 
 
   render() {
+    console.log(this.state.items);
     if (!this.state.isLoaded) {
       return (<div style={{ display: 'flex', justifyContent: 'center', margin: 100 }}>
         <div className='sweet-loading'>
@@ -211,6 +231,7 @@ class CetakDokumen extends Component {
                     defaultPageSize={10}
                     columns={[
                       { accessor: 'id', show: false },
+                      { accessor: 'id_kecamatan', show: false },
                       { accessor: 'nama_almarhum', show: false },
                       { accessor: 'no_surat_perizinan', show: false },
                       { accessor: 'tanggal_surat_permohonan', show: false },
