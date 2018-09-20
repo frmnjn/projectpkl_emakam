@@ -41,6 +41,7 @@ class CetakDokumen extends Component {
     super(props);
 
     this.cetak_dokumen = this.cetak_dokumen.bind(this);
+    this.modalnosuratclose = this.modalnosuratclose.bind(this);
     // this.get_active_row = this.get_active_row.bind(this);
 
     this.state = {
@@ -53,6 +54,10 @@ class CetakDokumen extends Component {
       activetanggal_sekarang: null,
       activenik_ahli_waris: null,
       activekontak_ahli_waris: null,
+
+      activenosurat:[],
+
+      no_surat:null
     };
   }
 
@@ -71,6 +76,25 @@ class CetakDokumen extends Component {
     )
   }
 
+  update_no_surat_perizinan(id) {
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        status: 'Proses Selesai',
+        no_surat_perizinan: this.state.no_surat,
+        tanggal_surat_permohonan: this.get_tanggal_sekarang()
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        //alert('Update Success');
+      })
+  }
+
   get_tanggal_sekarang() {
     var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     // var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
@@ -84,18 +108,42 @@ class CetakDokumen extends Component {
     return (day + ' ' + months[month] + ' ' + year);
   }
 
-  cetak_dokumen(row) {
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  cetak_dokumen = event => {
+    event.preventDefault();
+    this.update_no_surat_perizinan(this.state.activenosurat.id);
     const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token')
     +'&tanggal_sekarang='+this.get_tanggal_sekarang()            
-    +'&nama_ahli_waris='+row.nama_pewaris
-    +'&alamat_ahli_waris='+row.alamat_ahli_waris
-    +'&nama_almarhum='+row.nama_almarhum
-    +'&ttl_almarhum='+row.tanggal_lahir_alm
-    +'&jenis_kelamin_almarhum='+row.jenis_kelamin
-    +'&tpu_almarhum='+row.nama_tpu
-    +'&tanggal_pemakaman='+row.tanggal_pemakaman
-    +'&blok_almarhum='+row.kode_blok
+    +'&nama_ahli_waris='+this.state.activenosurat.nama_pewaris
+    +'&alamat_ahli_waris='+this.state.activenosurat.alamat_ahli_waris
+    +'&nama_almarhum='+this.state.activenosurat.nama_almarhum
+    +'&ttl_almarhum='+this.state.activenosurat.tanggal_lahir_alm
+    +'&jenis_kelamin_almarhum='+this.state.activenosurat.jenis_kelamin
+    +'&tpu_almarhum='+this.state.activenosurat.nama_tpu
+    +'&tanggal_pemakaman='+this.state.activenosurat.tanggal_pemakaman
+    +'&blok_almarhum='+this.state.activenosurat.kode_blok
+    +'&no_surat_perizinan='+this.state.no_surat
+    +'&no_surat_permohonan='+this.state.activenosurat.no_surat_permohonan
+    +'&tanggal_surat_permohonan='+this.state.activenosurat.tanggal_surat_permohonan
     window.location = url;
+
+    this.modalnosuratclose();
+  }
+
+  nosuratmodal(items) {
+    this.setState({
+      activenosurat: items,
+      nosuratmodal: !this.state.nosuratmodal,
+    })
+  }
+
+  modalnosuratclose() {
+    this.setState({
+      nosuratmodal: !this.state.nosuratmodal,
+    });
   }
 
 
@@ -111,6 +159,18 @@ class CetakDokumen extends Component {
     } else {
       return (
         <div className="animated fadeIn">
+        <Modal isOpen={this.state.nosuratmodal} toggle={this.modalnosuratclose} className={'modal-Large ' + this.props.className}>
+            <ModalHeader toggle={this.modalnosuratclose}>No Surat</ModalHeader>
+            <ModalBody>
+              <form className="form-group" onSubmit={this.cetak_dokumen}>
+                <div class="form-group">
+                <label>No Surat</label>
+                <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input>
+                </div>
+                <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
+              </form>
+            </ModalBody>
+          </Modal>
           <Row>
             <Col>
               <Card>
@@ -125,6 +185,8 @@ class CetakDokumen extends Component {
                     columns={[
                       { accessor: 'id', show: false },
                       { accessor: 'nama_almarhum', show: false },
+                      { accessor: 'tanggal_surat_permohonan', show: false },
+                      { accessor: 'no_surat_permohonan', show: false },
                       { accessor: 'nik_ahli_waris', show: false },
                       { accessor: 'alamat_ahli_waris', show: false },
                       { accessor: 'tanggal_wafat', show: false },
@@ -157,7 +219,7 @@ class CetakDokumen extends Component {
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.cetak_dokumen(row.row)} className="mr-1">Cetak Dokumen</Button>
+                            <Button color="info" onClick={() => this.nosuratmodal(row.row)} className="mr-1">Cetak Dokumen</Button>
                           </div>
                         )
                       },

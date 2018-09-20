@@ -54,7 +54,7 @@ class AdminKecamatan extends Controller{
         ->join('blok_makam','makam.id_blok','=','blok_makam.id_blok')
         ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
         ->where('dokumen.kelengkapan_dokumen','=','Lengkap','AND','dokumen.status','=','Proses Selesai')
-        ->select('dokumen.id','dokumen.nama_almarhum','dokumen.nama_pewaris','dokumen.tgllhr_ahli_waris','dokumen.email','dokumen.pekerjaan_ahli_waris','dokumen.file_ktp','dokumen.file_kk','dokumen.file_surat_izin','dokumen.kelengkapan_dokumen','dokumen.status','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
+        ->select('dokumen.*','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
         ->distinct()
         ->get();
 
@@ -239,6 +239,9 @@ class AdminKecamatan extends Controller{
 	}
 
 	function cetak_surat_perizinan(Request $request){
+		$no_surat_perizinan = $request->input('no_surat_perizinan');
+		$no_surat_permohonan = $request->input('no_surat_permohonan');
+		$tanggal_surat_permohonan = $request->input('tanggal_surat_permohonan');
 		$tanggal_sekarang = $request->input('tanggal_sekarang');
 		$nama_ahli_waris = $request->input('nama_ahli_waris');
 		$alamat_ahli_waris = $request->input('alamat_ahli_waris');
@@ -275,7 +278,7 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(0,7,'',0,1,'R');
 		Fpdf::SetFont('Times','B','10');
 		Fpdf::Cell(0,4.5,'KEPUTUSAN CAMAT SUKUN KOTA MALANG',0,1,'C');
-		Fpdf::Cell(0,4.5,'NOMOR : 188.451/1006/35.73.04/2017',0,1,'C');
+		Fpdf::Cell(0,4.5,"NOMOR : $no_surat_perizinan",0,1,'C');
 		Fpdf::Cell(0,4.5,'TENTANG',0,1,'C');
 		Fpdf::Cell(0,4.5,'IZIN PENGGUNAAN TANAH MAKAM/MAKAM TUMPANGAN',0,1,'C');
 		Fpdf::Cell(0,4.5,'CAMAT SUKUN,',0,1,'C');
@@ -285,12 +288,12 @@ class AdminKecamatan extends Controller{
 		Fpdf::Cell(25,4.5,'Menimbang',0,0,'L');
 		Fpdf::Cell(5,4.5,':',0,0,'L');
 		Fpdf::Cell(5,4.5,'a.',0,0,'L');
-		Fpdf::MultiCell(140,4.5,'Bahwa PERMOHONAN lain Penggunaan Tanah Makam/Makam Tumpangan dari Sdr. Maria Tanggal 3 Juli 2017 Walikota Malang Nomor 12 Tahun 2015 tentang Tata Cara Pelayanan Perizinan di Kecamatan;',0,'J',false);
+		Fpdf::MultiCell(140,4.5,"Bahwa PERMOHONAN lain Penggunaan Tanah Makam/Makam Tumpangan dari Sdr. $nama_ahli_waris Tanggal 3 Juli 2017 Walikota Malang Nomor 12 Tahun 2015 tentang Tata Cara Pelayanan Perizinan di Kecamatan;",0,'J',false);
 		Fpdf::Cell(10);
 		Fpdf::Cell(25,4.5,'',0,0,'L');
 		Fpdf::Cell(5,4.5,'',0,0,'L');
 		Fpdf::Cell(5,4.5,'b.',0,0,'L');
-		Fpdf::MultiCell(140,4.5,'Bahwa sesuai rekomendasi Dinas Perumahan Dan Kawasan Permukiman No. 469/2740/35.73.304/2017 Tanggal 16 Juni 2017 perihal Perpanjangan Ijin Penggunaan Tanah Makam;',0,'J',false);
+		Fpdf::MultiCell(140,4.5,"Bahwa sesuai rekomendasi Dinas Perumahan Dan Kawasan Permukiman No. $no_surat_permohonan Tanggal $tanggal_surat_permohonan perihal Perpanjangan Ijin Penggunaan Tanah Makam;",0,'J',false);
 		Fpdf::Cell(10);
 		Fpdf::Cell(25,4.5,'',0,0,'L');
 		Fpdf::Cell(5,4.5,'',0,0,'L');
