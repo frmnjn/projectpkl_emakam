@@ -118,7 +118,7 @@ class Search extends Component {
   }
 
   update_status(id, newstatus) {
-    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -137,7 +137,7 @@ class Search extends Component {
   }
 
   update_status_acc_dinas(id, newstatus) {
-    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -160,7 +160,7 @@ class Search extends Component {
   acc_kec(row) {
     alert('system are sending email, and processing the data. please wait...')
     var status = 'Proses Selesai'
-    fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
+    fetch('http://178.128.81.239:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
     })).then(console.log("sending"))
 
@@ -175,7 +175,7 @@ class Search extends Component {
     event.preventDefault();
     var status = 'Menunggu Persetujuan Kepala Kecamatan';
     this.update_status_acc_dinas(this.state.activenosurat.id, status);
-    const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+    const url = 'http://178.128.81.239:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + this.get_tanggal_sekarang()
       + '&nama_ahli_waris=' + this.state.activenosurat.nama_pewaris
       + '&alamat_ahli_waris=' + this.state.activenosurat.alamat_ahli_waris
@@ -200,7 +200,7 @@ class Search extends Component {
   }
 
   cek_kelengkapan(id) {
-    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -222,7 +222,7 @@ class Search extends Component {
   }
 
   fetchdata() {
-    fetch("http://localhost:8000/api/dokumen/view?token=" + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user') + '&role=' + sessionStorage.getItem('login_session'))
+    fetch("http://178.128.81.239:8000/api/dokumen/view?token=" + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user') + '&role=' + sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
@@ -381,19 +381,19 @@ class Search extends Component {
           <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalktpclose}>KTP</ModalHeader>
             <ModalBody>
-              <img src={"http://localhost:8000/storage" + this.state.activektp} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://178.128.81.239:8000/storage" + this.state.activektp} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalkkclose}>KK</ModalHeader>
             <ModalBody>
-              <img src={"http://localhost:8000/storage" + this.state.activekk} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://178.128.81.239:8000/storage" + this.state.activekk} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.suratmodal} toggle={this.modalsuratclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalsuratclose}>Surat Permohonan</ModalHeader>
             <ModalBody>
-              <img src={"http://localhost:8000/storage" + this.state.activesurat} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://178.128.81.239:8000/storage" + this.state.activesurat} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.modalprogress} toggle={this.toggleproggress} className={'modal-Large ' + this.props.className}>
