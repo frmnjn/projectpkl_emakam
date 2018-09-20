@@ -213,15 +213,21 @@ class RegistrasiPerijinanMakam extends Component {
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris,
       })
-    })
-
-    fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson.id_penghuni_makam)
+      data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
+      
+      fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data
       }).then((response) => response.json())
         .then((responseJson) => {
           alert(responseJson);
         })
+    })
+
+    
   }
   render() {
     return (

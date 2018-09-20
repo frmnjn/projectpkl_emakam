@@ -49,9 +49,15 @@ class AdminKecamatan extends Controller{
 		$view = DB::table('dokumen')
 		->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
 		->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
-		->where('role_kecamatan.id_user','=',$id_user)
-		->select('*')
-		->get();
+		->join('penghuni_makam', 'dokumen.nama_pewaris', '=', 'penghuni_makam.nama_ahli_waris')
+        ->join('makam','penghuni_makam.id_makam','=','makam.id_makam')
+        ->join('blok_makam','makam.id_blok','=','blok_makam.id_blok')
+        ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
+        ->where('dokumen.kelengkapan_dokumen','=','Lengkap','AND','dokumen.status','=','Proses Selesai')
+        ->select('dokumen.id','dokumen.nama_almarhum','dokumen.nama_pewaris','dokumen.tgllhr_ahli_waris','dokumen.email','dokumen.pekerjaan_ahli_waris','dokumen.file_ktp','dokumen.file_kk','dokumen.file_surat_izin','dokumen.kelengkapan_dokumen','dokumen.status','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
+        ->distinct()
+        ->get();
+
 		return response()->json($view);
 	}
 
