@@ -70,18 +70,18 @@ class ManajemenHakAksesKec extends Component {
 
   fetchall() {
 
-    fetch('http://178.128.81.239:8000/api/user/view?token=' + sessionStorage.getItem('token'))
-      .then(response => response.json())
-      .then(
-        (result) => {
-          result = result.filter(function (item) {
-            return item.role.toString().search('1') !== -1;
-          })
-          this.setState({
-            table_user: result
-          });
-        },
-    )
+    // fetch('http://178.128.81.239:8000/api/user/view?token=' + sessionStorage.getItem('token'))
+    //   .then(response => response.json())
+    //   .then(
+    //     (result) => {
+    //       result = result.filter(function (item) {
+    //         return item.role.toString().search('1') !== -1;
+    //       })
+    //       this.setState({
+    //         table_user: result
+    //       });
+    //     },
+    // )
 
     fetch('http://178.128.81.239:8000/api/kecamatan/viewall?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
@@ -93,14 +93,14 @@ class ManajemenHakAksesKec extends Component {
         },
     )
 
-    fetch('http://178.128.81.239:8000/api/kecamatan/constraint_user?token=' + sessionStorage.getItem('token'))
+    fetch('http://178.128.81.239:8000/api/user/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
-          // result = result.filter(function (item) {
-          //   return item.role.toString().search('4') !== -1||
-          //   item.role.toString().search('5') !== -1;
-          // })
+          result = result.filter(function (item) {
+            return item.role.toString().search('4') !== -1||
+            item.role.toString().search('5') !== -1;
+          })
           this.setState({
             table_constraint_user: result,
             isLoaded: true
