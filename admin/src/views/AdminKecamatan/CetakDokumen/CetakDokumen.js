@@ -128,6 +128,7 @@ class CetakDokumen extends Component {
     +'&no_surat_perizinan='+this.state.no_surat
     +'&no_surat_permohonan='+this.state.activenosurat.no_surat_permohonan
     +'&tanggal_surat_permohonan='+this.state.activenosurat.tanggal_surat_permohonan
+    +'&id_kecamatan='+this.state.activenosurat.id_kecamatan
     window.location = url;
 
     this.modalnosuratclose();
@@ -148,6 +149,7 @@ class CetakDokumen extends Component {
 
 
   render() {
+    console.log(this.state.items);
     if (!this.state.isLoaded) {
       return (<div style={{ display: 'flex', justifyContent: 'center', margin: 100 }}>
         <div className='sweet-loading'>
@@ -184,6 +186,7 @@ class CetakDokumen extends Component {
                     defaultPageSize={10}
                     columns={[
                       { accessor: 'id', show: false },
+                      { accessor: 'id_kecamatan', show: false },
                       { accessor: 'nama_almarhum', show: false },
                       { accessor: 'tanggal_surat_permohonan', show: false },
                       { accessor: 'no_surat_permohonan', show: false },

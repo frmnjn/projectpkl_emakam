@@ -29,7 +29,7 @@ class KepalaTPUController extends Controller{
             ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->where('role_kecamatan.id_user','=',$id_user)
-            ->select('*')
+            ->select('dokumen.*','kecamatan.*','role_kecamatan.*')
             ->get();
 
             return $view;
