@@ -43,6 +43,7 @@ class CetakDokumen extends Component {
     this.cetak_dokumen = this.cetak_dokumen.bind(this);
     this.modalnosuratclose = this.modalnosuratclose.bind(this);
     this.get_tanggal_sekarang = this.get_tanggal_sekarang.bind(this);
+    this.update_no_surat_perizinan = this.update_no_surat_perizinan.bind(this);
 
     // this.get_active_row = this.get_active_row.bind(this);
 
@@ -64,12 +65,14 @@ class CetakDokumen extends Component {
   }
 
   componentDidMount() {
-    fetch("http://178.128.81.239:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
       .then(
         (json) => {
+          console.log(json);
+          
           this.setState({
             isLoaded: true,
             items: json,
@@ -78,24 +81,7 @@ class CetakDokumen extends Component {
     )
   }
 
-  update_no_surat_perizinan(id) {
-    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: id,
-        status: 'Proses Selesai',
-        no_surat_perizinan: this.state.no_surat,
-        tanggal_surat_perizinin: this.get_tanggal_sekarang()
-      })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        //alert('Update Success');
-      })
-  }
+  
 
   get_tanggal_sekarang() {
     var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -117,7 +103,7 @@ class CetakDokumen extends Component {
 
   surat_permohonan = (items) =>{
     if(items.no_surat_perizinan!=null){
-      const url = 'http://178.128.81.239:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+      const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + items.tanggal_surat_permohonan
       + '&nama_ahli_waris=' + items.nama_pewaris
       + '&alamat_ahli_waris=' + items.alamat_ahli_waris
@@ -138,7 +124,7 @@ class CetakDokumen extends Component {
   cetak_dokumen = (items) => {
     // event.preventDefault();
     if(items.no_surat_perizinan!=null){
-      const url = 'http://178.128.81.239:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token')
+      const url = 'http://localhost:8000/api/dokumen/cetak_surat_perizinan?token=' + sessionStorage.getItem('token')
       +'&tanggal_sekarang='+items.tanggal_surat_perizinin          
       +'&nama_ahli_waris='+items.nama_pewaris
       +'&alamat_ahli_waris='+items.alamat_ahli_waris
@@ -157,6 +143,25 @@ class CetakDokumen extends Component {
     }
   }
 
+  update_no_surat_perizinan(id) {
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        status: 'Proses Selesai',
+        no_surat_perizinan: this.state.no_surat,
+        tanggal_surat_perizinin: this.get_tanggal_sekarang()
+      })
+    }).then((response) => response.json())
+      .then((responsejson) => {
+        alert('Update Success');
+      })
+  }
+
   nosuratmodal(items) {
     this.setState({
       activenosurat: items,
@@ -172,7 +177,7 @@ class CetakDokumen extends Component {
 
 
   render() {
-    console.log(this.state.items);
+    // console.log(this.state.items);
     if (!this.state.isLoaded) {
       return (<div style={{ display: 'flex', justifyContent: 'center', margin: 100 }}>
         <div className='sweet-loading'>
@@ -187,12 +192,12 @@ class CetakDokumen extends Component {
         <Modal isOpen={this.state.nosuratmodal} toggle={this.modalnosuratclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalnosuratclose}>No Surat</ModalHeader>
             <ModalBody>
-              <form className="form-group" onSubmit={this.nomor_surat}>
+              <form className="form-group" onSubmit=''>
                 <div class="form-group">
                 <label>No Surat</label>
-                <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input>
+                <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input><br/>
+                <Button onClick={()=>this.update_no_surat_perizinan(this.state.activenosurat.id)}>Atur</Button>
                 </div>
-                <input type="submit" className="form-control btn btn-primary" Value="Submit"></input>
               </form>
             </ModalBody>
           </Modal>
@@ -206,6 +211,7 @@ class CetakDokumen extends Component {
                   <ReactTable
                     data={this.state.items}
                     resolveData={data => data.map(row => row)}
+                    filterable
                     defaultPageSize={10}
                     columns={[
                       { accessor: 'id', show: false },
@@ -225,6 +231,10 @@ class CetakDokumen extends Component {
                       { accessor: 'nama_tpu', show: false },
                       { accessor: 'alamat_terakhir', show: false },
                       { accessor: 'kode_blok', show: false },
+                      {
+                        Header: 'Nomor Surat',
+                        accessor: 'no_surat_perizinan', // String-based value accessors!
+                      },
                       {
                         Header: 'Nama Almarhum',
                         accessor: 'nama_almarhum', // String-based value accessors!

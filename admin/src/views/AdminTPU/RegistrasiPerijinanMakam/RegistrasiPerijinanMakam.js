@@ -77,7 +77,7 @@ class RegistrasiPerijinanMakam extends Component {
   }
 
   componentDidMount() {
-    fetch('http://178.128.81.239:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -111,7 +111,7 @@ class RegistrasiPerijinanMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -193,7 +193,7 @@ class RegistrasiPerijinanMakam extends Component {
     //   console.log(value);
     // }
 
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -218,7 +218,7 @@ class RegistrasiPerijinanMakam extends Component {
       console.log(responseJson.id_penghuni_makam)
       data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
       
-      fetch('http://178.128.81.239:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
+      fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data
       }).then((response) => response.json())
@@ -327,7 +327,17 @@ class RegistrasiPerijinanMakam extends Component {
                         <input type="file" onChange={this.onchange} class="form-control-file" name="file_surat_izin" />
                         </label>
                         <br />
-                        <br /><hr/>
+                        <label for="file_sk">
+                          Scan Surat Kematian:
+                        <input type="file" onChange={this.onchange} class="form-control-file" name="file_sk" />
+                        </label>
+                        <br />
+                        <label for="file_sk_lama">
+                          Scan SK lama (optional):
+                        <input type="file" onChange={this.onchange} class="form-control-file" name="file_sk_lama" />
+                        </label>
+                        <br />
+                        <hr/>
                         <input  type="submit" value="Submit"></input>
                     </div>
                   </form>

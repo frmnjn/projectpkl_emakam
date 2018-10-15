@@ -49,7 +49,7 @@ class AdminKecamatan extends Controller{
 		$view = DB::table("dokumen")
 		->join("kecamatan", "kecamatan.id_kecamatan", "=", "dokumen.id_kecamatan")
 		->join("role_kecamatan", "role_kecamatan.id_kecamatan", "=", "dokumen.id_kecamatan")
-		->join("penghuni_makam", "dokumen.nama_pewaris", "=", "penghuni_makam.nama_ahli_waris")
+		->join("penghuni_makam", "dokumen.id_penghuni_makam", "=", "penghuni_makam.id_penghuni_makam")
         ->join("makam","penghuni_makam.id_makam","=","makam.id_makam")
         ->join("blok_makam","makam.id_blok","=","blok_makam.id_blok")
         ->join("tpu","blok_makam.id_tpu","=","tpu.id_tpu")

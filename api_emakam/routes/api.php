@@ -69,6 +69,7 @@ Route::middleware('cors')->get('makam/view', 'AdminTPUController@view_makam');
 Route::middleware('cors')->post('makam/create', 'AdminTPUController@create_makam');
 Route::middleware('cors')->put('makam/edit/{id}', 'AdminTPUController@edit_makam');
 Route::middleware('cors')->delete('makam/delete/{id}', 'AdminTPUController@delete_makam');
+Route::middleware('cors')->delete('makam/delete_ex', 'AdminTPUController@delete_expire_makam');
 
 //blok makam
 Route::middleware('cors')->get('blok/view', 'AdminTPUController@view_blok');

@@ -43,7 +43,7 @@ import GoogleMapReact from 'google-map-react';
 import { RingLoader } from 'react-spinners';
 import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
 
-
+import moment from 'moment';
 import 'react-table/react-table.css'
 
 const brandPrimary = getStyle('--primary')
@@ -109,7 +109,7 @@ class Makam extends Component {
     this.fetchmakam()
     this.fetchpenghuni()
     
-    fetch("http://178.128.81.239:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -124,7 +124,7 @@ class Makam extends Component {
   }
 
   fetchmakam(){
-    fetch("http://178.128.81.239:8000/api/makam/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/makam/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -139,7 +139,7 @@ class Makam extends Component {
   }
 
   fetchpenghuni(){
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -152,7 +152,7 @@ class Makam extends Component {
 
   handleEdit(items){
     
-    fetch('http://178.128.81.239:8000/api/makam/edit/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/edit/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -166,6 +166,7 @@ class Makam extends Component {
         lng:this.state.lng
       })
     }).then(
+      alert('update sukses'),
       this.fetchmakam
     ).then(
       this.setState({
@@ -176,7 +177,7 @@ class Makam extends Component {
 
   handleCreate(){
     
-    fetch('http://178.128.81.239:8000/api/makam/create?token='+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/create?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -190,6 +191,7 @@ class Makam extends Component {
         lng:this.state.lng,
       })
     }).then(
+      alert('create sukses'),
       this.fetchmakam
     ).then(
       this.setState({
@@ -200,14 +202,36 @@ class Makam extends Component {
 
   handleDelete(){
     
-    fetch('http://178.128.81.239:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
+      alert('delte sukses'),
       this.fetchmakam
     ).then(
       this.setState({
         small:!this.state.small
       })
+    )
+  }
+
+  mapClicked(mapProps, map, event) {
+    this.setState({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
+    })
+  }
+
+  handleDeleteEx(){
+    
+    fetch('http://localhost:8000/api/makam/delete_ex'+"?token="+sessionStorage.getItem('token'), {
+      method: 'DELETE',
+    }).then(response => response.json())
+    .then(
+      (result) => {
+        console.log(result)
+      }).then(
+      alert('delte sukses'),
+      this.fetchmakam
     )
   }
 
@@ -250,17 +274,34 @@ class Makam extends Component {
 
   status_terisi(data){
     var item = this.state.penghuni
+    var today = moment()
+
     item = item.filter(function(item){
-      return item.id_makam.toString().search(data.toString())!== -1
+      return item.id_makam.toString().search(data.id_makam.toString())!== -1
     })
 
-    var status='Kosong'
+    var status='yellow'
+    var ms = today.diff(moment(data.created_at));
+    var yearspan= Math.floor(moment.duration(ms).asYears())
 
     item.map((items)=>{
       status='Terisi'
     })
 
-    return status    
+    if(status=='Terisi'){
+      if(yearspan<2){
+        status = 'red'
+      }else if(yearspan<3)
+      {
+        status = 'grey'
+      }else{
+        status = 'green'
+      }
+
+      
+    }
+
+    return status
   }
 
 
@@ -550,6 +591,7 @@ class Makam extends Component {
                       <Col col="10" ><strong>Manajemen Makam</strong></Col>
                       <Col col="2" className="text-right">
                         <Button onClick={this.toggleCreate}   outline color="primary">Create</Button>
+                        <Button onClick={this.handleDeleteEx}   outline color="primary">Delete Old Data</Button>
                       </Col>
                     </Row>
                   </CardHeader>
@@ -563,32 +605,70 @@ class Makam extends Component {
                         {accessor:'kode_blok',show:false},
                         {accessor:'lat',show:false},
                         {accessor:'lng',show:false},
+                        {accessor:'nomor_makam',show:false},
+                        {accessor:'created_at',show:false},
                         {
-                          Header: 'Nomor Makam',
-                          accessor: 'nomor_makam' // String-based value accessors!
+                          Header: 'Nomor Makam', 
+                          // accessor: 'nomor_makam', // String-based value accessors!
+                          Cell: row=>(
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor:this.status_terisi(row.row),
+                                borderRadius: "2px",
+                              }}
+                            
+                            >{row.row.nomor_makam}
+                            </div>
+                          )
                         },
                         {
                           Header: 'Kode Makam',
-                          accessor: 'kode_makam' // String-based value accessors!
+                          accessor: 'kode_makam', // String-based value accessors!
+                          Cell: row=>(
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor:this.status_terisi(row.row),
+                                borderRadius: "2px",
+                              }}
+                            
+                            >{row.row.kode_makam}
+                            </div>
+                          )
                         },
                         {
                           Header: 'Kode Blok',
-                          accessor: 'kode_blok' // String-based value accessors!
+                          accessor: 'kode_blok', // String-based value accessors!
+                          Cell: row=>(
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor:this.status_terisi(row.row),
+                                borderRadius: "2px",
+                              }}
+                            
+                            >{row.row.kode_blok}
+                            </div>
+                          )
                         },
                         {
                           Header: 'TPU',
                           accessor: 'nama_tpu', // String-based value accessors!
-                        },
-                        {
-                          Header: 'Status Terisi',
-                          Cell: row => (
-                            <div>{this.status_terisi(row.row.id_makam)}</div>
-                          )
-                        },
-                        {
-                          Header: 'Status Penghuni',
-                          Cell: row => (
-                            <div>{this.status_penghuni(row.row.id_makam)}</div>
+                          Cell: row=>(
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor:this.status_terisi(row.row),
+                                borderRadius: "2px",
+                              }}
+                            
+                            >{row.row.nama_tpu}
+                            </div>
                           )
                         },
                         {

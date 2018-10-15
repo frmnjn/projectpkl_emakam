@@ -119,7 +119,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   fetchall() {
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -128,7 +128,7 @@ class ManajemenDataPenghuniMakam extends Component {
           }); //console.log(result);
         },
     ).then(
-      fetch('http://178.128.81.239:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+      fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
         .then(response => response.json())
         .then(
           (result) => {
@@ -247,7 +247,7 @@ class ManajemenDataPenghuniMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -280,7 +280,7 @@ class ManajemenDataPenghuniMakam extends Component {
   handleSubmitEdit = event => {
     event.preventDefault();
 
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/update/' + this.state.activeid_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/penghuni_makam/update/' + this.state.activeid_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -311,7 +311,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   handledelete(list) {
-    fetch('http://178.128.81.239:8000/api/penghuni_makam/delete/' + list.id_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/penghuni_makam/delete/' + list.id_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
@@ -588,17 +588,17 @@ class ManajemenDataPenghuniMakam extends Component {
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button outline color="info" onClick={() => this.toggle(row.row)} className="mr-1">Lihat</Button>)
+                            Cell: row => (<Button outline color="info" onClick={() => this.toggle(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>)
                           },
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>)
+                            Cell: row => (<Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1"><i className="cui-pencil icons text-left"></i></Button>)
                           },
                           {
                             Header: '',
                             filterable: false,
-                            Cell: row => (<Button outline color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>)
+                            Cell: row => (<Button outline color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) }} className="mr-1"><i className="cui-circle-x icons text-left"></i></Button>)
                           },
                         ]}
                       />

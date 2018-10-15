@@ -57,7 +57,7 @@ class ChangePassword extends Component {
     console.log(this.state.oldpassword);
     console.log(this.state.newpassword);
     event.preventDefault();
-    fetch('http://178.128.81.239:8000/api/change_password?token='+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/change_password?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

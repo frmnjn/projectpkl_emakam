@@ -59,6 +59,20 @@ class AdminTPUController extends Controller{
 
 	}
 
+	function delete_expire_makam(Request $request){
+		$makam = DB::table('makam')
+		->leftjoin('penghuni_makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+		->select('makam.*','penghuni_makam.*')
+		->where('created_at','<=',NOW()->subYears(3))
+		->delete();
+
+
+		return response()->json($makam);
+
+	}
+
+	
+
 	function view_penghunimakam(Request $request){
 		$id_user=$request->input('id_user');
 		$view = DB::table('penghuni_makam')
@@ -193,10 +207,14 @@ class AdminTPUController extends Controller{
 	function upload(Request $request){
 		$ktp = $request->file('file_ktp');
 		$kk = $request->file('file_kk');
+		$sk = $request->file('file_sk');
+		$sk_lama = $request->file('file_sk_lama');
+
 		$surat_izin = $request->file('file_surat_izin');
 		$progress= 'Menunggu Persetujuan Kepala UPT';
 		$dokumen= 'Dokumen Kurang';
-		$status1 = false; $status2 = false; $status3 = false;
+		$status1 = false; $status2 = false; $status3 = false; $status4 = false;
+
 		
 
 		if(!empty($ktp)) {
@@ -208,10 +226,23 @@ class AdminTPUController extends Controller{
 		if(!empty($surat_izin)) {
 			$status3 = true;
 		}
-		if($status1 && $status2 && $status3){
+		if(!empty($sk)) {
+			$status4 = true;
+		}
+		if($status1 && $status2 && $status3 && $status3){
 			$path_ktp = $ktp->store('public/files');
 			$path_kk = $kk->store('public/files');
 			$path_surat_izin = $surat_izin->store('public/files');
+			$path_sk = $surat_izin->store('public/files');
+			$path_sk_lama;
+			
+			if(!empty($sk_lama)){
+				$path_sk_lama = $surat_izin->store('public/files');
+			}else{
+				$path_sk_lama="Kosong";
+			}
+
+
 
 
 			Dokumen::create(array(
@@ -227,6 +258,8 @@ class AdminTPUController extends Controller{
 				'file_ktp' => $path_ktp,
 				'file_kk' => $path_kk,
 				'file_surat_izin' => $path_surat_izin,
+				'file_sk' => $path_sk,
+				'file_sk_lama' => $path_sk_lama,
 				'status' => $progress ,
 				'kelengkapan_dokumen' => $dokumen,
 			));

@@ -26,7 +26,7 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    fetch('http://178.128.81.239:8000/api/signin', {
+    fetch('http://localhost:8000/api/signin', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -135,7 +135,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://178.128.81.239:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -149,7 +149,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://178.128.81.239:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
+      fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -320,7 +320,7 @@ class Search extends Component {
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1">Detail</Button>
+                          <Button color="info" onClick={()=>this.toggle(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
                         </div>
                       )
                     },

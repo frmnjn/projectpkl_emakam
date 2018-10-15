@@ -52,6 +52,9 @@ class Search extends Component {
     this.modalktpclose = this.modalktpclose.bind(this);
     this.modalsuratclose = this.modalsuratclose.bind(this);
     this.modalnosuratclose = this.modalnosuratclose.bind(this);
+    this.modalskclose = this.modalskclose.bind(this);
+    this.modalsklamaclose = this.modalsklamaclose.bind(this);
+
 
     this.toggleproggress = this.toggleproggress.bind(this);
     this.proggress = this.proggress.bind(this);
@@ -97,10 +100,10 @@ class Search extends Component {
 
   proggress(status) {
 
-    return status == "Menunggu Persetujuan Kepala UPT" ? 25 :
-      status == "Menunggu Persetujuan Kepala Dinas" ? 50 :
-        status == "Menunggu Persetujuan Kepala Kecamatan" ? 75 :
-          status == "Proses Selesai" ? 100 : 0
+    return status == "Menunggu Persetujuan Kepala UPT" ? 1 :
+      status == "Menunggu Persetujuan Kepala Dinas" ? 2 :
+        status == "Menunggu Persetujuan Kepala Kecamatan" ? 3 :
+          status == "Proses Selesai" ? 4 : 0
 
   }
 
@@ -118,7 +121,7 @@ class Search extends Component {
   }
 
   update_status(id, newstatus) {
-    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -137,7 +140,7 @@ class Search extends Component {
   }
 
   update_status_acc_dinas(id, newstatus) {
-    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -160,7 +163,7 @@ class Search extends Component {
   acc_kec(row) {
     alert('system are sending email, and processing the data. please wait...')
     var status = 'Proses Selesai'
-    fetch('http://178.128.81.239:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
+    fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
     })).then(console.log("sending"))
 
@@ -175,7 +178,7 @@ class Search extends Component {
     event.preventDefault();
     var status = 'Menunggu Persetujuan Kepala Kecamatan';
     this.update_status_acc_dinas(this.state.activenosurat.id, status);
-    const url = 'http://178.128.81.239:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+    const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + this.get_tanggal_sekarang()
       + '&nama_ahli_waris=' + this.state.activenosurat.nama_pewaris
       + '&alamat_ahli_waris=' + this.state.activenosurat.alamat_ahli_waris
@@ -200,7 +203,7 @@ class Search extends Component {
   }
 
   cek_kelengkapan(id) {
-    fetch('http://178.128.81.239:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -222,7 +225,7 @@ class Search extends Component {
   }
 
   fetchdata() {
-    fetch("http://178.128.81.239:8000/api/dokumen/view?token=" + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user') + '&role=' + sessionStorage.getItem('login_session'))
+    fetch("http://localhost:8000/api/dokumen/view?token=" + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user') + '&role=' + sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
@@ -269,6 +272,35 @@ class Search extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  checksuratpermohonan(items){
+    if(items.no_surat_permohonan!=null){
+      return items.no_surat_permohonan
+    }else{
+      return "Kosong"
+    }
+  }
+
+  checksuratizin(items){
+    if(items.no_surat_perizinan!=null){
+      return items.no_surat_perizinan
+    }else{
+      return "Kosong"
+    }
+  }
+
+  checksklama(items){
+    if(items.file_sk_lama!="Kosong"){
+      return (
+        <Button id='buttonsk' color="info"  onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+      )
+    }else{
+      return (
+        <Button id='buttonsk' color="info" disabled onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+      )
+    }
+      
+  }
+
   toggle(items) {
     this.setState({
       activedata: items,
@@ -280,6 +312,20 @@ class Search extends Component {
     this.setState({
       activekk: items.file_kk.substring(6),
       kkmodal: !this.state.kkmodal,
+    })
+  }
+
+  modalsk(items) {
+    this.setState({
+      activesk: items.file_sk.substring(6),
+      skmodal: !this.state.skmodal,
+    })
+  }
+
+  modalsklama(items) {
+    this.setState({
+      activesklama: items.file_sk_lama.substring(6),
+      sklamamodal: !this.state.sklamamodal,
     })
   }
 
@@ -326,6 +372,19 @@ class Search extends Component {
       suratmodal: !this.state.suratmodal,
     });
   }
+
+  modalskclose() {
+    this.setState({
+      skmodal: !this.state.skmodal,
+    })
+  }
+
+  modalsklamaclose() {
+    this.setState({
+      sklamamodal: !this.state.sklamamodal,
+    })
+  }
+
 
   toggleclose() {
     this.setState({
@@ -381,24 +440,36 @@ class Search extends Component {
           <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalktpclose}>KTP</ModalHeader>
             <ModalBody>
-              <img src={"http://178.128.81.239:8000/storage" + this.state.activektp} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://localhost:8000/storage" + this.state.activektp} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalkkclose}>KK</ModalHeader>
             <ModalBody>
-              <img src={"http://178.128.81.239:8000/storage" + this.state.activekk} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://localhost:8000/storage" + this.state.activekk} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.suratmodal} toggle={this.modalsuratclose} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.modalsuratclose}>Surat Permohonan</ModalHeader>
             <ModalBody>
-              <img src={"http://178.128.81.239:8000/storage" + this.state.activesurat} class="img-fluid" alt="Responsive image"></img>
+              <img src={"http://localhost:8000/storage" + this.state.activesurat} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.modalprogress} toggle={this.toggleproggress} className={'modal-Large ' + this.props.className}>
             <ModalHeader toggle={this.toggleproggress}>Progress Tracking</ModalHeader>
             <ModalBody>
+            </ModalBody>
+          </Modal>
+          <Modal isOpen={this.state.skmodal} toggle={this.modalskclose} className={'modal-Large ' + this.props.className}>
+            <ModalHeader toggle={this.modalskclose}>Surat Kematian</ModalHeader>
+            <ModalBody>
+              <img src={"http://localhost:8000/storage" + this.state.activesk} class="img-fluid" alt="Responsive image"></img>
+            </ModalBody>
+          </Modal>
+          <Modal isOpen={this.state.sklamamodal} toggle={this.modalsklamaclose} className={'modal-Large ' + this.props.className}>
+            <ModalHeader toggle={this.modalsklamaclose}>Surat Kematian Lama</ModalHeader>
+            <ModalBody>
+              <img src={"http://localhost:8000/storage" + this.state.activesklama} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Row>
@@ -412,6 +483,7 @@ class Search extends Component {
                     data={this.state.showitems}
                     resolveData={data => data.map(row => row)}
                     defaultPageSize={10}
+                    filterable
                     columns={[
                       { accessor: 'id', show: false },
                       { accessor: 'nama_almarhum', show: false },
@@ -426,6 +498,24 @@ class Search extends Component {
                       { accessor: 'nama_tpu', show: false },
                       { accessor: 'alamat_terakhir', show: false },
                       { accessor: 'kode_blok', show: false },
+                      {
+                        Header: 'Nomor Surat Izin',
+                        accessor: 'no_surat_perizinan', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            {this.checksuratizin(row.row)}
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'Nomor Surat Permohonan',
+                        accessor: 'no_surat_permohonan', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            {this.checksuratpermohonan(row.row)}
+                          </div>
+                        )
+                      },
                       {
                         Header: 'Nama Almarhum',
                         accessor: 'nama_almarhum', // String-based value accessors!
@@ -443,7 +533,7 @@ class Search extends Component {
                         accessor: 'file_ktp', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.modalktp(row.row)} className="mr-1">View</Button>
+                            <Button color="info" onClick={() => this.modalktp(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
                           </div>
                         )
                       },
@@ -452,7 +542,25 @@ class Search extends Component {
                         accessor: 'file_kk', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.modalkk(row.row)} className="mr-1">View</Button>
+                            <Button color="info" onClick={() => this.modalkk(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'SK Almarhum',
+                        accessor: 'file_sk', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            <Button color="info" onClick={() => this.modalsk(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+                          </div>
+                        )
+                      },
+                      {
+                        Header: 'SK Lama Almarhum',
+                        accessor: 'file_sk_lama', // String-based value accessors!
+                        Cell: row => (
+                          <div>
+                            {this.checksklama(row.row)}
                           </div>
                         )
                       },
@@ -461,7 +569,7 @@ class Search extends Component {
                         accessor: 'file_surat_izin', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.modalsurat(row.row)} className="mr-1">View</Button>
+                            <Button color="info" onClick={() => this.modalsurat(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
                           </div>
                         )
                       },
@@ -478,8 +586,8 @@ class Search extends Component {
                         Header: 'Track Proggression',
                         Cell: row => (
                           <div>
-                            <div className="text-center">{this.proggress(row.row.status)}%</div>
-                            <Progress value={this.proggress(row.row.status)} />
+                            <div className="text-center">{this.proggress(row.row.status)}</div>
+                            <Progress value={this.proggress(row.row.status)*25} />
                           </div>
                         )
                       },

@@ -72,7 +72,7 @@ class ManajemenHakAkses extends Component {
 
   fetchall() {
 
-    fetch('http://178.128.81.239:8000/api/user/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/user/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -86,7 +86,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://178.128.81.239:8000/api/tpu/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/tpu/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -96,7 +96,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://178.128.81.239:8000/api/role_tpu/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/role_tpu/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -106,7 +106,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://178.128.81.239:8000/api/constraint_user?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/constraint_user?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -157,7 +157,7 @@ class ManajemenHakAkses extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.value_user);
-    fetch('http://178.128.81.239:8000/api/create_role_tpu?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/create_role_tpu?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -180,7 +180,7 @@ class ManajemenHakAkses extends Component {
 
   handleSubmitEdit = event => {
     if (this.state.tpu_validation) {
-      fetch('http://178.128.81.239:8000/api/update_role_tpu/' + this.state.active_id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
+      fetch('http://localhost:8000/api/update_role_tpu/' + this.state.active_id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -205,7 +205,7 @@ class ManajemenHakAkses extends Component {
 
   handledelete(table_constraint_user) {
     console.log(table_constraint_user);
-    fetch('http://178.128.81.239:8000/api/delete_role_tpu/' + table_constraint_user.id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
       .then(
@@ -373,8 +373,8 @@ class ManajemenHakAkses extends Component {
                           filterable: false,
                           Cell: row => (
                             <div>
-                              <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1">Edit</Button>
-                              <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1">Delete</Button>
+                              <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1"><i className="cui-pencil icons text-left"></i></Button>
+                              <Button outline color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handledelete(row.row) }} className="mr-1"><i className="cui-circle-x icons text-left"></i></Button>
                             </div>
                           )
                         },

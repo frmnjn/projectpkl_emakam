@@ -126,7 +126,7 @@ class BlokMakam extends Component {
   }
 
   fetchtpu(){
-    fetch('http://178.128.81.239:8000/api/tpu/view_byUser?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch('http://localhost:8000/api/tpu/view_byUser?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -138,7 +138,7 @@ class BlokMakam extends Component {
   }
 
   fetchblok() {
-    fetch("http://178.128.81.239:8000/api/blok/view?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/blok/view?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -153,7 +153,7 @@ class BlokMakam extends Component {
   }
 
   fetchpolygon() {
-    fetch('http://178.128.81.239:8000/api/polygon/view?token='+sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/polygon/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -165,7 +165,7 @@ class BlokMakam extends Component {
   }
 
   viewpolygon(id_blok){
-    alert(id_blok)
+    //alert(id_blok)
     var raw=this.state.dummy
     console.log(raw)
 
@@ -186,7 +186,7 @@ class BlokMakam extends Component {
 
   createpolygon(items) {
 
-    fetch('http://178.128.81.239:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -202,7 +202,7 @@ class BlokMakam extends Component {
 
   detelepolygon() {
 
-    fetch('http://178.128.81.239:8000/api/polygon/delete/'+this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/polygon/delete/'+this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     })
   }
@@ -216,7 +216,7 @@ class BlokMakam extends Component {
       })
     
 
-    fetch('http://178.128.81.239:8000/api/blok/edit/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/blok/edit/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -227,6 +227,7 @@ class BlokMakam extends Component {
         id_tpu: this.state.idtpuaktif,
       })
     }).then(
+      alert('edit sukses'),
       this.fetchblok,
       this.fetchpolygon
     ).then(
@@ -238,7 +239,7 @@ class BlokMakam extends Component {
 
   handleCreate() {
 
-    fetch('http://178.128.81.239:8000/api/blok/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/blok/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -253,7 +254,7 @@ class BlokMakam extends Component {
     .then(
       (result) => {
         this.state.newpolygon.map((items) => {
-          fetch('http://178.128.81.239:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
+          fetch('http://localhost:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -268,6 +269,7 @@ class BlokMakam extends Component {
         })
       },
     ).then(
+      alert('create sukses'),
       this.fetchblok
     ).then(
       this.setState({
@@ -280,9 +282,10 @@ class BlokMakam extends Component {
 
     this.detelepolygon();
 
-    fetch('http://178.128.81.239:8000/api/blok/delete/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/blok/delete/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
+      alert('delete sukses'),
       this.fetchblok
     ).then(
       this.setState({
@@ -611,13 +614,13 @@ class BlokMakam extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={()=>this.toggleLocation(row.row)} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                  <Button onClick={()=>this.toggleLocation(row.row)} block outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i></Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i></Button>
                                 </Col>
                               </Row>
                             </div>

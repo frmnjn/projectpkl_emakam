@@ -109,7 +109,7 @@ class tpu extends Component {
   }
 
   fetchdata() {
-    fetch("http://178.128.81.239:8000/api/tpu/view?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/tpu/view?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -121,7 +121,7 @@ class tpu extends Component {
           });
         },
     ).then(
-    fetch("http://178.128.81.239:8000/api/kecamatan/viewall?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/kecamatan/viewall?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -138,7 +138,7 @@ class tpu extends Component {
 
   handleEdit() {
 
-    fetch('http://178.128.81.239:8000/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -160,7 +160,7 @@ class tpu extends Component {
 
   handleCreate() {
 
-    fetch('http://178.128.81.239:8000/api/tpu/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -182,7 +182,7 @@ class tpu extends Component {
 
   handleDelete() {
 
-    fetch('http://178.128.81.239:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       this.fetchdata
@@ -495,13 +495,13 @@ class tpu extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i> Lokasi</Button>
+                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i> Ubah</Button>
+                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i></Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i> Hapus</Button>
+                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i></Button>
                                 </Col>
                               </Row>
                             </div>
