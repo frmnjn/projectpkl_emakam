@@ -119,7 +119,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   fetchall() {
-    fetch('http://178.128.81.243:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://178.128.81.243/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -128,7 +128,7 @@ class ManajemenDataPenghuniMakam extends Component {
           }); //console.log(result);
         },
     ).then(
-      fetch('http://178.128.81.243:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+      fetch('http://178.128.81.243/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
         .then(response => response.json())
         .then(
           (result) => {
@@ -247,7 +247,7 @@ class ManajemenDataPenghuniMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    fetch('http://178.128.81.243:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.243/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -280,7 +280,7 @@ class ManajemenDataPenghuniMakam extends Component {
   handleSubmitEdit = event => {
     event.preventDefault();
 
-    fetch('http://178.128.81.243:8000/api/penghuni_makam/update/' + this.state.activeid_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.243/api/penghuni_makam/update/' + this.state.activeid_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -311,7 +311,7 @@ class ManajemenDataPenghuniMakam extends Component {
   }
 
   handledelete(list) {
-    fetch('http://178.128.81.243:8000/api/penghuni_makam/delete/' + list.id_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://178.128.81.243/api/penghuni_makam/delete/' + list.id_penghuni_makam + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
