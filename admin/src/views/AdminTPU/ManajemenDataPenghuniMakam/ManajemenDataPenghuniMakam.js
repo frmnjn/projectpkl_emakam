@@ -576,23 +576,20 @@ class ManajemenDataPenghuniMakam extends Component {
                             filterable: false,
                           },
                           {
-                            Header: '',
+                            Header: 'Action',
                             filterable: false,
+                            width:220,
                             Cell: row => (
                               <div>
                               <Row>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  &emsp;
                                   <Button onClick={this.toggleLocation} outline color="primary"><i className="cui-location-pin icons text-left"></i> </Button>
-                                </Col>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  &emsp;
                                   <Button outline color="info" onClick={() => this.toggle(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>      
-                                </Col>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  &emsp;
                                   <Button outline color="success" onClick={() => this.toggleLarge(row.row)} className="mr-1"><i className="cui-pencil icons text-left"></i></Button>
-                                </Col>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
+                                  &emsp;
                                   <Button outline color="danger" onClick={() => { if (window.confirm('Anda yakin untuk menghapus Data ini?')) this.handledelete(row.row) }} className="mr-1"><i className="cui-circle-x icons text-left"></i></Button>
-                                </Col>
                               </Row>
                             </div>
                             )          

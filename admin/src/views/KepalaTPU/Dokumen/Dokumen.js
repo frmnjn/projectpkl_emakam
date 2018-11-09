@@ -545,8 +545,9 @@ class Search extends Component {
                         )
                       },
                       {
-                        Header: 'SK Almarhum',
+                        Header: 'Kelengkapan Dokumen',
                         filterable: false,
+                        width:200,
                         accessor: 'file_sk', // String-based value accessors!
                         Cell: row => (
                           <div>

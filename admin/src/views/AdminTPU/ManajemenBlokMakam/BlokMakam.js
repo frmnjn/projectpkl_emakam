@@ -613,15 +613,12 @@ class BlokMakam extends Component {
                           Cell: row => (
                             <div>
                               <Row>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={()=>this.toggleLocation(row.row)} block outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
-                                </Col>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i></Button>
-                                </Col>
-                                <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={() => this.toggleSmall(row.row)} block outline color="danger"><i className="cui-circle-x icons text-left"></i></Button>
-                                </Col>
+                                  &emsp;
+                                  <Button onClick={()=>this.toggleLocation(row.row)} outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
+                                  &emsp;
+                                  <Button onClick={() => this.toggleEdit(row.row)} outline color="success"><i className="cui-pencil icons text-left"></i></Button>
+                                  &emsp;
+                                  <Button onClick={() => this.toggleSmall(row.row)}  outline color="danger"><i className="cui-circle-x icons text-left"></i></Button>
                               </Row>
                             </div>
                           )
