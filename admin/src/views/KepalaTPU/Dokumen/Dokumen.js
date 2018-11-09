@@ -484,6 +484,10 @@ class Search extends Component {
                       { accessor: 'alamat_terakhir', show: false },
                       { accessor: 'kode_blok', show: false },
                       {
+                        Header: 'Kode Registrasi',
+                        accessor: 'kode_registrasi', // String-based value accessors!
+                      },
+                      {
                         Header: 'Nama Almarhum',
                         accessor: 'nama_almarhum', // String-based value accessors!
                       },

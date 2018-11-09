@@ -64,6 +64,7 @@ class RegistrasiPerijinanMakam extends Component {
       pekerjaan:'',
       id_makam: "",
       kode_makam: "",
+      kode_tpu: "",
       nama_ahli_waris: "",
       alamat_ahli_waris: "",
       nik_ahli_waris: "",
@@ -103,7 +104,7 @@ class RegistrasiPerijinanMakam extends Component {
   makam_items() {
     var newitem = [];
     this.state.makam.map((items) => {
-      newitem = newitem.concat({ value: items.id_makam+"-"+items.id_tpu+"-"+items.id_kecamatan, label: items.kode_makam})
+      newitem = newitem.concat({ value: items.id_makam+"-"+items.id_tpu+"-"+items.id_kecamatan+"-"+items.kode_makam, label: items.kode_makam})
     })
 
     return newitem
@@ -167,13 +168,15 @@ class RegistrasiPerijinanMakam extends Component {
 
   handleSelect = (selectedOption) =>{
     var split = selectedOption.value.split('-');
+    var label = split[3].split('-')
     // alert(split[0]+" - "+split[1]+" - "+split[2])
     this.setState({ 
       selectedOption,
       activeid_makam: split[0],
       id_makam: split[0],
       id_tpu:split[1],
-      id_kecamatan:split[2]
+      id_kecamatan:split[2],
+      kode_tpu:label[0],
     });
   }
 
@@ -217,7 +220,7 @@ class RegistrasiPerijinanMakam extends Component {
     .then((responseJson) => {
       console.log(responseJson.id_penghuni_makam)
       data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
-      
+      data.append('kode_tpu',this.state.kode_tpu);
       fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data

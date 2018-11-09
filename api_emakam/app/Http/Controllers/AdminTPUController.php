@@ -216,7 +216,7 @@ class AdminTPUController extends Controller{
 		$surat_izin = $request->file('file_surat_izin');
 		$progress= 'Menunggu Persetujuan Kepala UPT';
 		$dokumen= 'Dokumen Kurang';
-		$status1 = false; $status2 = false; $status3 = false; $status4 = false;
+		$status1 = true; $status2 = true; $status3 = true; $status4 = false;
 
 		
 
@@ -248,8 +248,8 @@ class AdminTPUController extends Controller{
 
 
 
-			Dokumen::create(array(
-				
+			$create=Dokumen::create(array(
+				'kode_registrasi' => '',
 				'nama_almarhum' => $request->input('nama_almarhum'),
 				'nama_pewaris' => $request->input('nama_pewaris'),
 				'email' => $request->input('email'),
@@ -266,7 +266,13 @@ class AdminTPUController extends Controller{
 				'status' => $progress ,
 				'kelengkapan_dokumen' => $dokumen,
 			));
-			return response()->json('upload sukses!');
+			$kode_registrasi=$request->input('kode_tpu').'-'.$create->id;
+			$update=Dokumen::findOrFail($create->id);
+			$update->update(array(
+				'kode_registrasi' => $kode_registrasi
+			));
+			return 	response()->json('upload sukses!');
+			
 		} else{
 			return response()->json('upload gagal!');
 		}
