@@ -70,7 +70,7 @@ class ManajemenHakAksesKec extends Component {
 
   fetchall() {
 
-    fetch('http://178.128.81.243/api/user/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/user/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -84,7 +84,7 @@ class ManajemenHakAksesKec extends Component {
     })
 
 
-    fetch('http://178.128.81.243/api/kecamatan/viewall?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/kecamatan/viewall?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -94,7 +94,7 @@ class ManajemenHakAksesKec extends Component {
         },
     )
 
-    fetch('http://178.128.81.243/api/kecamatan/constraint_user?token=' + sessionStorage.getItem('token'))
+    fetch('http://localhost:8000/api/kecamatan/constraint_user?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -145,7 +145,7 @@ class ManajemenHakAksesKec extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.value_user);
-    fetch('http://178.128.81.243/api/kecamatan/create_role?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/kecamatan/create_role?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -168,7 +168,7 @@ class ManajemenHakAksesKec extends Component {
 
   handleSubmitEdit = event => {
     
-      fetch('http://178.128.81.243/api/kecamatan/update_role/' + this.state.active_id_role + "?token=" + sessionStorage.getItem('token'), {
+      fetch('http://localhost:8000/api/kecamatan/update_role/' + this.state.active_id_role + "?token=" + sessionStorage.getItem('token'), {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -193,7 +193,7 @@ class ManajemenHakAksesKec extends Component {
 
   handledelete(table_constraint_user) {
     console.log(table_constraint_user);
-    fetch('http://178.128.81.243/api/kecamatan/delete_role/' + table_constraint_user.id_role + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/kecamatan/delete_role/' + table_constraint_user.id_role + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
       .then(

@@ -109,7 +109,7 @@ class Makam extends Component {
     this.fetchmakam()
     this.fetchpenghuni()
     
-    fetch("http://178.128.81.243/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/blok/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -124,7 +124,7 @@ class Makam extends Component {
   }
 
   fetchmakam(){
-    fetch("http://178.128.81.243/api/makam/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    fetch("http://localhost:8000/api/makam/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -139,7 +139,7 @@ class Makam extends Component {
   }
 
   fetchpenghuni(){
-    fetch('http://178.128.81.243/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://localhost:8000/api/penghuni_makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -152,7 +152,7 @@ class Makam extends Component {
 
   handleEdit(items){
     
-    fetch('http://178.128.81.243/api/makam/edit/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/edit/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -167,7 +167,7 @@ class Makam extends Component {
       })
     }).then(
       alert('update sukses'),
-      this.fetchmakam
+      this.fetchmakam()
     ).then(
       this.setState({
         edit: !this.state.edit
@@ -177,7 +177,7 @@ class Makam extends Component {
 
   handleCreate(){
     
-    fetch('http://178.128.81.243/api/makam/create?token='+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/create?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -192,7 +192,7 @@ class Makam extends Component {
       })
     }).then(
       alert('create sukses'),
-      this.fetchmakam
+      this.fetchmakam()
     ).then(
       this.setState({
         create:!this.state.create
@@ -202,11 +202,11 @@ class Makam extends Component {
 
   handleDelete(){
     
-    fetch('http://178.128.81.243/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
       alert('delte sukses'),
-      this.fetchmakam
+      this.fetchmakam()
     ).then(
       this.setState({
         small:!this.state.small
@@ -223,7 +223,7 @@ class Makam extends Component {
 
   handleDeleteEx(){
     
-    fetch('http://178.128.81.243/api/makam/delete_ex'+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/makam/delete_ex'+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(response => response.json())
     .then(
@@ -261,7 +261,6 @@ class Makam extends Component {
     item = item.filter(function(item){
       return item.id_makam.toString().search(data.toString())!== -1
     })
-
     var status='-'
 
       item.map((items)=>{
@@ -609,17 +608,10 @@ class Makam extends Component {
                         {accessor:'created_at',show:false},
                         {
                           Header: 'Nomor Makam', 
+                          show:false,
                           // accessor: 'nomor_makam', // String-based value accessors!
                           Cell: row=>(
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor:this.status_terisi(row.row),
-                                borderRadius: "2px",
-                              }}
-                            
-                            >{row.row.nomor_makam}
+                            <div>{row.row.nomor_makam}
                             </div>
                           )
                         },
@@ -628,13 +620,6 @@ class Makam extends Component {
                           accessor: 'kode_makam', // String-based value accessors!
                           Cell: row=>(
                             <div
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor:this.status_terisi(row.row),
-                                borderRadius: "2px",
-                              }}
-                            
                             >{row.row.kode_makam}
                             </div>
                           )
@@ -643,15 +628,7 @@ class Makam extends Component {
                           Header: 'Kode Blok',
                           accessor: 'kode_blok', // String-based value accessors!
                           Cell: row=>(
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor:this.status_terisi(row.row),
-                                borderRadius: "2px",
-                              }}
-                            
-                            >{row.row.kode_blok}
+                            <div>{row.row.kode_blok}
                             </div>
                           )
                         },
@@ -659,16 +636,21 @@ class Makam extends Component {
                           Header: 'TPU',
                           accessor: 'nama_tpu', // String-based value accessors!
                           Cell: row=>(
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor:this.status_terisi(row.row),
-                                borderRadius: "2px",
-                              }}
-                            
-                            >{row.row.nama_tpu}
+                            <div>{row.row.nama_tpu}
                             </div>
+                          )
+                        },
+                        {
+                          Header: "Status Makam",
+                          Cell: row=>(
+                            <div
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              backgroundColor:this.status_terisi(row.row),
+                              borderRadius: "2px",
+                            }}
+                            ></div>
                           )
                         },
                         {
@@ -694,6 +676,7 @@ class Makam extends Component {
                             </div>
                           )
                         },
+                        
                       ]}
                     />
                   <hr></hr>

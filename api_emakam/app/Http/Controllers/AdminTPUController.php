@@ -28,6 +28,7 @@ class AdminTPUController extends Controller{
 		->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
 		->select('blok_makam.*', 'makam.*','tpu.*')
 		->where('role_tpu.id_user','=',$id_user)
+		->orderBy('id_makam','desc')
 		->get();
 		return response()->json($view);
 	}
@@ -82,6 +83,7 @@ class AdminTPUController extends Controller{
 		->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
 		->select('penghuni_makam.*', 'makam.*','tpu.*')
 		->where('role_tpu.id_user','=',$id_user)
+		->orderBy('id_penghuni_makam','desc')
 		->get();
 		return response()->json($view);
 	}
@@ -123,6 +125,7 @@ class AdminTPUController extends Controller{
 		->join('role_tpu','role_tpu.id_tpu','=', 'tpu.id_tpu')
 		->select('blok_makam.*', 'tpu.*')
 		->where('role_tpu.id_user','=',$id_user)
+		->orderBy('id_blok','desc')
 		->get();
 
 		return response()->json($view);

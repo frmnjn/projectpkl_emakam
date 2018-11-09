@@ -135,7 +135,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://178.128.81.243/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -149,7 +149,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://178.128.81.243/api/blok/view_search?token="+sessionStorage.getItem('token'))
+      fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -223,7 +223,7 @@ class Search extends Component {
                 Manajemen Data Makam
               </CardHeader>
               <CardBody>
-                <Row>
+                {/* <Row>
                   <Col xs="12">
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
@@ -241,10 +241,11 @@ class Search extends Component {
                         <Input onChange={this.filterList} type="text" id="input1-group3" name="input1-group3" placeholder="Search" />
                       </InputGroup>
                   </Col>
-                </Row>
+                </Row> */}
                 <br/>
                 <ReactTable
                   data={this.state.showitems}
+                  filterable
                   resolveData={data => data.map(row => row)}
                   defaultPageSize={10}
                   columns={[                    
@@ -308,6 +309,7 @@ class Search extends Component {
                     },
                     {
                       Header: 'Status',
+                      show:false,
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>
@@ -317,6 +319,7 @@ class Search extends Component {
                     },
                     {
                       Header: 'Actions',
+                      filterable:false,
                       accessor: 'status', // String-based value accessors!
                       Cell: row => (
                         <div>

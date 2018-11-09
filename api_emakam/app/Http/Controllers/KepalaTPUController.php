@@ -29,8 +29,11 @@ class KepalaTPUController extends Controller{
             ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->where('role_kecamatan.id_user','=',$id_user)
+            ->orderBy('id','desc')
             ->select('dokumen.*','kecamatan.*','role_kecamatan.*')
+            
             ->get();
+            
 
             return $view;
         }else if($role == '1' || $role == '2'){
@@ -38,6 +41,7 @@ class KepalaTPUController extends Controller{
             ->join('tpu', 'tpu.id_tpu', '=', 'dokumen.id_tpu')
             ->join('role_tpu', 'role_tpu.id_tpu', '=', 'dokumen.id_tpu')
             ->where('role_tpu.id_user','=',$id_user)
+            ->orderBy('id','desc')
             ->select('*')
             ->get();
 
@@ -48,6 +52,7 @@ class KepalaTPUController extends Controller{
             ->join('makam','penghuni_makam.id_makam','=','makam.id_makam')
             ->join('blok_makam','makam.id_blok','=','blok_makam.id_blok')
             ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
+            ->orderBy('id','desc')
             ->select('dokumen.*','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
             ->get();
 

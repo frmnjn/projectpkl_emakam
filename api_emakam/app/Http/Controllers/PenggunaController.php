@@ -23,6 +23,7 @@ class PenggunaController extends Controller{
         ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
         ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
         ->select('penghuni_makam.*', 'makam.*')
+        ->orderBy('id_penghuni_makam','desc')
         ->get();
         return response()->json($view);
     }
