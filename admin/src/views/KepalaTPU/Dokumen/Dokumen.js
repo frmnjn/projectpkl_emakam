@@ -594,6 +594,7 @@ class Search extends Component {
                       },
                       {
                         Header: 'Actions kp.kecamatan',
+                        filterable: false,
                         accessor: 'status', // String-based value accessors!
                         show: sessionStorage.getItem('login_session') == "4" ? true : false,
                         Cell: row => (
@@ -604,6 +605,7 @@ class Search extends Component {
                       },
                       {
                         Header: 'Actions',
+                        filterable: false,
                         accessor: 'status', // String-based value accessors!
                         show: sessionStorage.getItem('login_session') == "3" ? true : false,
                         Cell: row => (
@@ -614,6 +616,7 @@ class Search extends Component {
                       },
                       {
                         Header: 'Actions',
+                        filterable: false,
                         show: sessionStorage.getItem('login_session') == "1" ? true : false,
                         accessor: 'status', // String-based value accessors!
                         Cell: row => (

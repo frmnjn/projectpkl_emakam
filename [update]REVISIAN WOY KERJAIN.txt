@@ -1,6 +1,6 @@
 apache jmeter
 Menu Panduan
-bikin tampilan search, no registrasi, nama almarhum, status sampe dmana, 
+bikin tampilan search, no registrasi, nama almarhum, status sampe dmana -done
 
 //DOKUMEN
 redirect after regist -done
