@@ -12,6 +12,7 @@ use JWTAuthException;
 use App\User;
 use App\Role_tpu;
 use App\Role_kecamatan;
+use App\Dokumen;
 
 
 class AuthController extends Controller
@@ -128,5 +129,14 @@ class AuthController extends Controller
             'secret' => Hash::make($request->input('password'))
         ];
         return response()->json($pass);
+    }
+
+    function track_progress(Request $request){
+        $view = DB::table('dokumen')
+        ->where($request->all())
+        ->select('nama_almarhum','status')
+        ->get();
+
+        return response()->json($view);
     }
 }

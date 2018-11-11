@@ -166,12 +166,13 @@ class Makam extends Component {
         lng:this.state.lng
       })
     }).then(
-      alert('update sukses'),
-      this.fetchmakam()
+      alert('update sukses')
     ).then(
       this.setState({
         edit: !this.state.edit
       })
+    ).then(
+      this.fetchmakam
     )
   }
 
@@ -191,12 +192,13 @@ class Makam extends Component {
         lng:this.state.lng,
       })
     }).then(
-      alert('create sukses'),
-      this.fetchmakam()
+      alert('create sukses')
     ).then(
       this.setState({
         create:!this.state.create
       })
+    ).then(
+      this.fetchmakam
     )
   }
 
@@ -205,12 +207,13 @@ class Makam extends Component {
     fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
     }).then(
-      alert('delte sukses'),
-      this.fetchmakam()
+      alert('delte sukses')
     ).then(
       this.setState({
         small:!this.state.small
       })
+    ).then(
+      this.fetchmakam
     )
   }
 
@@ -230,7 +233,7 @@ class Makam extends Component {
       (result) => {
         console.log(result)
       }).then(
-      alert('delte sukses'),
+      alert('delete sukses'),
       this.fetchmakam
     )
   }

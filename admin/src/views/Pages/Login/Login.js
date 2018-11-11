@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import usersData from '../../../views/Users/UsersData';
+import { Card, CardBody, Col, Container,Row } from 'reactstrap';
 import { RingLoader } from 'react-spinners';
 const center = {
   marginLeft: '45%'

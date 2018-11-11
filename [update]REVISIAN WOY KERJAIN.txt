@@ -1,0 +1,52 @@
+apache jmeter
+Menu Panduan
+bikin tampilan search, no registrasi, nama almarhum, status sampe dmana, 
+
+//DOKUMEN
+redirect after regist -done
+no registrasi from ID Entry -done
+format
+KODETPU-IDENTRY -done
+track progress buang -done
+Search KTP, KK buang -lupa diganti apa kodingan di comment
+kelengkapan dokumen buang -done
+auto refresh after actions 
+sort by id desc (tabel dokumen) -done
+
+//BLOK MAKAM
+Create Blok Makam gagal-done, auto refresh -done
+Update Blok Makam gagal-done (new bug update blok tanpa input map, data lama hilang)
+delete blok makam gagal-done
+style jangan pake block 
+
+/Makam
+Nomor Makam hapus -done
+Status Makam -done
+Actions width buat fix -done
+filter by status(warna) -buat cronnya dulu
+auto refresh -done
+cron job untuk ubah status makam
+
+//penghuni makam
+actions jadiin satu kolom -done
+field nama > nama almarhum -done
+cek crud -done
+auto refresh -done
+
+//cari data
+buang status -done
+ubah searchnya pake kayak dokumen, jadi per kolom -done
+
+
+Kolom
+1. Kode Registrasi -done
+2. Nama Almarhum -done
+3. Nama Ahli Waris -done
+4. Status -done
+5. Nomor Surat permohonan -done
+6. Perizinan -done
+7. Dokumen Pendukung -done
+8. Actions (Accept, Details) -not done
+
+
+Dokumen jadi satu kolom,bedain icons -tinggal ganti icon

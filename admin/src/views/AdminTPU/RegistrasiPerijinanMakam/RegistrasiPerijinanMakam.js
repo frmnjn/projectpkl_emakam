@@ -1,44 +1,16 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Bar, Line } from 'react-chartjs-2';
-import DatePicker from 'react-datepicker';
 import Select from 'react-select';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  CardTitle,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Progress,
   Row,
-  Table,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Label,
+  Input
 } from 'reactstrap';
-import { RingLoader } from 'react-spinners';
 const data = new FormData();
 class RegistrasiPerijinanMakam extends Component {
   constructor(props) {
@@ -48,7 +20,6 @@ class RegistrasiPerijinanMakam extends Component {
 
     this.state = {
       startDate: moment(),
-
       makam: [],
       makamitems:[],
       list: [],
@@ -122,9 +93,9 @@ class RegistrasiPerijinanMakam extends Component {
         nama: this.state.nama,
         jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
-        tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
-        tanggal_lahir_alm: this.state.tanggal_lahir_alm.format().substring(0, 10),
-        tanggal_pemakaman: this.state.tanggal_pemakaman.format().substring(0, 10),
+        tanggal_wafat: this.state.tanggal_wafat,
+        tanggal_lahir_alm: this.state.tanggal_lahir_alm,
+        tanggal_pemakaman: this.state.tanggal_pemakaman,
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -136,34 +107,10 @@ class RegistrasiPerijinanMakam extends Component {
       this.fetchall
     ).then(
       this.setState({
-        primary: !this.state.primary
+        primary: !this.state.primary,
       })
     )
     alert("Data penghuni baru berhasil ditambahkan!");
-  }
-
-  handleDateWafat =(date)=> {
-    this.setState({
-      tanggal_wafat: date,
-    });
-  }
-
-  handleDateLhrAlm =(date)=> {
-    this.setState({
-      tanggal_lahir_alm: date,
-    });
-  }
-
-  handleDatePemakaman =(date)=> {
-    this.setState({
-      tanggal_pemakaman: date,
-    });
-  }
-
-  handleDateLhrWrs =(date)=> {
-    this.setState({
-      tgllhr_ahli_waris: date,
-    });
   }
 
   handleSelect = (selectedOption) =>{
@@ -187,10 +134,8 @@ class RegistrasiPerijinanMakam extends Component {
     data.append('email',this.state.email);
     data.append('id_tpu',this.state.id_tpu);
     data.append('id_kecamatan',this.state.id_kecamatan);
-    data.append('tgllhr_ahli_waris',this.state.tgllhr_ahli_waris.format().substring(0, 10));
+    data.append('tgllhr_ahli_waris',this.state.tgllhr_ahli_waris);
     data.append('pekerjaan_ahli_waris',this.state.pekerjaan);
-
-
 
     // for (var value of data.values()) {
     //   console.log(value);
@@ -206,9 +151,9 @@ class RegistrasiPerijinanMakam extends Component {
         nama: this.state.nama,
         jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
-        tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
-        tanggal_lahir_alm: this.state.tanggal_lahir_alm.format().substring(0, 10),
-        tanggal_pemakaman: this.state.tanggal_pemakaman.format().substring(0, 10),
+        tanggal_wafat: this.state.tanggal_wafat,
+        tanggal_lahir_alm: this.state.tanggal_lahir_alm,
+        tanggal_pemakaman: this.state.tanggal_pemakaman,
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -227,11 +172,11 @@ class RegistrasiPerijinanMakam extends Component {
       }).then((response) => response.json())
         .then((responseJson) => {
           alert(responseJson);
+          this.props.history.push('/Dokumen');
         })
     })
-
-    
   }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -257,7 +202,8 @@ class RegistrasiPerijinanMakam extends Component {
                         <label>Alamat</label>
                         <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="Alamat Ahli Waris" onChange={this.handleChange}></input>
                         <label>Tanggal Lahir</label>
-                        <DatePicker name="tgllhr_ahli_waris" dateFormat="DD/MM/YYYY" selected={this.state.tgllhr_ahli_waris} onChange={this.handleDateLhrWrs} />
+                        <Input type="date" className="form-control" name="tgllhr_ahli_waris" onChange={this.handleChange}></Input>
+                        {/* <DatePicker name="tgllhr_ahli_waris" dateFormat="DD/MM/YYYY" selected={this.state.tgllhr_ahli_waris} onChange={this.handleDateLhrWrs} /> */}
                         <label>NIK</label>
                         <input type="text" className="form-control" name="nik_ahli_waris" placeholder="NIK Ahli Waris" onChange={this.handleChange}></input>
                         <label>Kontak</label>
@@ -284,13 +230,16 @@ class RegistrasiPerijinanMakam extends Component {
                         <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
                         <br />
                         <label>Tanggal Lahir</label>
-                        <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} />
+                        <Input type="date" className="form-control" name="tanggal_lahir_alm" onChange={this.handleChange}></Input>
+                        {/* <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} /> */}
                         <br />
                         <label>Tanggal Wafat</label>
-                        <DatePicker name="tanggal_wafat" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDateWafat} />
+                        <Input type="date" className="form-control" name="tanggal_wafat" onChange={this.handleChange}></Input>
+                        {/* <DatePicker name="tanggal_wafat" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDateWafat} /> */}
                         <br />
                         <label>Tanggal Pemakaman</label>
-                        <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} />
+                        <Input type="date" className="form-control" name="tanggal_pemakaman" onChange={this.handleChange}></Input>
+                        {/* <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} /> */}
                         <br />
                         <label>Status</label>
                         <Input type="select" className="form-control" name="status" onChange={this.handleChange}>

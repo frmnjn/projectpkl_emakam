@@ -4,57 +4,26 @@ import axios from 'axios';
 import usersData from '../../../views/Users/UsersData';
 import { Redirect } from 'react-router-dom';
 import {
-  Badge,
   Button,
-  ButtonDropdown,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  CardTitle,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Progress,
   Row,
-  Table,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Label,
+  Input
 } from 'reactstrap';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
 import { RingLoader } from 'react-spinners';
 import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
 import 'react-table/react-table.css'
 
-const brandPrimary = getStyle('--primary')
-const brandSuccess = getStyle('--success')
-const brandInfo = getStyle('--info')
-const brandWarning = getStyle('--warning')
-const brandDanger = getStyle('--danger')
-
-
 class BlokMakam extends Component {
   constructor(props) {
     super(props);
-
-
 
     this.toggle = this.toggle.bind(this);
     this.toggleSmall = this.toggleSmall.bind(this);
@@ -95,11 +64,9 @@ class BlokMakam extends Component {
 
       dummy:[],
 
-
       activename: null,
       activeqty: null,
       activesupplier: null,
-
 
       lng:112.61316118043442,
       lat:-7.952687231547793,
@@ -111,18 +78,15 @@ class BlokMakam extends Component {
       kodetpuaktif: null,
 
       formqty: '1',
-
-
     };
 
-
+    this.fetchblok();
+    this.fetchtpu();
+    this.fetchpolygon();
   }
 
   componentDidMount() {
-    this.fetchblok()
-    this.fetchtpu()    
-    this.fetchpolygon()
-
+    
   }
 
   fetchtpu(){
@@ -227,13 +191,14 @@ class BlokMakam extends Component {
         id_tpu: this.state.idtpuaktif,
       })
     }).then(
-      alert('edit sukses'),
-      this.fetchblok(),
-      this.fetchpolygon()
+      alert('edit sukses')
     ).then(
       this.setState({
         edit: !this.state.edit
       })
+    ).then(
+      this.fetchblok,
+      this.fetchpolygon
     )
   }
 
@@ -269,12 +234,13 @@ class BlokMakam extends Component {
         })
       },
     ).then(
-      alert('create sukses'),
-      this.fetchblok()
+      alert('create sukses')
     ).then(
       this.setState({
         create: !this.state.create
       })
+    ).then(
+      this.fetchblok
     )
   }
 
@@ -291,6 +257,8 @@ class BlokMakam extends Component {
       this.setState({
         small: !this.state.small
       })
+    ).then(
+      this.fetchblok
     )
   }
 
