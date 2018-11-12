@@ -197,6 +197,7 @@ class BlokMakam extends Component {
       })
     ).then(
       this.fetchblok,
+    ).then(
       this.fetchpolygon
     )
   }
@@ -234,14 +235,14 @@ class BlokMakam extends Component {
         }),
         alert('create blok makam sukses')
       },
-    ).then({   
-    })
-    .then(
+    ).then(
       this.setState({
         create: !this.state.create
       })
     ).then(
       this.fetchblok
+    ).then(
+      this.fetchpolygon
     )
   }
 
