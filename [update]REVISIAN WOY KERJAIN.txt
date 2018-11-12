@@ -50,3 +50,31 @@ Kolom
 
 
 Dokumen jadi satu kolom,bedain icons -tinggal ganti icon
+
+ABis regist langsung masuk ke kupt aja, statusnya langsung jadi lengkap
+ganti icon dokumen
+tulisan jangan disingkat 
+surat izin yang lama
+update success > rekomendasi sukses
+setiap akun kasih akses yang udah di acc (history)
+alert email hapus
+actions kp kec > actions
+Atur > simpan
+modal close after atur no surat
+auto refresh
+no regist di admin kct
+admin kct jadi actions
+home jd url seperlunya
+
+alert abis create blok makam
+refresh polgon
+
+status makam, ganti tulisan, terus warnain
+
+tanggal di create p makam
+
+pastiin sama kayak sop
+
+Blok Makam, Makam, Penghuni Makam ilangin manajemen nhya
+
+
