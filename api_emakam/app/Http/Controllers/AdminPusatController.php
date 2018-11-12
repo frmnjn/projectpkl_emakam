@@ -66,16 +66,26 @@ class AdminPusatController extends Controller
 
         $makam = DB::table('makam')
             ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+
             ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
             // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
             ->where('tpu.id_tpu','=',$id)
             ->delete();
+
+        $polygon = DB::table('polygon')
+        	->join('blok_makam','blok_makam.id_blok','=','polygon.id_blok')
+            ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+            // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
+            ->where('tpu.id_tpu','=',$id)
+            ->delete();  
 
         $blokmakam = DB::table('blok_makam')
             ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
             // ->select('penghunimakam.*','blok_makam.*', 'tpu.*')
             ->where('tpu.id_tpu','=',$id)
             ->delete();
+
+
         
         $tpu = Tpu::findOrFail($id);
         $tpu->delete();

@@ -123,7 +123,7 @@ class Search extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert('Rekomendasi telah berhasil diproses');
+        alert('Permintaan telah berhasil diproses');
       }).then(
         this.fetchdata
       )
@@ -155,7 +155,7 @@ class Search extends Component {
     var status = 'Proses Selesai'
     fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
-    })).then(console.log("sending"))
+    })).then(console.log("sending"))  
 
     // if (this.state.isSend) {
     //   alert("Notification Sent")

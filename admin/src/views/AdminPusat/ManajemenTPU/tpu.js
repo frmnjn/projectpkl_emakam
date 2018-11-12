@@ -195,10 +195,12 @@ class tpu extends Component {
 
     fetch('http://localhost:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
-    }).then((response) => response.json())
-    .then((responseJson) => {
-      alert(responseJson)
-    }).then(
+    })
+    // .then((response) => response.json())
+    // .then((responseJson) => {
+    //   alert(responseJson)
+    // })
+    .then(
       this.fetchdata
     ).then(
       this.setState({

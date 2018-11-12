@@ -308,7 +308,7 @@ class Makam extends Component {
       } 
     }
 
-    return <p style={{color:"yellow"}}>Terisi</p>
+    return <p style={{color:"yellow"}}>Kosong</p>
   }
 
 

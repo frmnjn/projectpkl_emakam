@@ -65,9 +65,9 @@ class DefaultLayout extends Component {
               sessionStorage.getItem('login_session') == "2" ?
               <small class="text-muted">your role : Kepala UPT</small>:
               sessionStorage.getItem('login_session') == "3" ?
-              <small class="text-muted">your role : Dinas</small>:
+              <small class="text-muted">your role : Kepala Dinas</small>:
               sessionStorage.getItem('login_session') == "4" ?
-              <small class="text-muted">your role : Kecamatan</small>:
+              <small class="text-muted">your role : Kepala Kecamatan</small>:
               sessionStorage.getItem('login_session') == "5" ?
               <small class="text-muted">your role : Admin Kecamatan</small>:
               <small class="text-muted">your role : Guest</small>

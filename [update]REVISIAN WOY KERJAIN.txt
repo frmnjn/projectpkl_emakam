@@ -55,7 +55,7 @@ ABis regist langsung masuk ke kupt aja, statusnya langsung jadi lengkap-done
 ganti icon dokumen -done
 tulisan jangan disingkat -done
 surat izin yang lama -done
-update success > rekomendasi sukses -done > (permohonan telah bershasil diproses)
+update success > rekomendasi sukses -done > Permintaan telah bershasil diproses)
 setiap akun kasih akses yang udah di acc (history)
 alert email hapus
 actions kp kec > actions -done

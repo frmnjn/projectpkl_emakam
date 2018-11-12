@@ -44,6 +44,7 @@ class CetakDokumen extends Component {
     this.modalnosuratclose = this.modalnosuratclose.bind(this);
     this.get_tanggal_sekarang = this.get_tanggal_sekarang.bind(this);
     this.update_no_surat_perizinan = this.update_no_surat_perizinan.bind(this);
+    this.fetchview = this.fetchview.bind(this);
 
     // this.get_active_row = this.get_active_row.bind(this);
 
@@ -65,7 +66,11 @@ class CetakDokumen extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    this.fetchview()
+  }
+
+  fetchview(){
+      fetch("http://localhost:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -159,8 +164,11 @@ class CetakDokumen extends Component {
       })
     }).then((response) => response.json())
       .then((responsejson) => {
-        alert('Update Success');
-      }).then(
+        alert('Nomor Surat telah tersimpan');
+      })
+      .then(
+        this.fetchview
+      ).then(
         this.modalnosuratclose
       )
   }
