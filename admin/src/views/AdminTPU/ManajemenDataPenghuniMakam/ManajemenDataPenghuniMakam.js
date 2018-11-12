@@ -267,6 +267,11 @@ class ManajemenDataPenghuniMakam extends Component {
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris
       })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      if(responseJson!=null){
+        alert('create penghuni makam sukses')
+      }
     }).then(
       this.fetchall
     ).then(
@@ -274,7 +279,6 @@ class ManajemenDataPenghuniMakam extends Component {
         primary: !this.state.primary
       })
     )
-    alert("Data penghuni baru berhasil ditambahkan!");
   }
 
   handleSubmitEdit = event => {
@@ -300,6 +304,9 @@ class ManajemenDataPenghuniMakam extends Component {
         nik_ahli_waris: this.state.activenik_ahli_waris,
         kontak_ahli_waris: this.state.activekontak_ahli_waris,
       })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        alert(responseJson)
     }).then(
       this.fetchall
     ).then(
@@ -317,9 +324,11 @@ class ManajemenDataPenghuniMakam extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       }
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        alert(responseJson)
     }).then(
       this.fetchall,
-      alert("Data user dengan id " + this.state.activeid_penghuni_makam + " berhasil di hapus!"),
     )
     
   }

@@ -190,9 +190,8 @@ class BlokMakam extends Component {
         kode_blok: this.state.kodetpuaktif+'-'+this.state.kodeaktif,
         id_tpu: this.state.idtpuaktif,
       })
-    }).then(
-      alert('edit sukses')
-    ).then(
+    }).then((response) => response.json())
+    .then((responseJson) => {alert(responseJson)}).then(
       this.setState({
         edit: !this.state.edit
       })
@@ -230,12 +229,14 @@ class BlokMakam extends Component {
               lat: items.lat,
               lng: items.lng,
             })
-          })
-        })
+          }).then((response) => response.json())
+          .then((responseJson) => {alert(responseJson)})
+        }),
+        alert('create blok makam sukses')
       },
-    ).then(
-      alert('create sukses')
-    ).then(
+    ).then({   
+    })
+    .then(
       this.setState({
         create: !this.state.create
       })
@@ -250,8 +251,8 @@ class BlokMakam extends Component {
 
     fetch('http://localhost:8000/api/blok/delete/' + this.state.idblokaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
-    }).then(
-      alert('delete sukses'),
+    }).then((response) => response.json())
+    .then((responseJson) => {alert(responseJson)}).then(
       this.fetchblok()
     ).then(
       this.setState({

@@ -40,7 +40,8 @@ class AdminPusatController extends Controller
 
     function create_tpu(Request $request){
 
-        return Tpu::create($request->all());
+        Tpu::create($request->all());
+        return response()->json(["create TPU  sukses"]);
 
     }
 
@@ -49,7 +50,7 @@ class AdminPusatController extends Controller
         $tpu = Tpu::findOrFail($id);
         $tpu->update($request->all());
 
-        return response()->json($tpu);
+        return response()->json(["edit TPU sukses"]);
 
     }
 
@@ -79,7 +80,7 @@ class AdminPusatController extends Controller
         $tpu = Tpu::findOrFail($id);
         $tpu->delete();
 
-        return response()->json($tpu);
+        return response()->json(["delete TPU sukses"]);
     }
     
     function view_role_tpu(){
@@ -169,6 +170,8 @@ class AdminPusatController extends Controller
         ]);
 
         $user->save();
+
+        return response()->json(['msg' => "create user sukses"]);
     }
 
     function update_user(Request $request, $id_user)
@@ -187,7 +190,7 @@ class AdminPusatController extends Controller
         ]);
         $role_tpu->save();
 
-        return response()->json($username);
+        return response()->json(['msg' => "update user sukses"]);
     }
 
     function delete_user(Request $request, $id_user)
@@ -235,7 +238,7 @@ class AdminPusatController extends Controller
 
             
         }
-        return response()->json($msg);
+        return response()->json(['msg' => "delete user sukses"]);
     }
 
     function constraint_user_kecamatan(){

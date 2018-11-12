@@ -149,7 +149,11 @@ class tpu extends Component {
         id_kecamatan: this.state.kecamatanaktif,
         kode_tpu: this.state.kodeaktif,
       })
-    }).then(
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson)
+    })
+    .then(
       this.fetchdata
     ).then(
       this.setState({
@@ -171,6 +175,9 @@ class tpu extends Component {
         id_kecamatan: this.state.kecamatanaktif,
         kode_tpu: this.state.kodeaktif
       })
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson)
     }).then(
       this.fetchdata
     ).then(
@@ -184,6 +191,9 @@ class tpu extends Component {
 
     fetch('http://localhost:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson)
     }).then(
       this.fetchdata
     ).then(
@@ -315,7 +325,7 @@ class tpu extends Component {
                               </div>
                               </ModalBody>
                               <ModalFooter>
-                                <Button color="secondary" onClick=''>Tutup</Button>
+                                <Button color="secondary" onClick={this.toggleLocation}>Tutup</Button>
                               </ModalFooter>
                             </Modal>
 

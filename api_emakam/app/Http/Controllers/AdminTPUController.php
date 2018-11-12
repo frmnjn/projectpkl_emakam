@@ -35,7 +35,9 @@ class AdminTPUController extends Controller{
 
 	function create_makam(Request $request){
 
-		return Makam::create($request->all());
+		Makam::create($request->all());
+		return response()->json(["create makam sukses"]);
+
 
 	}
 
@@ -44,8 +46,7 @@ class AdminTPUController extends Controller{
 		$makam = Makam::findOrFail($id);
 		$makam->update($request->all());
 
-		return response()->json($makam);
-
+		return response()->json(["edit makam sukses"]);
 	}
 
 	function delete_makam(Request $request,$id){
@@ -56,7 +57,7 @@ class AdminTPUController extends Controller{
 		$makam = Makam::findOrFail($id);
 		$makam->delete();
 
-		return response()->json($makam);
+		return response()->json(["delete makam sukses"]);
 
 	}
 
@@ -99,7 +100,8 @@ class AdminTPUController extends Controller{
 
 	function create_penghunimakam(Request $request){
 
-		return $penghuni_makam = Penghuni_makam::create($request->all());
+		$penghuni_makam = Penghuni_makam::create($request->all());
+		return $penghuni_makam;
 
 	}
 
@@ -107,7 +109,7 @@ class AdminTPUController extends Controller{
 	{
 		$penghuni_makam = Penghuni_makam::findOrFail($id);
 		$penghuni_makam->update($request->all());
-		return $penghuni_makam;
+		return response()->json(["update penghuni makam sukses"]);
 	}
 
 	public function delete_penghunimakam(Request $request, $id)
@@ -115,7 +117,7 @@ class AdminTPUController extends Controller{
 		$penghuni_makam = Penghuni_makam::findOrFail($id);
 		$penghuni_makam->delete();
 
-		return 204;
+		return response()->json(["delete penghuni makam sukses"]);
 	}
 
 	function view_blok(Request $request){
@@ -149,7 +151,7 @@ class AdminTPUController extends Controller{
 	{
 		$blok = Blok_Makam::findOrFail($id);
 		$blok->update($request->all());
-		return $blok;
+		return response()->json(["edit blok makam sukses"]);
 	}
 
 	public function delete_blok(Request $request, $id)
@@ -169,6 +171,7 @@ class AdminTPUController extends Controller{
 		$blok->delete();
 
 		return response()->json($blok);
+		return response()->json(["delete blok makam sukses"]);
 	}
 
 	function view_role_tpu(){
@@ -196,7 +199,9 @@ class AdminTPUController extends Controller{
 
 	public function create_polygon(Request $request)
 	{
+		
 		return Polygon::create($request->all());
+
 	}
 
 	public function delete_polygon(Request $request, $id)

@@ -165,9 +165,10 @@ class Makam extends Component {
         lat:this.state.lat,
         lng:this.state.lng
       })
+    }).then((response)=>response.json())
+    .then((responseJson)=>{
+      alert(responseJson)
     }).then(
-      alert('update sukses')
-    ).then(
       this.setState({
         edit: !this.state.edit
       })
@@ -191,8 +192,10 @@ class Makam extends Component {
         lat:this.state.lat,
         lng:this.state.lng,
       })
-    }).then(
-      alert('create sukses')
+    }).then((response)=>response.json())
+    .then((responseJson)=>{
+      alert(responseJson)
+    }
     ).then(
       this.setState({
         create:!this.state.create
@@ -206,9 +209,10 @@ class Makam extends Component {
     
     fetch('http://localhost:8000/api/makam/delete/'+this.state.idmakamaktif+"?token="+sessionStorage.getItem('token'), {
       method: 'DELETE',
+    }).then((response)=>response.json())
+    .then((responseJson)=>{
+      alert(responseJson)
     }).then(
-      alert('delte sukses')
-    ).then(
       this.setState({
         small:!this.state.small
       })
