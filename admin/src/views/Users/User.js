@@ -62,7 +62,7 @@ class User extends Component {
 
   handlesubmit(){
     
-    fetch('http://localhost:8000/edit_user/'+usersData.id, {
+    fetch('http://api.emakam.tujuhlangit.id/edit_user/'+usersData.id, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

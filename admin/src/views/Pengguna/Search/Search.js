@@ -135,7 +135,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
+    fetch("http://api.emakam.tujuhlangit.id/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -149,7 +149,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token'))
+      fetch("http://api.emakam.tujuhlangit.id/api/blok/view_search?token="+sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })

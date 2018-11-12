@@ -49,7 +49,7 @@ class RegistrasiPerijinanMakam extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://api.emakam.tujuhlangit.id/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -83,7 +83,7 @@ class RegistrasiPerijinanMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -141,7 +141,7 @@ class RegistrasiPerijinanMakam extends Component {
     //   console.log(value);
     // }
 
-    fetch('http://localhost:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -166,7 +166,7 @@ class RegistrasiPerijinanMakam extends Component {
       console.log(responseJson.id_penghuni_makam)
       data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
       data.append('kode_tpu',this.state.kode_tpu);
-      fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
+      fetch('http://api.emakam.tujuhlangit.id/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data
       }).then((response) => response.json())

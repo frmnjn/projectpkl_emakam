@@ -72,7 +72,7 @@ class ManajemenHakAkses extends Component {
 
   fetchall() {
 
-    fetch('http://localhost:8000/api/user/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/user/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -86,7 +86,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/tpu/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/tpu/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -96,7 +96,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/role_tpu/view?token=' + sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/role_tpu/view?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -106,7 +106,7 @@ class ManajemenHakAkses extends Component {
         },
     )
 
-    fetch('http://localhost:8000/api/constraint_user?token=' + sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/constraint_user?token=' + sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -157,7 +157,7 @@ class ManajemenHakAkses extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.value_user);
-    fetch('http://localhost:8000/api/create_role_tpu?token=' + sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/create_role_tpu?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -180,7 +180,7 @@ class ManajemenHakAkses extends Component {
 
   handleSubmitEdit = event => {
     if (this.state.tpu_validation) {
-      fetch('http://localhost:8000/api/update_role_tpu/' + this.state.active_id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
+      fetch('http://api.emakam.tujuhlangit.id/api/update_role_tpu/' + this.state.active_id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -205,7 +205,7 @@ class ManajemenHakAkses extends Component {
 
   handledelete(table_constraint_user) {
     console.log(table_constraint_user);
-    fetch('http://localhost:8000/api/delete_role_tpu/' + table_constraint_user.id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/delete_role_tpu/' + table_constraint_user.id_role_tpu + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE'
     })
       .then(
