@@ -118,6 +118,7 @@ class CetakDokumen extends Component {
       + '&blok_almarhum=' + items.kode_blok
       + '&no_surat_permohonan=' + items.no_surat_permohonan
       window.location = url;
+      this.modalnosuratclose
     }
   }
 
@@ -159,7 +160,9 @@ class CetakDokumen extends Component {
     }).then((response) => response.json())
       .then((responsejson) => {
         alert('Update Success');
-      })
+      }).then(
+        this.modalnosuratclose
+      )
   }
 
   nosuratmodal(items) {
@@ -196,7 +199,7 @@ class CetakDokumen extends Component {
                 <div class="form-group">
                 <label>No Surat</label>
                 <input type="text" className="form-control" onChange={this.handleChange} name="no_surat"></input><br/>
-                <Button onClick={()=>this.update_no_surat_perizinan(this.state.activenosurat.id)}>Atur</Button>
+                <Button onClick={()=>this.update_no_surat_perizinan(this.state.activenosurat.id)}>Simpan</Button>
                 </div>
               </form>
             </ModalBody>
@@ -232,6 +235,10 @@ class CetakDokumen extends Component {
                       { accessor: 'alamat_terakhir', show: false },
                       { accessor: 'kode_blok', show: false },
                       {
+                        Header: 'Kode Registrasi',
+                        accessor: 'kode_registrasi', // String-based value accessors!
+                      },
+                      {
                         Header: 'Nomor Surat',
                         accessor: 'no_surat_perizinan', // String-based value accessors!
                       },
@@ -253,7 +260,7 @@ class CetakDokumen extends Component {
                         show: false
                       },
                       {
-                        Header: 'Nomor Surat',
+                        Header: 'Action',
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>

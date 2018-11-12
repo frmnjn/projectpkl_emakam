@@ -148,6 +148,8 @@ class tpu extends Component {
         nama_tpu: this.state.namaaktif,
         id_kecamatan: this.state.kecamatanaktif,
         kode_tpu: this.state.kodeaktif,
+        lat:this.state.lat,
+        lng:this.state.lng,
       })
     }).then((response) => response.json())
     .then((responseJson) => {
@@ -173,7 +175,9 @@ class tpu extends Component {
       body: JSON.stringify({
         nama_tpu: this.state.namaaktif,
         id_kecamatan: this.state.kecamatanaktif,
-        kode_tpu: this.state.kodeaktif
+        kode_tpu: this.state.kodeaktif,
+        lat:this.state.lat,
+        lng:this.state.lng,
       })
     }).then((response) => response.json())
     .then((responseJson) => {

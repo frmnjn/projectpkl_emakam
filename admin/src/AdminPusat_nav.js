@@ -15,22 +15,22 @@ export default {
       icon: 'icon-magnifier',
     },
     {
-      name: 'Manajemen TPU',
+      name: 'TPU',
       url: '/ManajemenTpu',
       icon: 'icon-chart',
     },
     {
-      name: 'Manajemen Pengguna',
+      name: 'Pengguna',
       url: '/ManajemenPengguna',
       icon: 'icon-user',
     },
     {
-      name: 'Manajemen Hak Akses',
+      name: 'Hak Akses TPU',
       url: '/ManajemenHakAkses',
       icon: 'icon-pencil',
     },
     {
-      name: 'M. Akses Kecamatan',
+      name: 'Hak Akses Kecamatan',
       url: '/ManajemenHakAksesKec',
       icon: 'icon-pencil',
     },

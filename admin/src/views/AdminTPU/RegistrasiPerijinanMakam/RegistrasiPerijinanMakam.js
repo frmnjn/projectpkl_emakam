@@ -154,7 +154,7 @@ class RegistrasiPerijinanMakam extends Component {
         tanggal_wafat: this.state.tanggal_wafat,
         tanggal_lahir_alm: this.state.tanggal_lahir_alm,
         tanggal_pemakaman: this.state.tanggal_pemakaman,
-        status: this.state.status,
+        status: 'Baru',
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
         alamat_ahli_waris: this.state.alamat_ahli_waris,
@@ -242,12 +242,12 @@ class RegistrasiPerijinanMakam extends Component {
                         {/* <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} /> */}
                         <br />
                         <label>Status</label>
-                        <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
+                        {/* <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
                           <option value=''>pilih</option>
                           <option value='Diperpanjang'>Diperpanjang</option>
                           <option value='Expired'>Expired</option>
                           <option value='Ditimpa'>Ditimpa</option>
-                        </Input><br/>
+                        </Input><br/> */}
                         <label>Pilih Nomor Makam (Kode Makam)</label>
                         <Select
                           value={this.state.selectedOption}
@@ -285,7 +285,7 @@ class RegistrasiPerijinanMakam extends Component {
                         </label>
                         <br />
                         <label for="file_sk_lama">
-                          Scan SK lama (optional):
+                          Scan Surat izin lama (optional):
                         <input type="file" onChange={this.onchange} class="form-control-file" name="file_sk_lama" />
                         </label>
                         <br />

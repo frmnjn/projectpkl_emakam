@@ -230,8 +230,7 @@ class BlokMakam extends Component {
               lat: items.lat,
               lng: items.lng,
             })
-          }).then((response) => response.json())
-          .then((responseJson) => {alert(responseJson)})
+          })
         }),
         alert('create blok makam sukses')
       },
@@ -240,7 +239,7 @@ class BlokMakam extends Component {
         create: !this.state.create
       })
     ).then(
-      this.fetchblok
+      this.fetchblok,
     ).then(
       this.fetchpolygon
     )

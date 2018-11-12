@@ -219,7 +219,7 @@ class AdminTPUController extends Controller{
 
 		$surat_izin = $request->file('file_surat_izin');
 		$progress= 'Menunggu Persetujuan Kepala UPT';
-		$dokumen= 'Dokumen Kurang';
+		$dokumen= 'Lengkap';
 		$status1 = true; $status2 = true; $status3 = true; $status4 = false;
 
 		

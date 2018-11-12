@@ -20,17 +20,17 @@ export default {
       icon: 'icon-chart',
     },
     {
-      name: 'M. Blok Makam',
+      name: 'Blok Makam',
       url: '/ManajemenBlokMakam',
       icon: 'icon-chart',
     },
     {
-      name: 'Manajemen Makam',
+      name: 'Makam',
       url: '/ManajemenMakam',
       icon: 'icon-chart',
     },
     {
-      name: 'M. Penghuni Makam',
+      name: 'Penghuni Makam',
       url: '/ManajemenPenghuniMakam',
       icon: 'icon-chart',
     },

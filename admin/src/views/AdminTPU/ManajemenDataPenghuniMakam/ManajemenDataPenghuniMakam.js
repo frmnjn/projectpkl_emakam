@@ -257,9 +257,9 @@ class ManajemenDataPenghuniMakam extends Component {
         nama: this.state.nama,
         jenis_kelamin: this.state.jenis_kelamin,
         alamat_terakhir: this.state.alamat_terakhir,
-        tanggal_wafat: this.state.tanggal_wafat.format().substring(0, 10),
-        tanggal_lahir_alm: this.state.tanggal_wafat.format().substring(0, 10),
-        tanggal_pemakaman: this.state.tanggal_wafat.format().substring(0, 10),
+        tanggal_wafat: this.state.tanggal_wafat,
+        tanggal_lahir_alm: this.state.tanggal_lahir_alm,
+        tanggal_pemakaman: this.state.tanggal_pemakaman,
         status: this.state.status,
         id_makam: this.state.id_makam,
         nama_ahli_waris: this.state.nama_ahli_waris,
@@ -386,13 +386,16 @@ class ManajemenDataPenghuniMakam extends Component {
                           <input type="text" className="form-control" name="alamat_terakhir" placeholder="Alamat Terakhir" onChange={this.handleChange}></input>
                           <br />
                           <label>Tanggal Lahir</label>
-                          <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} />
+                          <Input type="date" className="form-control" name="tanggal_lahir_alm" onChange={this.handleChange}></Input>
+                          {/* <DatePicker name="tanggal_lahir_alm" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_lahir_alm} onChange={this.handleDateLhrAlm} /> */}
                           <br />
                           <label>Tanggal Wafat</label>
-                          <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} />
+                          <Input type="date" className="form-control" name="tanggal_wafat" onChange={this.handleChange}></Input>
+                          {/* <DatePicker dateFormat="DD/MM/YYYY" selected={this.state.tanggal_wafat} onChange={this.handleDate} /> */}
                           <br />
                           <label>Tanggal Pemakaman</label>
-                          <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} />
+                          <Input type="date" className="form-control" name="tanggal_pemakaman" onChange={this.handleChange}></Input>
+                          {/* <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} /> */}
                           <br />
                           <label>Status</label>
                           <Input type="select" className="form-control" name="status" onChange={this.handleChange}>

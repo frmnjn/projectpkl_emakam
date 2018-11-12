@@ -296,18 +296,19 @@ class Makam extends Component {
 
     if(status=='Terisi'){
       if(yearspan<2){
-        status = 'red'
+        return <p style={{color:"red"}}>Terisi</p>
+        // status = 'red'
       }else if(yearspan<3)
       {
-        status = 'grey'
+        return <p style={{color:"grey"}}>Terisi</p>
+        // status = 'grey'
       }else{
-        status = 'green'
-      }
-
-      
+        return <p style={{color:"green"}}>Terisi</p>
+        // status = 'green'
+      } 
     }
 
-    return status
+    return <p style={{color:"yellow"}}>Terisi</p>
   }
 
 
@@ -651,13 +652,15 @@ class Makam extends Component {
                           Header: "Status Makam",
                           Cell: row=>(
                             <div
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              backgroundColor:this.status_terisi(row.row),
-                              borderRadius: "2px",
-                            }}
-                            ></div>
+                            // style={{
+                            //   width: "100%",
+                            //   height: "100%",
+                            //   backgroundColor:this.status_terisi(row.row),
+                            //   borderRadius: "2px",
+                            // }}
+                            >
+                            {this.status_terisi(row.row)}
+                            </div>
                           )
                         },
                         {

@@ -123,7 +123,7 @@ class Search extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert('Update Success');
+        alert('Rekomendasi telah berhasil diproses');
       }).then(
         this.fetchdata
       )
@@ -144,14 +144,14 @@ class Search extends Component {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert('Update Success');
+        alert('Permohonan izin berhasil diproses');
       }).then(
         this.fetchdata
       )
   }
 
   acc_kec(row) {
-    alert('system are sending email, and processing the data. please wait...')
+    alert('sistem sedang memproses data dan mencoba mengirim email. tunggu sebentar...')
     var status = 'Proses Selesai'
     fetch('http://localhost:8000/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
@@ -166,8 +166,7 @@ class Search extends Component {
 
   acc_dinas = event => {
     event.preventDefault();
-    var status = 'Menunggu Persetujuan Kepala Kecamatan';
-    this.update_status_acc_dinas(this.state.activenosurat.id, status);
+    var status = 'Menunggu Persetujuan Kepala Kecamatan'
     const url = 'http://localhost:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + this.get_tanggal_sekarang()
       + '&nama_ahli_waris=' + this.state.activenosurat.nama_pewaris
@@ -183,8 +182,10 @@ class Search extends Component {
       + '&blok_almarhum=' + this.state.activenosurat.kode_blok
       + '&no_surat_permohonan=' + this.state.no_surat
 
-    window.location = url;
-    this.modalnosuratclose();
+    window.location = url
+    this.update_status_acc_dinas(this.state.activenosurat.id, status)
+
+    this.modalnosuratclose()
   }
 
   acc_kupt(id) {
@@ -281,11 +282,11 @@ class Search extends Component {
   checksklama(items){
     if(items.file_sk_lama!="-"){
       return (
-        <Button id='buttonsk' color="info"  onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+        <Button id='buttonsk' color="info"  onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-note icons text-left"></i></Button>
       )
     }else{
       return (
-        <Button id='buttonsk' color="info" disabled onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+        <Button id='buttonsk' color="info" disabled onClick={() => this.modalsklama(items)} className="mr-1"><i className="icon-note icons text-left"></i></Button>
       )
     }
       
@@ -428,13 +429,13 @@ class Search extends Component {
           </Modal>
 
           <Modal isOpen={this.state.ktpmodal} toggle={this.modalktpclose} className={'modal-Large ' + this.props.className}>
-            <ModalHeader toggle={this.modalktpclose}>KTP</ModalHeader>
+            <ModalHeader toggle={this.modalktpclose}>Kartu Tanda Penduduk</ModalHeader>
             <ModalBody>
               <img src={"http://localhost:8000/storage" + this.state.activektp} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.kkmodal} toggle={this.modalkkclose} className={'modal-Large ' + this.props.className}>
-            <ModalHeader toggle={this.modalkkclose}>KK</ModalHeader>
+            <ModalHeader toggle={this.modalkkclose}>Kartu Keluarga</ModalHeader>
             <ModalBody>
               <img src={"http://localhost:8000/storage" + this.state.activekk} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
@@ -452,7 +453,7 @@ class Search extends Component {
             </ModalBody>
           </Modal>
           <Modal isOpen={this.state.sklamamodal} toggle={this.modalsklamaclose} className={'modal-Large ' + this.props.className}>
-            <ModalHeader toggle={this.modalsklamaclose}>Surat Kematian Lama</ModalHeader>
+            <ModalHeader toggle={this.modalsklamaclose}>Surat Izin Lama</ModalHeader>
             <ModalBody>
               <img src={"http://localhost:8000/storage" + this.state.activesklama} class="img-fluid" alt="Responsive image"></img>
             </ModalBody>
@@ -555,9 +556,9 @@ class Search extends Component {
                         accessor: 'file_sk', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.modalktp(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
-                            <Button color="info" onClick={() => this.modalkk(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
-                            <Button color="info" onClick={() => this.modalsk(row.row)} className="mr-1"><i className="icon-magnifier icons text-left"></i></Button>
+                            <Button color="info" onClick={() => this.modalktp(row.row)} className="mr-1"><i className="icon-credit-card text-left"></i></Button>
+                            <Button color="info" onClick={() => this.modalkk(row.row)} className="mr-1"><i className="icon-map icons text-left"></i></Button>
+                            <Button color="info" onClick={() => this.modalsk(row.row)} className="mr-1"><i className="icon-layers icons text-left"></i></Button>
                             {this.checksklama(row.row)}
                           </div>
                         )
@@ -593,7 +594,7 @@ class Search extends Component {
                         accessor: 'status', // String-based value accessors!
                       },
                       {
-                        Header: 'Actions kp.kecamatan',
+                        Header: 'Actions',
                         filterable: false,
                         accessor: 'status', // String-based value accessors!
                         show: sessionStorage.getItem('login_session') == "4" ? true : false,
@@ -617,7 +618,8 @@ class Search extends Component {
                       {
                         Header: 'Actions',
                         filterable: false,
-                        show: sessionStorage.getItem('login_session') == "1" ? true : false,
+                        show: false,
+                        // sessionStorage.getItem('login_session') == "1" ? true : false,
                         accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
