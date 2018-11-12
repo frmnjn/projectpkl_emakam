@@ -170,7 +170,6 @@ class AdminTPUController extends Controller{
 		$blok = Blok_Makam::findOrFail($id);
 		$blok->delete();
 
-		return response()->json($blok);
 		return response()->json(["delete blok makam sukses"]);
 	}
 
