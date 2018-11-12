@@ -257,7 +257,7 @@ class Search extends Component {
                       accessor: 'nama', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <div><strong>{row.row.nama}</strong></div>                          
+                          <div>{row.row.nama}</div>                          
                         </div>
                       )
                     },
@@ -285,7 +285,7 @@ class Search extends Component {
                       accessor: 'kode_makam', // String-based value accessors!
                       Cell: row => (
                         <div>
-                          <div><strong>{row.row.kode_makam}</strong></div>                        
+                          <div>{row.row.kode_makam}</div>                        
                         </div>
                       )
                     },

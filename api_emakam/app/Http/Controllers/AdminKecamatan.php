@@ -70,6 +70,7 @@ class AdminKecamatan extends Controller{
 	public function tgl_indo($tanggal){
 		$tanggal = explode(" ",$tanggal);
 		$bulan = array (
+			"",
 			"Januari",
 			"Februari",
 			"Maret",
