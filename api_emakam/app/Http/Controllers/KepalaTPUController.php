@@ -73,11 +73,16 @@ class KepalaTPUController extends Controller{
   }
 
   function update_dokumen(Request $request){
-    $id=$request->input('id');
-    $dokumen = Dokumen::findOrFail($id);
-    $dokumen->update($request->all());
-
-    return response()->json($dokumen);
+      try{
+        $id=$request->input('id');
+        $dokumen = Dokumen::findOrFail($id);
+        $dokumen->update($request->all());
+    
+        return response()->json($dokumen);
+      }catch(Exception $e){
+          
+      }
+    
 }
 
 

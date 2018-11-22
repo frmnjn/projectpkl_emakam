@@ -269,8 +269,10 @@ class ManajemenDataPenghuniMakam extends Component {
       })
     }).then((response) => response.json())
     .then((responseJson) => {
-      if(responseJson!=null){
-        alert('create penghuni makam sukses')
+      if(responseJson.message==null){
+        alert("pembuatan penghuni makam sukses")
+      }else{
+        alert("pembuatan penghuni makam gagal")
       }
     }).then(
       this.fetchall

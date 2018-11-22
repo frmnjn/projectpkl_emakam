@@ -167,7 +167,11 @@ class Makam extends Component {
       })
     }).then((response)=>response.json())
     .then((responseJson)=>{
-      alert(responseJson)
+      if(Array.isArray(responseJson)){
+        alert(responseJson)
+      }else{
+        alert("pembuatan makam gagal")
+      }
     }).then(
       this.setState({
         edit: !this.state.edit
@@ -194,7 +198,13 @@ class Makam extends Component {
       })
     }).then((response)=>response.json())
     .then((responseJson)=>{
-      alert(responseJson)
+      // alert(typeof(responseJson))
+      // console.log(responseJson)
+      if(Array.isArray(responseJson)){
+        alert(responseJson)
+      }else{
+        alert("pembuatan makam gagal")
+      }
     }
     ).then(
       this.setState({
@@ -211,7 +221,11 @@ class Makam extends Component {
       method: 'DELETE',
     }).then((response)=>response.json())
     .then((responseJson)=>{
-      alert(responseJson)
+      if(Array.isArray(responseJson)){
+        alert(responseJson)
+      }else{
+        alert("pembuatan makam gagal")
+      }
     }).then(
       this.setState({
         small:!this.state.small

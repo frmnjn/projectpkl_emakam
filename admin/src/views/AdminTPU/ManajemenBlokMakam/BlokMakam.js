@@ -191,7 +191,9 @@ class BlokMakam extends Component {
         id_tpu: this.state.idtpuaktif,
       })
     }).then((response) => response.json())
-    .then((responseJson) => {alert(responseJson)}).then(
+    .then((responseJson) => {
+      alert(responseJson)
+    }).then(
       this.setState({
         edit: !this.state.edit
       })
@@ -218,23 +220,28 @@ class BlokMakam extends Component {
     }).then(response => response.json())
     .then(
       (result) => {
-        this.state.newpolygon.map((items) => {
-          fetch('http://127.0.0.1:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id_blok: result.id_blok,
-              lat: items.lat,
-              lng: items.lng,
+        if(result.message==null){
+          this.state.newpolygon.map((items) => {
+            fetch('http://127.0.0.1:8000/api/polygon/create?token=' + sessionStorage.getItem('token'), {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id_blok: result.id_blok,
+                lat: items.lat,
+                lng: items.lng,
+              })
             })
           })
-        }),
-        alert('create blok makam sukses')
-      },
-    ).then(
+          alert("pembuatan blokmakam sukses")
+        }else{
+          alert("pembuatan blokmakam gagal")
+        }
+      }
+    )
+    .then(
       this.setState({
         create: !this.state.create
       })

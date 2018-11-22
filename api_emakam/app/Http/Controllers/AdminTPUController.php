@@ -35,29 +35,48 @@ class AdminTPUController extends Controller{
 
 	function create_makam(Request $request){
 
-		Makam::create($request->all());
-		return response()->json(["create makam sukses"]);
+		try{
+
+			Makam::create($request->all());
+			return response()->json(["pembuatan makam sukses"]);
+
+		}catch(Exception $e){
+			return response()->json(["pembuatan makam gagal"]);
+
+		}
+
+		
 
 
 	}
 
 	function edit_makam(Request $request,$id){
+		try{
+			$makam = Makam::findOrFail($id);
+			$makam->update($request->all());
+	
+			return response()->json(["edit makam sukses"]);
+		}catch(Exception $e){
 
-		$makam = Makam::findOrFail($id);
-		$makam->update($request->all());
+		}
 
-		return response()->json(["edit makam sukses"]);
+		
 	}
 
 	function delete_makam(Request $request,$id){
-		$penghuni_makam = DB::table('penghuni_makam')
-		->where('penghuni_makam.id_makam','=',$id)
-		->delete();
-
-		$makam = Makam::findOrFail($id);
-		$makam->delete();
-
-		return response()->json(["delete makam sukses"]);
+		try{
+			$penghuni_makam = DB::table('penghuni_makam')
+			->where('penghuni_makam.id_makam','=',$id)
+			->delete();
+	
+			$makam = Makam::findOrFail($id);
+			$makam->delete();
+	
+			return response()->json(["delete makam sukses"]);
+		}catch(Exception $e){
+			
+		}
+		
 
 	}
 
@@ -99,25 +118,38 @@ class AdminTPUController extends Controller{
 	}
 
 	function create_penghunimakam(Request $request){
+		try{
+			$penghuni_makam = Penghuni_makam::create($request->all());
+			return $penghuni_makam;
+		}catch(Exception $e){
 
-		$penghuni_makam = Penghuni_makam::create($request->all());
-		return $penghuni_makam;
+		}
 
+		
 	}
 
 	public function update_penghunimakam(Request $request, $id)
 	{
-		$penghuni_makam = Penghuni_makam::findOrFail($id);
-		$penghuni_makam->update($request->all());
-		return response()->json(["update penghuni makam sukses"]);
+		try{
+			$penghuni_makam = Penghuni_makam::findOrFail($id);
+			$penghuni_makam->update($request->all());
+			return response()->json(["update penghuni makam sukses"]);
+		}catch(Exception $e){
+
+		}
+		
 	}
 
 	public function delete_penghunimakam(Request $request, $id)
 	{
-		$penghuni_makam = Penghuni_makam::findOrFail($id);
-		$penghuni_makam->delete();
+		try{
+			$penghuni_makam = Penghuni_makam::findOrFail($id);
+			$penghuni_makam->delete();
+			return response()->json(["delete penghuni makam sukses"]);
+		}catch(Exception $e){
 
-		return response()->json(["delete penghuni makam sukses"]);
+		}
+		
 	}
 
 	function view_blok(Request $request){
@@ -142,35 +174,49 @@ class AdminTPUController extends Controller{
 	}
 
 	function create_blok(Request $request){
+		try{
+			return Blok_Makam::create($request->all());
+		}catch(Exception $e){
 
-		return Blok_Makam::create($request->all());
+		}
+
 
 	}
 
 	public function edit_blok(Request $request, $id)
 	{
-		$blok = Blok_Makam::findOrFail($id);
-		$blok->update($request->all());
-		return response()->json(["edit blok makam sukses"]);
+		try{
+			$blok = Blok_Makam::findOrFail($id);
+			$blok->update($request->all());
+			return response()->json(["edit blok makam sukses"]);
+		}catch(Exception $e){
+
+		}
+		
 	}
 
 	public function delete_blok(Request $request, $id)
 	{
-		$penghuni_makam = DB::table('penghuni_makam')
-		->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
-		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
-		->where('blok_makam.id_blok','=',$id)
-		->delete();
+		try{
+			$penghuni_makam = DB::table('penghuni_makam')
+			->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+			->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+			->where('blok_makam.id_blok','=',$id)
+			->delete();
 
-		$makam = DB::table('makam')
-		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
-		->where('blok_makam.id_blok','=',$id)
-		->delete();
+			$makam = DB::table('makam')
+			->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+			->where('blok_makam.id_blok','=',$id)
+			->delete();
 
-		$blok = Blok_Makam::findOrFail($id);
-		$blok->delete();
+			$blok = Blok_Makam::findOrFail($id);
+			$blok->delete();
 
-		return response()->json(["delete blok makam sukses"]);
+			return response()->json(["delete blok makam sukses"]);
+		}catch(Exception $e){
+
+		}
+		
 	}
 
 	function view_role_tpu(){
@@ -198,20 +244,30 @@ class AdminTPUController extends Controller{
 
 	public function create_polygon(Request $request)
 	{
-		
-		return Polygon::create($request->all());
+		try{
+			return Polygon::create($request->all());
+		}catch(Exception $e){
+			
+		}
 
 	}
 
 	public function delete_polygon(Request $request, $id)
 	{
-		$table = DB::table('polygon')
-		->where('polygon.id_blok','=',$id)
-		->delete();
-		return $table;
+		try{
+			$table = DB::table('polygon')
+			->where('polygon.id_blok','=',$id)
+			->delete();
+			return $table;
+		}catch(Exception $e){
+
+		}
+		
 	}
 
 	function upload(Request $request){
+		try{
+
 		$ktp = $request->file('file_ktp');
 		$kk = $request->file('file_kk');
 		$sk = $request->file('file_sk');
@@ -280,6 +336,11 @@ class AdminTPUController extends Controller{
 		} else{
 			return response()->json('upload gagal!');
 		}
+
+		}catch(Exception $e){
+			
+		}
+		
 
 	}
 	

@@ -39,23 +39,34 @@ class AdminPusatController extends Controller
     }
 
     function create_tpu(Request $request){
+        try{
+            Tpu::create($request->all());
+            return response()->json(["create TPU  sukses"]);
+        }catch(Exception $e){
 
-        Tpu::create($request->all());
-        return response()->json(["create TPU  sukses"]);
+        }
+
+        
 
     }
 
     function edit_tpu(Request $request,$id){
+        try{
+            $tpu = Tpu::findOrFail($id);
+            $tpu->update($request->all());
 
-        $tpu = Tpu::findOrFail($id);
-        $tpu->update($request->all());
+            return response()->json(["edit TPU sukses"]);
+        }catch(Exception $e){
 
-        return response()->json(["edit TPU sukses"]);
+        }
+
+        
 
     }
 
     public function delete_tpu(Request $request, $id)
     {
+        try{
         $penghuni_makam = DB::table('penghuni_makam')
             ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
             ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
@@ -91,6 +102,10 @@ class AdminPusatController extends Controller
         $tpu->delete();
 
         return response()->json(["delete TPU sukses"]);
+        }catch(Excpetion $e){
+
+        }
+
     }
     
     function view_role_tpu(){
@@ -100,6 +115,11 @@ class AdminPusatController extends Controller
 
     function create_role_tpu(Request $request)
     {
+        try{
+
+        }catch(Exception $e){
+
+        }
         $id_tpu = $request->input('id_tpu');
         $id_user = $request->input('id_user');
 
@@ -115,6 +135,11 @@ class AdminPusatController extends Controller
 
     function create_role_kecamatan(Request $request)
     {
+        try{
+
+        }catch(Exception $e){
+
+        }
         $id_tpu = $request->input('id_tpu');
         $id_user = $request->input('id_user');
 
@@ -125,36 +150,56 @@ class AdminPusatController extends Controller
 
     function update_role_tpu(Request $request, $id_role_tpu)
     {
-        $role_tpu = Role_tpu::findOrFail($id_role_tpu);
+        try{
+            $role_tpu = Role_tpu::findOrFail($id_role_tpu);
         
-        $role_tpu->update($request->all());
+            $role_tpu->update($request->all());
+    
+            return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
+        }catch(Exception $e){
 
-        return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
+        }
+
     }
 
     function update_role_kecamatan(Request $request, $id_role)
     {
-        $role = Role_kecamatan::findOrFail($id_role);
+        try{
+            $role = Role_kecamatan::findOrFail($id_role);
         
-        $role->update($request->all());
+            $role->update($request->all());
+    
+            return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
+        }catch(Exception $e){
 
-        return response()->json(['msg' => "Hak Akses Berhasil di update!"]);
+        }
+        
     }
 
     function delete_role_tpu(Request $request, $id_role_tpu)
     {
-        $role_tpu = Role_tpu::findOrFail($id_role_tpu);
-        $role_tpu->delete();
+        try{
+            $role_tpu = Role_tpu::findOrFail($id_role_tpu);
+            $role_tpu->delete();
+    
+            return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
+        }catch(Exception $e){
 
-        return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
+        }
+        
     }
 
     function delete_role_kecamatan(Request $request, $id_role)
     {
-        $role = Role_kecamatan::findOrFail($id_role);
-        $role ->delete();
+        try{
+            $role = Role_kecamatan::findOrFail($id_role);
+            $role ->delete();
+    
+            return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
+        }catch(Exception $e){
 
-        return response()->json(['msg' => "Hak Akses Berhasil dihapus!"]);
+        }
+
     }
 
     function view_role_byuser(Request $request){
@@ -167,88 +212,104 @@ class AdminPusatController extends Controller
 
         function create_user(Request $request)
     {
-        $username = $request->input('username');
-        $password = Hash::make($request->input('password'));
-        $role = $request->input('role');
-        //$id_tpu = $request->input('id_tpu');
-        //$id_user = "";
+        try{
+            $username = $request->input('username');
+            $password = Hash::make($request->input('password'));
+            $role = $request->input('role');
+            //$id_tpu = $request->input('id_tpu');
+            //$id_user = "";
+    
+            $user = new User([
+                'username' => $username,
+                'password' => $password,
+                'role' => $role
+            ]);
+    
+            $user->save();
+    
+            return response()->json(['msg' => "create user sukses"]);
+        }catch(Exception $e){
 
-        $user = new User([
-            'username' => $username,
-            'password' => $password,
-            'role' => $role
-        ]);
-
-        $user->save();
-
-        return response()->json(['msg' => "create user sukses"]);
+        }
+       
     }
 
     function update_user(Request $request, $id_user)
     {
-        $user = User::findOrFail($id_user);
+        try{
+            $user = User::findOrFail($id_user);
 
 
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $role = $request->input('role');
+            $username = $request->input('username');
+            $password = $request->input('password');
+            $role = $request->input('role');
+    
+            $user->update([
+                'username' => $request->input('username'),
+                'password' => $request->input('password'),
+                'role' => $request->input('role')
+            ]);
+            $role_tpu->save();
+    
+            return response()->json(['msg' => "update user sukses"]);
 
-        $user->update([
-            'username' => $request->input('username'),
-            'password' => $request->input('password'),
-            'role' => $request->input('role')
-        ]);
-        $role_tpu->save();
+        }catch(Exception $e){
 
-        return response()->json(['msg' => "update user sukses"]);
+        }
+        
     }
 
     function delete_user(Request $request, $id_user)
     {
-        $role = $request->input('role');
-        $user = DB::table('user')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
-        if(empty($user)){
-            $msg = ([
-                'msg' => "Data User tidak ditemukan !"
-            ]);
-        } else {
-            if($role==1||$role==2){
-                $role_tpu = DB::table('role_tpu')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
-                if(empty($role_tpu)){
+        try{
+            $role = $request->input('role');
+            $user = DB::table('user')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
+            if(empty($user)){
+                $msg = ([
+                    'msg' => "Data User tidak ditemukan !"
+                ]);
+            } else {
+                if($role==1||$role==2){
+                    $role_tpu = DB::table('role_tpu')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
+                    if(empty($role_tpu)){
+                        $user = User::findOrFail($id_user);
+                        $user->delete();
+                        $msg = ([
+                            'msg' => "User berhasil dihapus"
+                        ]);
+                    } else {
+                        $msg = ([
+                            'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
+                        ]);
+                    }
+                }else if($role==5||$role==4){
+                    $role_kecamatan = DB::table('role_kecamatan')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
+                    if(empty($role_kecamatan)){
+                        $user = User::findOrFail($id_user);
+                        $user->delete();
+                        $msg = ([
+                            'msg' => "User berhasil dihapus"
+                        ]);
+                    } else {
+                        $msg = ([
+                            'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
+                        ]);
+                    }
+                }else{
                     $user = User::findOrFail($id_user);
-                    $user->delete();
-                    $msg = ([
-                        'msg' => "User berhasil dihapus"
-                    ]);
-                } else {
-                    $msg = ([
-                        'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
-                    ]);
+                        $user->delete();
+                        $msg = ([
+                            'msg' => "User berhasil dihapus"
+                        ]);
                 }
-            }else if($role==5||$role==4){
-                $role_kecamatan = DB::table('role_kecamatan')->select('id_user')->where('id_user', '=', $id_user)->value('id_user');
-                if(empty($role_kecamatan)){
-                    $user = User::findOrFail($id_user);
-                    $user->delete();
-                    $msg = ([
-                        'msg' => "User berhasil dihapus"
-                    ]);
-                } else {
-                    $msg = ([
-                        'msg' => "Anda harus menghapus hak akses user terlebih dahulu !"
-                    ]);
-                }
-            }else{
-                $user = User::findOrFail($id_user);
-                    $user->delete();
-                    $msg = ([
-                        'msg' => "User berhasil dihapus"
-                    ]);
+    
+                
             }
+            return response()->json(['msg' => "delete user sukses"]);
+        }catch(Exception $e){
 
-            
         }
-        return response()->json(['msg' => "delete user sukses"]);
+        
     }
 
     function constraint_user_kecamatan(){

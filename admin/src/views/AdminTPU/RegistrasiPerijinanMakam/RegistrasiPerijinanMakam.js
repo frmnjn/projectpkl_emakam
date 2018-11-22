@@ -163,17 +163,25 @@ class RegistrasiPerijinanMakam extends Component {
       })
     }).then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson.id_penghuni_makam)
-      data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
-      data.append('kode_tpu',this.state.kode_tpu);
-      fetch('http://127.0.0.1:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
-      method: 'POST',
-      body: data
-      }).then((response) => response.json())
-        .then((responseJson) => {
-          alert(responseJson);
-          this.props.history.push('/Dokumen');
-        })
+      if(responseJson.message==null){
+        console.log(responseJson.id_penghuni_makam)
+        data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
+        data.append('kode_tpu',this.state.kode_tpu);
+        fetch('http://127.0.0.1:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
+        method: 'POST',
+        body: data
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            if(responseJson.message==null){
+              alert(responseJson)
+            }else{
+            }
+            this.props.history.push('/Dokumen');
+          })
+      }else{
+        alert("pembuatan dokumen gagal")
+      }
+      
     })
   }
 
