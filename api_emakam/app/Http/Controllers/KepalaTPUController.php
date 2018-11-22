@@ -26,12 +26,16 @@ class KepalaTPUController extends Controller{
         
         if($role == '4'||$role == '5'){
             $view = DB::table('dokumen')
+            ->join('penghuni_makam','dokumen.id_penghuni_makam','=','penghuni_makam.id_penghuni_makam')
+            ->join('makam','penghuni_makam.id_makam','=','makam.id_makam')
+            ->join('blok_makam','makam.id_blok','=','blok_makam.id_blok')
+            ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
             ->join('kecamatan', 'kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->join('role_kecamatan', 'role_kecamatan.id_kecamatan', '=', 'dokumen.id_kecamatan')
             ->where('role_kecamatan.id_user','=',$id_user)
             ->orderBy('id','desc')
-            ->select('dokumen.*','kecamatan.*','role_kecamatan.*')
-            
+            ->select('dokumen.*','kecamatan.*','role_kecamatan.*','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
+            ->distinct()
             ->get();
             
 
@@ -43,6 +47,7 @@ class KepalaTPUController extends Controller{
             ->where('role_tpu.id_user','=',$id_user)
             ->orderBy('id','desc')
             ->select('*')
+            ->distinct()
             ->get();
 
             return $view;
@@ -54,6 +59,7 @@ class KepalaTPUController extends Controller{
             ->join('tpu','blok_makam.id_tpu','=','tpu.id_tpu')
             ->orderBy('id','desc')
             ->select('dokumen.*','penghuni_makam.id_penghuni_makam','penghuni_makam.nama','penghuni_makam.jenis_kelamin','penghuni_makam.alamat_terakhir','penghuni_makam.tanggal_lahir_alm','penghuni_makam.tanggal_wafat','penghuni_makam.tanggal_pemakaman','penghuni_makam.id_makam','penghuni_makam.nama_ahli_waris','penghuni_makam.alamat_ahli_waris','penghuni_makam.nik_ahli_waris','penghuni_makam.kontak_ahli_waris','makam.*','blok_makam.*','tpu.*')
+            ->distinct()
             ->get();
 
             return $view;

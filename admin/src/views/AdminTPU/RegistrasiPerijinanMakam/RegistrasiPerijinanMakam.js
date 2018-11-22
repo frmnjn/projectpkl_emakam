@@ -49,7 +49,7 @@ class RegistrasiPerijinanMakam extends Component {
   }
 
   componentDidMount() {
-    fetch('http://api.emakam.tujuhlangit.id/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
+    fetch('http://127.0.0.1:8000/api/makam/view?token=' + sessionStorage.getItem('token') + '&id_user=' + sessionStorage.getItem('id_user'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -83,7 +83,7 @@ class RegistrasiPerijinanMakam extends Component {
 
   handleSubmitCreate = event => {
     event.preventDefault();
-    fetch('http://api.emakam.tujuhlangit.id/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://127.0.0.1:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -141,7 +141,7 @@ class RegistrasiPerijinanMakam extends Component {
     //   console.log(value);
     // }
 
-    fetch('http://api.emakam.tujuhlangit.id/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://127.0.0.1:8000/api/penghuni_makam/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -166,7 +166,7 @@ class RegistrasiPerijinanMakam extends Component {
       console.log(responseJson.id_penghuni_makam)
       data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
       data.append('kode_tpu',this.state.kode_tpu);
-      fetch('http://api.emakam.tujuhlangit.id/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
+      fetch('http://127.0.0.1:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       body: data
       }).then((response) => response.json())
@@ -202,7 +202,7 @@ class RegistrasiPerijinanMakam extends Component {
                         <label>Alamat</label>
                         <input type="text" className="form-control" name="alamat_ahli_waris" placeholder="Alamat Ahli Waris" onChange={this.handleChange}></input>
                         <label>Tanggal Lahir</label>
-                        <Input type="date" className="form-control" name="tgllhr_ahli_waris" onChange={this.handleChange}></Input>
+                        <Input type="date" data-date-format="DD MMMM YYYY" className="form-control" name="tgllhr_ahli_waris" onChange={this.handleChange}></Input>
                         {/* <DatePicker name="tgllhr_ahli_waris" dateFormat="DD/MM/YYYY" selected={this.state.tgllhr_ahli_waris} onChange={this.handleDateLhrWrs} /> */}
                         <label>NIK</label>
                         <input type="text" className="form-control" name="nik_ahli_waris" placeholder="NIK Ahli Waris" onChange={this.handleChange}></input>

@@ -27,7 +27,7 @@ class TrackProgress extends Component {
 
   handleChangePassword = event => {
     event.preventDefault();
-    fetch('http://api.emakam.tujuhlangit.id/api/track_progress?kode_registrasi='+this.state.koderegistrasi)
+    fetch('http://127.0.0.1:8000/api/track_progress?kode_registrasi='+this.state.koderegistrasi)
     .then((response) => response.json())
     .then((responseJson) => {
       this.setState({
