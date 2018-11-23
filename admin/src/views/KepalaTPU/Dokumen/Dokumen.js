@@ -166,7 +166,7 @@ class Search extends Component {
   acc_dinas = event => {
     event.preventDefault();
     var status = 'Menunggu Persetujuan Kepala Kecamatan'
-    const url = 'http://127.0.0.1:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+    const url = 'http://127.0.0.1:8000/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + this.get_tanggal_sekarang()
       + '&nama_ahli_waris=' + this.state.activenosurat.nama_pewaris
       + '&alamat_ahli_waris=' + this.state.activenosurat.alamat_ahli_waris
@@ -303,7 +303,7 @@ class Search extends Component {
   surat_permohonan = (items) =>{
     console.log(items)
     if(items.no_surat_permohonan!=null){
-      const url = 'http://127.0.0.1:8000/api/dokumen/cetak_surat_permohonan?token=' + sessionStorage.getItem('token')
+      const url = 'http://127.0.0.1:8000/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + items.tanggal_surat_permohonan
       + '&nama_ahli_waris=' + items.nama_pewaris
       + '&alamat_ahli_waris=' + items.alamat_ahli_waris

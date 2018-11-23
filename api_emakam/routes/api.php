@@ -102,7 +102,8 @@ Route::middleware('cors')->post('dokumen/create', 'KepalaTPUController@create_do
 Route::middleware('cors')->get('dokumen/view_picture', 'KepalaTPUController@view_picture');
 
 Route::middleware('cors')->get('dokumen/view_siap_cetak', 'AdminKecamatan@view_dokumen_siap_cetak');
-Route::middleware('cors')->get('dokumen/cetak', 'AdminKecamatan@cetak_dokumen');
+Route::middleware('cors')->get('dokumen/cetak_dokumen_permohonan', 'AdminKecamatan@cetak_dokumen_permohonan');
+Route::middleware('cors')->get('dokumen/cetak_dokumen_perizinan', 'AdminKecamatan@cetak_dokumen_perizinan');
 Route::middleware('cors')->get('dokumen/cetak_surat_permohonan', 'AdminKecamatan@cetak_surat_permohonan');
 Route::middleware('cors')->get('dokumen/cetak_surat_perizinan', 'AdminKecamatan@cetak_surat_perizinan');
 

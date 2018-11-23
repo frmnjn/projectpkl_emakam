@@ -89,18 +89,68 @@ class AdminKecamatan extends Controller{
 		return $pecahkan[2] . " " . $bulan[ (int)$pecahkan[1] ] . " " . $pecahkan[0];
 	}
 
-	function cetak_dokumen(Request $request){
-		$file   = storage_path("app/template.docx");
-		$hasil   = storage_path("app/hasil.docx");
+	function cetak_dokumen_permohonan(Request $request){
+		$file   = storage_path("app/template_surat_permohonan.docx");
+		$hasil   = storage_path('app/Surat_Permohonan_'.$request->input('nama_almarhum').".docx");
 
 		$phpWord = new PhpWord();
 
 		$doc   = $phpWord->loadTemplate($file);
-		$doc -> setValue("nama_ahli_waris",$request->input("nama_ahli_waris"));
-		$doc -> setValue("tanggal",$request->input("tanggal"));
+		$doc -> setValue("no_surat_permohonan",$request->input("no_surat_permohonan"));
 		$doc -> setValue("tanggal_sekarang",$request->input("tanggal_sekarang"));
-		$doc -> setValue("nik_ahli_waris",$request->input("nik_ahli_waris"));
-		$doc -> setValue("kontak_ahli_waris",$request->input("kontak_ahli_waris"));
+		$doc -> setValue("nama_ahli_waris",$request->input("nama_ahli_waris"));
+		$doc -> setValue("alamat_ahli_waris",$request->input("alamat_ahli_waris"));
+		$doc -> setValue("ttl_ahli_waris",$this->tgl_indo($request->input("ttl_ahli_waris")));
+
+		$doc -> setValue("tanggal_wafat",$this->tgl_indo($request->input("tanggal_wafat")));
+		$doc -> setValue("nama_almarhum",$request->input("nama_almarhum"));
+		$doc -> setValue("ttl_almarhum", $this->tgl_indo($request->input("ttl_almarhum")));
+		$doc -> setValue("umur_almarhum",$this->get_age($request->input("ttl_almarhum")));
+		$doc -> setValue("jenis_kelamin_almarhum",$request->input("jenis_kelamin_almarhum"));
+		$doc -> setValue("tpu_almarhum",$request->input("tpu_almarhum"));
+		$doc -> setValue("alamat_almarhum",$request->input("alamat_almarhum"));
+		$doc -> setValue("tanggal_pemakaman",$this->tgl_indo($request->input("tanggal_pemakaman")));
+		$doc -> setValue("blok_almarhum",$request->input("blok_almarhum"));
+
+		$doc -> saveAs($hasil);
+
+		return response()->download($hasil)->deleteFileAfterSend(true);
+	}
+
+	function cetak_dokumen_perizinan(Request $request){
+		$id_kecamatan = $request->input("id_kecamatan");
+		$view = DB::table("kecamatan")
+            ->where("id_kecamatan","=",$id_kecamatan)
+            ->select("*")
+            ->get();
+		$file   = storage_path("app/template_surat_perizinan.docx");
+		$hasil   = storage_path('app/Surat_Perizinan_'.$request->input('nama_almarhum').".docx");
+
+		$phpWord = new PhpWord();
+
+		$doc   = $phpWord->loadTemplate($file);
+
+		$doc -> setValue("nama_kecamatan",strtoupper($view[0]->nama));
+		$doc -> setValue("nama_kecamatan_normal",$view[0]->nama);
+		$doc -> setValue("alamat_kecamatan",$view[0]->alamat_kecamatan);
+		$doc -> setValue("no_telp_kecamatan",$view[0]->no_telp_kecamatan);
+		$doc -> setValue("kode_pos_kecamatan",$view[0]->kode_pos_kecamatan);
+		$doc -> setValue("website_kecamatan",$view[0]->website_kecamatan);
+
+		$doc -> setValue("no_surat_perizinan",$request->input("no_surat_perizinan"));
+		$doc -> setValue("no_surat_permohonan",$request->input("no_surat_permohonan"));
+		$doc -> setValue("tanggal_surat_permohonan",$request->input("tanggal_surat_permohonan"));
+		$doc -> setValue("tanggal_sekarang",$request->input("tanggal_sekarang"));
+		$doc -> setValue("nama_ahli_waris",$request->input("nama_ahli_waris"));
+		$doc -> setValue("alamat_ahli_waris",$request->input("alamat_ahli_waris"));
+
+		$doc -> setValue("nama_almarhum",$request->input("nama_almarhum"));
+		$doc -> setValue("ttl_almarhum",$this->tgl_indo($request->input("ttl_almarhum")));
+		$doc -> setValue("jenis_kelamin_almarhum",$request->input("jenis_kelamin_almarhum"));
+		$doc -> setValue("tpu_almarhum",$request->input("tpu_almarhum"));
+		$doc -> setValue("tanggal_pemakaman", $this->tgl_indo($request->input("tanggal_pemakaman")));
+		$doc -> setValue("blok_almarhum",$request->input("blok_almarhum"));
+
 		$doc -> saveAs($hasil);
 
 		return response()->download($hasil)->deleteFileAfterSend(true);

@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import logo from '../../assets/img/brand/filkom.svg'
-import sygnet from '../../assets/img/brand/filkom.svg'
+import logo from '../../assets/img/brand/pemkot.png'
+import sygnet from '../../assets/img/brand/pemkot.png'
 
 const propTypes = {
   children: PropTypes.node,
@@ -149,8 +149,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
+          full={{ src: logo, width: 40, height: 40, alt: 'E-Makam' }}
+          minimized={{ src: sygnet, width: 30, height: 30, alt: 'E-Makam' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
