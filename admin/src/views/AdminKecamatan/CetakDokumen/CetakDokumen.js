@@ -70,7 +70,7 @@ class CetakDokumen extends Component {
   }
 
   fetchview(){
-      fetch("http://127.0.0.1:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+      fetch("http://api.emakam.tujuhlangit.id/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -108,7 +108,7 @@ class CetakDokumen extends Component {
 
   surat_permohonan = (items) =>{
     if(items.no_surat_permohonan!=null){
-      const url = 'http://127.0.0.1:8000/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
+      const url = 'http://api.emakam.tujuhlangit.id/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + items.tanggal_surat_permohonan
       + '&nama_ahli_waris=' + items.nama_pewaris
       + '&alamat_ahli_waris=' + items.alamat_ahli_waris
@@ -130,7 +130,7 @@ class CetakDokumen extends Component {
   cetak_dokumen = (items) => {
     // event.preventDefault();
     if(items.no_surat_perizinan!=null){
-      const url = 'http://127.0.0.1:8000/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
+      const url = 'http://api.emakam.tujuhlangit.id/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
       +'&tanggal_sekarang='+items.tanggal_surat_perizinin          
       +'&nama_ahli_waris='+items.nama_pewaris
       +'&alamat_ahli_waris='+items.alamat_ahli_waris
@@ -150,7 +150,7 @@ class CetakDokumen extends Component {
   }
 
   update_no_surat_perizinan(id) {
-    fetch('http://127.0.0.1:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -37,7 +37,7 @@ class DefaultHeader extends Component {
   componentDidMount(){
     // this.fetchnotif()
     if(sessionStorage.getItem('id_user')!=null&&sessionStorage.getItem('login_session')!=null){
-      fetch("http://127.0.0.1:8000/api/dokumen/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+sessionStorage.getItem('login_session'))
+      fetch("http://api.emakam.tujuhlangit.id/api/dokumen/view?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
@@ -90,7 +90,7 @@ class DefaultHeader extends Component {
   }
 
   fetchnotif(){
-    // fetch('http://127.0.0.1:8000/api/notifikasi/view?token='+ sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+    // fetch('http://api.emakam.tujuhlangit.id/api/notifikasi/view?token='+ sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
     //   .then(response => {
     //     return response.json()
     //   })
@@ -110,7 +110,7 @@ class DefaultHeader extends Component {
   }
 
   notifread(){
-    fetch('http://127.0.0.1:8000/api/notifikasi/update?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/notifikasi/update?token='+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

@@ -72,7 +72,7 @@ class ManajemenPengguna extends Component {
   }
 
   fetch_user(){
-    fetch('http://127.0.0.1:8000/api/user/view?token='+sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/user/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -85,7 +85,7 @@ class ManajemenPengguna extends Component {
   }
 
   fetch_tpu(){
-    fetch('http://127.0.0.1:8000/api/tpu/view?token='+sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -97,7 +97,7 @@ class ManajemenPengguna extends Component {
   }
 
   fetch_role_tpu(){
-    fetch('http://127.0.0.1:8000/api/role_tpu/view?token='+sessionStorage.getItem('token'))
+    fetch('http://api.emakam.tujuhlangit.id/api/role_tpu/view?token='+sessionStorage.getItem('token'))
       .then(response => response.json())
       .then(
         (result) => {
@@ -163,7 +163,7 @@ class ManajemenPengguna extends Component {
   handleSubmitCreate = event => {
     event.preventDefault();
     console.log(this.state.table_user);
-    fetch('http://127.0.0.1:8000/api/create_user?token='+sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/create_user?token='+sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -190,7 +190,7 @@ class ManajemenPengguna extends Component {
     event.preventDefault();
     console.log(this.state.activevalueNum);
 
-    fetch('http://127.0.0.1:8000/api/update_user/' + this.state.activeid+"?token="+sessionStorage.getItem('token'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/update_user/' + this.state.activeid+"?token="+sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -213,7 +213,7 @@ class ManajemenPengguna extends Component {
   }
 
   handledelete(table_user) {
-    fetch('http://127.0.0.1:8000/api/delete_user/' + table_user.id_user+"?token="+sessionStorage.getItem('token')+ '&role=' + sessionStorage.getItem('login_session'), {
+    fetch('http://api.emakam.tujuhlangit.id/api/delete_user/' + table_user.id_user+"?token="+sessionStorage.getItem('token')+ '&role=' + sessionStorage.getItem('login_session'), {
       method: 'DELETE'
     })
     .then(
