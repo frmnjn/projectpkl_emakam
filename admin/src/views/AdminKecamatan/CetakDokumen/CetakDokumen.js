@@ -269,6 +269,7 @@ class CetakDokumen extends Component {
                       },
                       {
                         Header: 'Action',
+                        filterable:false,
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
@@ -277,7 +278,8 @@ class CetakDokumen extends Component {
                         )
                       },
                       {
-                        Header: 'Cetak Surat Permohonan',
+                        Header: 'Unduh Surat Permohonan',
+                        filterable:false,
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
@@ -286,7 +288,8 @@ class CetakDokumen extends Component {
                         )
                       },
                       {
-                        Header: 'Cetak Surat Izin',
+                        Header: 'Unduh Surat Izin',
+                        filterable:false,
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>

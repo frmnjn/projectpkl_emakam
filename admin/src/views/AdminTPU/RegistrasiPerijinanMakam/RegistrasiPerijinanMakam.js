@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
+import { RingLoader } from 'react-spinners';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -12,6 +13,9 @@ import {
   Input
 } from 'reactstrap';
 const data = new FormData();
+const center = {
+  marginLeft: '45%',
+};
 class RegistrasiPerijinanMakam extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +23,8 @@ class RegistrasiPerijinanMakam extends Component {
     this.makam_items = this.makam_items.bind(this);
 
     this.state = {
+      isLoaded : false, 
+
       startDate: moment(),
       makam: [],
       makamitems:[],
@@ -161,7 +167,11 @@ class RegistrasiPerijinanMakam extends Component {
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris,
       })
-    }).then((response) => response.json())
+    }).then(
+      this.setState({
+        isLoaded: true
+      })
+    ).then((response) => response.json())
     .then((responseJson) => {
       if(responseJson.message==null){
         console.log(responseJson.id_penghuni_makam)
@@ -183,6 +193,20 @@ class RegistrasiPerijinanMakam extends Component {
       }
       
     })
+  }
+
+  load() {
+    return (
+      <div style={center} className='sweet-loading'>
+        <RingLoader
+          color={'#123abc'}
+        />
+      </div>
+    );
+  }
+
+  nothing() {
+    return (<div></div>)
   }
 
   render() {
@@ -249,7 +273,7 @@ class RegistrasiPerijinanMakam extends Component {
                         <Input type="date" className="form-control" name="tanggal_pemakaman" onChange={this.handleChange}></Input>
                         {/* <DatePicker name="tanggal_pemakaman" dateFormat="DD/MM/YYYY" selected={this.state.tanggal_pemakaman} onChange={this.handleDatePemakaman} /> */}
                         <br />
-                        <label>Status</label>
+                        {/* <label>Status</label> */}
                         {/* <Input type="select" className="form-control" name="status" onChange={this.handleChange}>
                           <option value=''>pilih</option>
                           <option value='Diperpanjang'>Diperpanjang</option>
@@ -300,6 +324,7 @@ class RegistrasiPerijinanMakam extends Component {
                         <hr/>
                         <input  type="submit" value="Submit"></input>
                     </div>
+                    {this.state.isLoaded ? this.nothing() : this.load()}
                   </form>
                 </Col>
               </CardBody>

@@ -1,0 +1,14 @@
+List Revisi 4 Des 2018
+-histori persuratan kecamatan
+-Sort by kolom, sort by date dari tanggal berapa sampe berapa
+-kolom search pindahin ke atas (optional kalo mentok yaudah)
+-kode registrasi dikirim email 
+
+Firman
+done -Semua action yang butuh search diapus searchnya
+done -Keterangan role 0 1 2 3 4 5 sebagai apa
+done -alert ketika salah password 
+done -Cetak dokumen ganti jadi unduh dokumen
+done -dokumen template masukkin server
+-progress bar ketika registrasi perijinan, jadi sebelum keluar alert, 
+munculin progress bar

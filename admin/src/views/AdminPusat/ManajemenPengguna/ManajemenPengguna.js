@@ -80,8 +80,26 @@ class ManajemenPengguna extends Component {
             table_user: result,
             isLoaded:true
           });
+          for(var i=0;i<result.length;i++){
+            if(result[i].role == "0"){
+              this.state.table_user[i].role_details = "Admin Pusat"
+            } else if(result[i].role == "1") {
+              this.state.table_user[i].role_details = "Admin TPU"
+            } else if(result[i].role == "2") {
+              this.state.table_user[i].role_details = "Kepala UPT Pemakaman"
+            } else if(result[i].role == "3") {
+              this.state.table_user[i].role_details = "Kepala Dinas"
+            } else if(result[i].role == "4") {
+              this.state.table_user[i].role_details = "Kepala Kecamatan"
+            } else {
+              this.state.table_user[i].role_details = "Admin Kecamatan"
+            }
+          }
         },
+        
     )
+    
+    //console.log(table_user);
   }
 
   fetch_tpu(){
@@ -329,6 +347,10 @@ class ManajemenPengguna extends Component {
                       {
                         Header: 'Role',
                         accessor: 'role', // String-based value accessors!
+                      },
+                      {
+                        Header: 'Detail Role',
+                        accessor: 'role_details', // String-based value accessors!
                       },
                       {
                         Header: 'Actions',

@@ -43,6 +43,7 @@ class Login extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.length > 0) {
+          alert("Login Berhasil!");
           responseJson.map((items) => {
             this.setState({
               temp: items
@@ -70,6 +71,7 @@ class Login extends Component {
           this.setState({
             isLoaded: false
           })
+          alert("Login Gagal!");
         }
       }
       );
