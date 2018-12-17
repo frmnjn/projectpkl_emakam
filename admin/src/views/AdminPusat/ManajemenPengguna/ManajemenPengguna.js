@@ -200,7 +200,12 @@ class ManajemenPengguna extends Component {
         this.setState({
           primary: !this.state.primary
         })
-      );
+      ).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
     //alert("user berhasil ditambahkan!");
   }
 
@@ -227,7 +232,12 @@ class ManajemenPengguna extends Component {
       this.setState({
         large : !this.state.large
       })
-    );
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handledelete(table_user) {
@@ -236,7 +246,12 @@ class ManajemenPengguna extends Component {
     })
     .then(
       this.fetchall
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   render() {

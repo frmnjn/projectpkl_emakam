@@ -145,7 +145,12 @@ class Search extends Component {
         alert('Permohonan izin berhasil diproses');
       }).then(
         this.fetchdata
-      )
+      ).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   acc_kec(row) {
@@ -153,7 +158,12 @@ class Search extends Component {
     var status = 'Proses Selesai'
     fetch('http://api.emakam.tujuhlangit.id/api/send?to=' + row.email + '&message=Permohonan izin penggunaan lahan makam anda telah diproses silahkan ke ambil pada kecamatan').then(this.setState({
       isSend: true
-    })).then(console.log("sending"))  
+    })).then(console.log("sending")).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })  
 
     // if (this.state.isSend) {
     //   alert("Notification Sent")
@@ -205,6 +215,11 @@ class Search extends Component {
     }).then((response) => response.json())
       .then((responseJson) => {
         alert('Update Sukses');
+      }).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
       })
   }
 

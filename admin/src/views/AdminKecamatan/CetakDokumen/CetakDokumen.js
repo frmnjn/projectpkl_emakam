@@ -175,7 +175,12 @@ class CetakDokumen extends Component {
         this.fetchview
       ).then(
         this.modalnosuratclose
-      )
+      ).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   nosuratmodal(items) {

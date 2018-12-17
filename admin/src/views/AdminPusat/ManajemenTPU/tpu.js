@@ -161,7 +161,12 @@ class tpu extends Component {
       this.setState({
         edit: !this.state.edit
       })
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleCreate() {
@@ -188,7 +193,12 @@ class tpu extends Component {
       this.setState({
         create: !this.state.create
       })
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleDelete() {
@@ -206,7 +216,12 @@ class tpu extends Component {
       this.setState({
         small: !this.state.small
       })
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   mapClicked(mapProps, map, event) {

@@ -178,7 +178,12 @@ class Makam extends Component {
       })
     ).then(
       this.fetchmakam
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleCreate(){
@@ -212,7 +217,12 @@ class Makam extends Component {
       })
     ).then(
       this.fetchmakam
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleDelete(){

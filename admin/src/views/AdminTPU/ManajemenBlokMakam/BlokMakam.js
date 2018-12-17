@@ -201,7 +201,12 @@ class BlokMakam extends Component {
       this.fetchblok,
     ).then(
       this.fetchpolygon
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleCreate() {
@@ -249,7 +254,12 @@ class BlokMakam extends Component {
       this.fetchblok,
     ).then(
       this.fetchpolygon
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   handleDelete() {
@@ -267,7 +277,12 @@ class BlokMakam extends Component {
       })
     ).then(
       this.fetchblok
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Permintaan tidak dapat diproses")
+    })
   }
 
   mapClicked(mapProps, map, event) {

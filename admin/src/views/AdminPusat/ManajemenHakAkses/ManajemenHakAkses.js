@@ -169,13 +169,17 @@ class ManajemenHakAkses extends Component {
       })
     }).then(
       this.fetchall
-    )
-      .then(
+    ).then(
         alert('update sukses'),
         this.setState({
           primary: !this.state.primary
         })
-      );
+      ).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   handleSubmitEdit = event => {
@@ -199,7 +203,12 @@ class ManajemenHakAkses extends Component {
           }),
           alert('update sukses'),
 
-        );
+        ).catch((err)=>{
+          this.setState({
+            isLoaded: false
+          })
+          alert("Permintaan tidak dapat diproses")
+        })
     }
   }
 
@@ -213,7 +222,12 @@ class ManajemenHakAkses extends Component {
       )
       .then(function () {
         alert("Hak Akses Berhasil dihapus!");
-      });
+      }).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   handleChangeOption_tpu = (e) => {

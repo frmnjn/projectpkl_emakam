@@ -163,7 +163,12 @@ class ManajemenHakAksesKec extends Component {
           primary: !this.state.primary
         }),
         alert('update sukses'),
-      );
+      ).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   handleSubmitEdit = event => {
@@ -187,7 +192,12 @@ class ManajemenHakAksesKec extends Component {
           }),
           alert("Update sukses"),
 
-        );
+        ).catch((err)=>{
+          this.setState({
+            isLoaded: false
+          })
+          alert("Permintaan tidak dapat diproses")
+        })
     
   }
 
@@ -201,7 +211,12 @@ class ManajemenHakAksesKec extends Component {
       )
       .then(function () {
         alert("Hak Akses Berhasil dihapus!");
-      });
+      }).catch((err)=>{
+        this.setState({
+          isLoaded: false
+        })
+        alert("Permintaan tidak dapat diproses")
+      })
   }
 
   handleChangeOption_kecamatan = (e) => {

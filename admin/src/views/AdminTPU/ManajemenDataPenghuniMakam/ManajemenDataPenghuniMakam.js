@@ -280,7 +280,12 @@ class ManajemenDataPenghuniMakam extends Component {
       this.setState({
         primary: !this.state.primary
       })
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Data tidak dapat terkirim")
+    })
   }
 
   handleSubmitEdit = event => {
@@ -315,7 +320,12 @@ class ManajemenDataPenghuniMakam extends Component {
       this.setState({
         large: !this.state.large
       })
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Data tidak dapat terkirim")
+    })
     alert("Data berhasil di update!");
   }
 
@@ -331,7 +341,12 @@ class ManajemenDataPenghuniMakam extends Component {
         alert(responseJson)
     }).then(
       this.fetchall,
-    )
+    ).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Data tidak dapat terkirim")
+    })
     
   }
 
