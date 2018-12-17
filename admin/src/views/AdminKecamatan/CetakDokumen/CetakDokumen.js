@@ -132,7 +132,7 @@ class CetakDokumen extends Component {
   cetak_dokumen = (items) => {
     // event.preventDefault();
     if(items.no_surat_perizinan!=null){
-      alert(items.no_surat_perizinan)
+      //alert(items.no_surat_perizinan)
       const url = 'http://api.emakam.tujuhlangit.id/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
       +'&tanggal_sekarang='+items.tanggal_surat_perizinin          
       +'&nama_ahli_waris='+items.nama_pewaris

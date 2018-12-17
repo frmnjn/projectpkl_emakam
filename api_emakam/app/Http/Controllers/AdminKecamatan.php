@@ -53,10 +53,10 @@ class AdminKecamatan extends Controller{
         ->join("makam","penghuni_makam.id_makam","=","makam.id_makam")
         ->join("blok_makam","makam.id_blok","=","blok_makam.id_blok")
         ->join("tpu","blok_makam.id_tpu","=","tpu.id_tpu")
-        ->where("dokumen.kelengkapan_dokumen","=","Lengkap","AND","dokumen.status","=","Proses Selesai")
+        ->where("role_kecamatan.id_user","=",$id_user,"AND","dokumen.kelengkapan_dokumen","=","Lengkap","AND","dokumen.status","=","Proses Selesai")
         ->select("dokumen.*","penghuni_makam.id_penghuni_makam","penghuni_makam.nama","penghuni_makam.jenis_kelamin","penghuni_makam.alamat_terakhir","penghuni_makam.tanggal_lahir_alm","penghuni_makam.tanggal_wafat","penghuni_makam.tanggal_pemakaman","penghuni_makam.id_makam","penghuni_makam.nama_ahli_waris","penghuni_makam.alamat_ahli_waris","penghuni_makam.nik_ahli_waris","penghuni_makam.kontak_ahli_waris","makam.*","blok_makam.*","tpu.*")
         ->distinct()
-        ->get();
+		->get();
 
 		return response()->json($view);
 	}
