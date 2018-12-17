@@ -61,7 +61,7 @@ class RegistrasiPerijinanMakam extends Component {
         (result) => {
           this.setState({
             makam: result,
-            isLoaded: true
+            //isLoaded: true
           }); //console.log(result);
         })
   }
@@ -135,6 +135,9 @@ class RegistrasiPerijinanMakam extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({
+      isLoaded: true
+    })
     data.append('nama_almarhum',this.state.nama);
     data.append('nama_pewaris',this.state.nama_ahli_waris);
     data.append('email',this.state.email);
@@ -167,12 +170,11 @@ class RegistrasiPerijinanMakam extends Component {
         nik_ahli_waris: this.state.nik_ahli_waris,
         kontak_ahli_waris: this.state.kontak_ahli_waris,
       })
-    }).then(
-      this.setState({
-        isLoaded: true
-      })
-    ).then((response) => response.json())
+    }).then((response) => response.json())
     .then((responseJson) => {
+      this.setState({
+        isLoaded: false
+      })
       if(responseJson.message==null){
         console.log(responseJson.id_penghuni_makam)
         data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
@@ -189,9 +191,13 @@ class RegistrasiPerijinanMakam extends Component {
             this.props.history.push('/Dokumen');
           })
       }else{
-        alert("pembuatan dokumen gagal")
+        alert("Pembuatan dokumen gagal")
       }
-      
+    }).catch((err)=>{
+      this.setState({
+        isLoaded: false
+      })
+      alert("Data tidak dapat terkirim")
     })
   }
 
@@ -324,7 +330,8 @@ class RegistrasiPerijinanMakam extends Component {
                         <hr/>
                         <input  type="submit" value="Submit"></input>
                     </div>
-                    {this.state.isLoaded ? this.nothing() : this.load()}
+                    {/* {this.load()} */}
+                    {this.state.isLoaded ? this.load() : this.nothing()}
                   </form>
                 </Col>
               </CardBody>
