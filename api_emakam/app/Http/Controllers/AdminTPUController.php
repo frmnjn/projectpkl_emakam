@@ -333,7 +333,7 @@ class AdminTPUController extends Controller{
 			$update->update(array(
 				'kode_registrasi' => $kode_registrasi
 			));
-			$request->merge(['msg'=>'Nomor registrasi anda adalah '.$kode_registrasi]);
+			$request->merge(['message'=>'Nomor registrasi anda adalah '.$kode_registrasi]);
 			$request->merge(['to'=>$request->input('email')]);
 
 			Mail::send(new EmailNotification());
