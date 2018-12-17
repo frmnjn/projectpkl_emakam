@@ -13,7 +13,12 @@ export default {
       name: 'Dokumen',
       url: '/Dokumen',
       icon: 'icon-chart',
-    },    
+    }, 
+    {
+      name: sessionStorage.getItem ('login_session') == 5? 'Download Dokumen':'Data Dokumen',
+      url: '/CetakDokumen',
+      icon: 'icon-chart',
+    }   
     // {
     //   name: 'Manajemen Hak Akses',
     //   url: '/ManajemenHakAkses',

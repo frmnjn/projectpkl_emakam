@@ -124,12 +124,15 @@ class CetakDokumen extends Component {
       + '&no_surat_permohonan=' + items.no_surat_permohonan
       window.location = url;
       this.modalnosuratclose
+    }else{
+      alert("nomor surat permohonan masih kosong!")
     }
   }
 
   cetak_dokumen = (items) => {
     // event.preventDefault();
     if(items.no_surat_perizinan!=null){
+      alert(items.no_surat_perizinan)
       const url = 'http://api.emakam.tujuhlangit.id/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
       +'&tanggal_sekarang='+items.tanggal_surat_perizinin          
       +'&nama_ahli_waris='+items.nama_pewaris
@@ -146,6 +149,8 @@ class CetakDokumen extends Component {
       +'&id_kecamatan='+items.id_kecamatan
 
       window.location = url;
+    }else{
+      alert("nomor surat perizinan masih kosong!");
     }
   }
 
@@ -247,8 +252,12 @@ class CetakDokumen extends Component {
                         accessor: 'kode_registrasi', // String-based value accessors!
                       },
                       {
-                        Header: 'Nomor Surat',
+                        Header: 'Nomor Surat Izin',
                         accessor: 'no_surat_perizinan', // String-based value accessors!
+                      },
+                      {
+                        Header: 'Nomor Surat Permohonan',
+                        accessor: 'no_surat_permohonan', // String-based value accessors!
                       },
                       {
                         Header: 'Nama Almarhum',
@@ -270,6 +279,7 @@ class CetakDokumen extends Component {
                       {
                         Header: 'Action',
                         filterable:false,
+                        show: sessionStorage.getItem('login_session')==5?true:false,
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
@@ -283,7 +293,7 @@ class CetakDokumen extends Component {
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.surat_permohonan(row.row)} className="mr-1">Cetak Dokumen</Button>
+                            <Button color="info" onClick={() => this.surat_permohonan(row.row)} className="mr-1">Unduh Dokumen</Button>
                           </div>
                         )
                       },
@@ -293,7 +303,7 @@ class CetakDokumen extends Component {
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={() => this.cetak_dokumen(row.row)} className="mr-1">Cetak Dokumen</Button>
+                            <Button color="info" onClick={() => this.cetak_dokumen(row.row)} className="mr-1">Unduh Dokumen</Button>
                           </div>
                         )
                       },

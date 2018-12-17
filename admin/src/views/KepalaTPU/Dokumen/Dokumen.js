@@ -45,7 +45,6 @@ class Search extends Component {
     super(props);
 
 
-
     this.toggle = this.toggle.bind(this);
     this.toggleclose = this.toggleclose.bind(this);
     this.modalkkclose = this.modalkkclose.bind(this);
@@ -318,6 +317,8 @@ class Search extends Component {
       + '&blok_almarhum=' + items.kode_blok
       + '&no_surat_permohonan=' + items.no_surat_permohonan
       window.location = url;
+    }else{
+      alert("nomor surat belum ada")
     }
   }
 
@@ -618,22 +619,22 @@ class Search extends Component {
                         Header: 'Status',
                         accessor: 'status', // String-based value accessors!
                       },
+                      // {
+                      //   Header: 'Track Proggression',
+                      //   Cell: row => (
+                      //     <div>
+                      //       <div className="text-center">{this.proggress(row.row.status)}</div>
+                      //       <Progress value={this.proggress(row.row.status)*25} />
+                      //     </div>
+                      //   )
+                      // },
                       {
-                        Header: 'Track Proggression',
-                        Cell: row => (
-                          <div>
-                            <div className="text-center">{this.proggress(row.row.status)}</div>
-                            <Progress value={this.proggress(row.row.status)*25} />
-                          </div>
-                        )
-                      },
-                      {
-                        Header: 'Cetak Surat Permohonan',
+                        Header: 'Unduh Surat Permohonan',
                         show: sessionStorage.getItem('login_session') == "4" ? true : false,
                         // accessor: 'status', // String-based value accessors!
                         Cell: row => (
                           <div>
-                            <Button color="info" onClick={()=>this.surat_permohonan(row.row)} className="mr-1">Cetak</Button>
+                            <Button color="info" onClick={()=>this.surat_permohonan(row.row)} className="mr-1">Unduh</Button>
                           </div>
                         )
                       },

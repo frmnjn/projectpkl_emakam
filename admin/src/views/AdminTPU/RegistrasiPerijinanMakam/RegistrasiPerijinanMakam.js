@@ -41,7 +41,7 @@ class RegistrasiPerijinanMakam extends Component {
       pekerjaan:'',
       id_makam: "",
       kode_makam: "",
-      kode_tpu: "",
+      kode_registrasi: "",
       nama_ahli_waris: "",
       alamat_ahli_waris: "",
       nik_ahli_waris: "",
@@ -129,7 +129,7 @@ class RegistrasiPerijinanMakam extends Component {
       id_makam: split[0],
       id_tpu:split[1],
       id_kecamatan:split[2],
-      kode_tpu:label[0],
+      kode_registrasi:label[0],
     });
   }
 
@@ -176,7 +176,7 @@ class RegistrasiPerijinanMakam extends Component {
       if(responseJson.message==null){
         console.log(responseJson.id_penghuni_makam)
         data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
-        data.append('kode_tpu',this.state.kode_tpu);
+        data.append('kode_tpu',this.state.kode_registrasi);
         fetch('http://api.emakam.tujuhlangit.id/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
         method: 'POST',
         body: data
@@ -280,7 +280,7 @@ class RegistrasiPerijinanMakam extends Component {
                           <option value='Expired'>Expired</option>
                           <option value='Ditimpa'>Ditimpa</option>
                         </Input><br/> */}
-                        <label>Pilih Nomor Makam (Kode Makam)</label>
+                        <label>Pilih Nomor Makam</label>
                         <Select
                           value={this.state.selectedOption}
                           onChange={this.handleSelect}

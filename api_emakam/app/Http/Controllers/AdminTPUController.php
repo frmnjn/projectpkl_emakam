@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Mail;
+use App\Mail\EmailNotification;
 use App\User;
 use App\Role_tpu;
 use App\Tpu;
@@ -331,6 +333,11 @@ class AdminTPUController extends Controller{
 			$update->update(array(
 				'kode_registrasi' => $kode_registrasi
 			));
+			$request->merge(['msg'=>'Nomor registrasi anda adalah '.$kode_registrasi]);
+			$request->merge(['to'=>$request->input('email')]);
+
+			Mail::send(new EmailNotification());
+
 			return 	response()->json('upload sukses!');
 			
 		} else{

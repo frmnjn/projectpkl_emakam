@@ -344,10 +344,10 @@ class ManajemenPengguna extends Component {
                         Header: 'Username',
                         accessor: 'username', // String-based value accessors!
                       },
-                      {
-                        Header: 'Role',
-                        accessor: 'role', // String-based value accessors!
-                      },
+                      // {
+                      //   Header: 'Role',
+                      //   accessor: 'role', // String-based value accessors!
+                      // },
                       {
                         Header: 'Detail Role',
                         accessor: 'role_details', // String-based value accessors!

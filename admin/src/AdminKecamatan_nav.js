@@ -10,7 +10,7 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Cetak Dokumen',
+      name: sessionStorage.getItem ('login_session') == 5? 'Download Dokumen':'Data Dokumen',
       url: '/CetakDokumen',
       icon: 'icon-chart',
     }
