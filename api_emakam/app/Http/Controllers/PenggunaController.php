@@ -18,13 +18,29 @@ class PenggunaController extends Controller{
         $this->middleware('jwt.auth');
     }
 
-	function view_search_penghunimakam(){
-        $view = DB::table('penghuni_makam')
-        ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
-        ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
-        ->select('penghuni_makam.*', 'makam.*')
-        ->orderBy('id_penghuni_makam','desc')
-        ->get();
+    function view_search_penghunimakam(Request $request){
+        $id_user=$request->input('id_user');
+        $role=$request->input('role');
+        if($role == '1' || $role == '2'){
+            $view = DB::table('penghuni_makam')
+            ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            ->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
+            ->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
+            ->select('penghuni_makam.*', 'makam.*')
+            ->where('role_tpu.id_user','=',$id_user)
+            ->orderBy('id_penghuni_makam','desc')
+            ->get();
+        } else {
+            $view = DB::table('penghuni_makam')
+            ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
+            ->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
+            ->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
+            ->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
+            ->select('penghuni_makam.*', 'makam.*')
+            ->orderBy('id_penghuni_makam','desc')
+            ->get();
+        }
         return response()->json($view);
     }
 
