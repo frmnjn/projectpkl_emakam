@@ -31,7 +31,7 @@ class EmailNotification extends Mailable
     {
         return $this->view('mail',['msg' => $request->input('message')])
         ->to($request->input('to'))
-            ->subject('Notification Email')
-            ->from('hehe@gmail.com','Project PKL Emakam 2018');
+            ->subject('Layanan E-Makam')
+            ->from('hehe@gmail.com','Layanan E-Makam');
     }
 }

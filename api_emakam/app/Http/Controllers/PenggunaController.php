@@ -18,7 +18,7 @@ class PenggunaController extends Controller{
         $this->middleware('jwt.auth');
     }
 
-    function view_search_penghunimakam(Request $request){
+	function view_search_penghunimakam(Request $request){
         $id_user=$request->input('id_user');
         $role=$request->input('role');
         if($role == '1' || $role == '2'){
@@ -30,7 +30,7 @@ class PenggunaController extends Controller{
             ->select('penghuni_makam.*', 'makam.*')
             ->where('role_tpu.id_user','=',$id_user)
             ->orderBy('id_penghuni_makam','desc')
-            ->get();
+	    ->distinct()->get();
         } else {
             $view = DB::table('penghuni_makam')
             ->join('makam', 'penghuni_makam.id_makam', '=', 'makam.id_makam')
@@ -38,8 +38,7 @@ class PenggunaController extends Controller{
             ->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
             ->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
             ->select('penghuni_makam.*', 'makam.*')
-            ->orderBy('id_penghuni_makam','desc')
-            ->get();
+            ->orderBy('id_penghuni_makam','desc')->distinct()->get();
         }
         return response()->json($view);
     }
