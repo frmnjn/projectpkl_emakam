@@ -14,9 +14,9 @@ use App\Blok_Makam;
 
 
 class PenggunaController extends Controller{
-	function __construct(){
-        $this->middleware('jwt.auth');
-    }
+	// function __construct(){
+    //     $this->middleware('jwt.auth');
+    // }
 
 	function view_search_penghunimakam(Request $request){
         $id_user=$request->input('id_user');
@@ -42,6 +42,16 @@ class PenggunaController extends Controller{
         }
         return response()->json($view);
     }
+
+    function view_tpu_pengguna(){
+        $view = DB::table('tpu')
+		->select('*')
+		->get();
+
+		return $view;
+        
+    }
+
 
     function view_search_blok(){
         $view = DB::table('blok_makam')

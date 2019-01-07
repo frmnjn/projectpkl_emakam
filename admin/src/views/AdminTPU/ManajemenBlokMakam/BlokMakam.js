@@ -133,6 +133,8 @@ class BlokMakam extends Component {
     var raw=this.state.dummy
     console.log(raw)
 
+    
+
 
     raw = raw.filter(function(item){
       return item.id_blok === id_blok
@@ -142,6 +144,10 @@ class BlokMakam extends Component {
 
     raw.map((items)=>{
       data.push({lat:parseFloat(items.lat),lng:parseFloat(items.lng)})
+      this.setState({
+        lat:items.lat,
+        lng:items.lng
+      })
     })
 
     console.log(data)
@@ -368,6 +374,8 @@ class BlokMakam extends Component {
   toggleLocationClose(){
     this.setState({
       location: !this.state.location,
+      lat:this.state.lat,
+      lng:this.state.lng,
     })
   }
 
@@ -422,7 +430,7 @@ class BlokMakam extends Component {
                                         onClick={this.mapClicked} 
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={18}
+                                        zoom={16}
                                         style={{width:'90%'}}
                                         >
 
@@ -489,7 +497,7 @@ class BlokMakam extends Component {
                                         onClick={this.mapClicked} 
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={18}
+                                        zoom={15}
                                         style={{width:'90%'}}
                                         >
 
@@ -518,18 +526,19 @@ class BlokMakam extends Component {
                     <Button color="secondary" onClick={this.toggleCreate}>Batal</Button>
                   </ModalFooter>
                 </Modal>
-                <Modal isOpen={this.state.small} toggle={this.toggleSmall}
-                  className={'modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleSmall}></ModalHeader>
-                  <ModalBody>
--                    <br /><br /><br />
-                    <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
-                  </ModalFooter>
-                </Modal>
+                            <Modal isOpen={this.state.small} toggle={this.toggleSmall}
+                              className={'modal-sm ' + this.props.className}>
+                              <ModalHeader toggle={this.toggleSmall}></ModalHeader>
+                              <ModalBody>
+            -                    <br /><br /><br />
+                                <strong>Apakah anda yakin ingin menghapus makam {this.state.idblokaktif} ?</strong>
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>{' '}
+                                <Button color="secondary" onClick={this.toggleSmall}>batal</Button>
+                              </ModalFooter>
+                            </Modal>
+
                             <Modal isOpen={this.state.location} toggle={this.toggleLocationClose}
                                   className={'modal-large ' + this.props.className}>
                               <ModalHeader toggle={this.toggleLocation}>Poligon Blok Makam</ModalHeader>
@@ -540,7 +549,7 @@ class BlokMakam extends Component {
                                       <Map 
                                         google={this.props.google} 
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={18}     
+                                        zoom={15}     
                                         style={{width:'95%'}}                                  
                                       >
 

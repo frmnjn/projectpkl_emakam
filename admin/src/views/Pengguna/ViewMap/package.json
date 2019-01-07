@@ -1,0 +1,6 @@
+{
+  "name": "View Map",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ViewMap.js"
+}

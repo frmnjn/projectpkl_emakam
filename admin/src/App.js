@@ -18,7 +18,7 @@ import { DefaultLayout } from './containers';
 // Pages
 import { Login, Page404, Page500 } from './views/Pages';
 
-import { ChangePassword, TrackProgress } from './views/Pengguna';
+import { ChangePassword, TrackProgress , ViewMap} from './views/Pengguna';
 
 // import { renderRoutes } from 'react-router-config';
 
@@ -31,6 +31,7 @@ class App extends Component {
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/ChangePassword" name="Change Password" component={ChangePassword} />
           <Route exact path="/TrackProgress" name="Track Progress" component={TrackProgress} />
+          <Route exact path="/ViewMap" name="Track Progress" component={ViewMap} />
           <Route exact path="/500" name="Page 500" component={Page500} />
           <Route path="/" name="Home" component={DefaultLayout} />
         </Switch>

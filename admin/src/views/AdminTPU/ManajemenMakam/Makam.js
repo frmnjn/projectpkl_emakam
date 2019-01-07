@@ -395,6 +395,7 @@ class Makam extends Component {
   }
 
   toggleLocation(items){
+    console.log(items)
     this.setState({      
       location: !this.state.location,
       lng:items.lng,
@@ -468,7 +469,7 @@ class Makam extends Component {
                                         }}>
                                        <Map 
                                         onClick={this.mapClicked} 
-                                        google={this.props.google} zoom={14}
+                                        google={this.props.google} 
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}
                                         style={{width:'90%'}}
@@ -538,7 +539,7 @@ class Makam extends Component {
                                         }}>
                                        <Map 
                                         onClick={this.mapClicked} 
-                                        google={this.props.google} zoom={14}
+                                        google={this.props.google} 
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}
                                         style={{width:'90%'}}
@@ -593,7 +594,7 @@ class Makam extends Component {
                                   <Row>
                                     <Col style={{height:'50vh'}}>
                                       <Map 
-                                        google={this.props.google} zoom={14}
+                                        google={this.props.google}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
                                         zoom={18}     
                                         style={{width:'95%'}}                                  

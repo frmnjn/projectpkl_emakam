@@ -69,6 +69,7 @@ class tpu extends Component {
     this.handleCreate = this.handleCreate.bind(this);
     this.mapClicked = this.mapClicked.bind(this);
     this.toggleLocation = this.toggleLocation.bind(this);
+    this.toggleLocationClose = this.toggleLocationClose.bind(this);
 
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
@@ -89,8 +90,8 @@ class tpu extends Component {
       namaaktif: null,
       kecamatanaktif: null,
       kodeaktif:null,
-      lat:-7.952229,
-      lng:112.613468,
+      lat:null,
+      lng:null,
 
       formqty: '1',
 
@@ -137,7 +138,7 @@ class tpu extends Component {
   }
 
   handleEdit() {
-
+    alert("new lat+lng is : "+this.state.lat+","+this.state.lng)
     fetch('http://api.emakam.tujuhlangit.id/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
@@ -294,7 +295,15 @@ class tpu extends Component {
     });
   }
 
-  toggleLocation(){
+  toggleLocation(items){
+    this.setState({
+      lat:parseFloat(items.lat),
+      lng:parseFloat(items.lng),
+      location: !this.state.location,
+    })
+  }
+
+  toggleLocationClose(){
     this.setState({
       location: !this.state.location,
     })
@@ -318,9 +327,9 @@ class tpu extends Component {
         return (
           <div className="animated fadeIn">
 
-                            <Modal isOpen={this.state.location} toggle={this.toggleLocation}
+                            <Modal isOpen={this.state.location} toggle={this.toggleLocationClose}
                                   className={'modal-large ' + this.props.className}>
-                              <ModalHeader toggle={this.toggleLocation}>Lokasi Makam</ModalHeader>
+                              <ModalHeader toggle={this.toggleLocationClose}>Lokasi TPU</ModalHeader>
                               <ModalBody>
                               <div >
                                   <Row>
@@ -328,7 +337,7 @@ class tpu extends Component {
                                       <Map 
                                         google={this.props.google} zoom={14}
                                         initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={18}     
+                                        zoom={13}     
                                         style={{width:'95%'}}                                  
                                       >
 
@@ -379,28 +388,28 @@ class tpu extends Component {
                     </Input><br/>
                     <hr/>
                         <Row>
-                                      <Col style={{
-                                          height:'50vh',
-                                          width:'5vw'
-                                        }}>
-                                       <Map 
-                                        onClick={this.mapClicked} 
-                                        google={this.props.google} zoom={14}
-                                        initialCenter={{lat:this.state.lat,lng:this.state.lng}}
-                                        zoom={18}
-                                        style={{width:'90%'}}
-                                        >
+                          <Col style={{
+                            height:'50vh',
+                            width:'5vw'
+                          }}>
+                          <Map 
+                            onClick={this.mapClicked} 
+                            google={this.props.google} zoom={14}
+                            initialCenter={{lat:-7.967345,lng:112.632462}}
+                            zoom={13}
+                            style={{width:'90%'}}
+                          >
   
-                                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
-                                                name={'Current location'} />
+                          <Marker position={{ lat: this.state.lat, lng: this.state.lng }}onClick={this.onMarkerClick}
+                          name={'Current location'} />
 
-                                        <InfoWindow onClose={this.onInfoWindowClose}>
-                                            <div>
-                                              <h1>Lalala</h1>
-                                            </div>
-                                        </InfoWindow>
-                                        </Map>
-                                      </Col>
+                          <InfoWindow onClose={this.onInfoWindowClose}>
+                                <div>
+                                    <h1>Lalala</h1>
+                                </div>
+                          </InfoWindow>
+                          </Map>
+                          </Col>
                         </Row>
                       <hr/>
                   </Col>
@@ -510,6 +519,8 @@ class tpu extends Component {
                         { accessor: 'id_tpu', show: false },
                         { accessor: 'kode_tpu', show: false },
                         { accessor: 'id_kecamatan', show: false },
+                        { accessor: 'lat', show: false },
+                        { accessor: 'lng', show: false },
                         {
                           Header: 'Nama TPU',
                           accessor: 'nama_tpu' // String-based value accessors!
@@ -526,7 +537,7 @@ class tpu extends Component {
                             <div>
                               <Row>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
-                                  <Button onClick={this.toggleLocation} block outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
+                                  <Button onClick={() => this.toggleLocation(row.row)} block outline color="primary"><i className="cui-location-pin icons text-left"></i></Button>
                                 </Col>
                                 <Col col="2" xl className="mb-1 mb-xl-0">
                                   <Button onClick={() => this.toggleEdit(row.row)} block outline color="success"><i className="cui-pencil icons text-left"></i></Button>
