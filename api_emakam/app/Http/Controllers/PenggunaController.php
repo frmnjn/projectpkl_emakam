@@ -18,7 +18,12 @@ class PenggunaController extends Controller{
     //     $this->middleware('jwt.auth');
     // }
 
-	function view_search_penghunimakam(Request $request){
+	function view_all_makam(){
+        $makam = Makam::all();
+        return response()->json($makam);
+    }
+
+    function view_search_penghunimakam(Request $request){
         $id_user=$request->input('id_user');
         $role=$request->input('role');
         if($role == '1' || $role == '2'){

@@ -27,20 +27,8 @@ class ViewMap extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleChangePassword = event => {
-    event.preventDefault();
-    fetch('http://api.emakam.tujuhlangit.id/api/track_progress?kode_registrasi='+this.state.koderegistrasi)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      this.setState({
-        hasil:responseJson
-      });
-    });
-
-  }
-
   load() {
-    alert('is it working ?')
+    //alert('is it working ?')
     return (
 
       this.state.items.map((hasil, index) => (
@@ -60,7 +48,7 @@ class ViewMap extends Component {
   }
 
   componentDidMount(){
-    fetch("http://api.emakam.tujuhlangit.id/api/tpu/view_pengguna?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/view_all_makam?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -97,7 +85,7 @@ class ViewMap extends Component {
                       style={{width:'95%'}}                                  
                     >
                       
-                      <Marker position={{ lat: -7.967345, lng: 112.632462}}onClick={this.onMarkerClick}
+                      {/* <Marker position={{ lat: -7.967345, lng: 112.632462}}onClick={this.onMarkerClick}
                           name={'Current location'} />
                       <InfoWindow onClose={this.onInfoWindowClose}>
                         <div>
@@ -119,7 +107,7 @@ class ViewMap extends Component {
                         <div>
                           <h1>TPU Kasin</h1>
                         </div>
-                      </InfoWindow>
+                      </InfoWindow> */}
 
                       {this.load()}
 

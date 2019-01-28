@@ -110,7 +110,7 @@ class tpu extends Component {
   }
 
   fetchdata() {
-    fetch("http://api.emakam.tujuhlangit.id/api/tpu/view?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/tpu/view?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -122,7 +122,7 @@ class tpu extends Component {
           });
         },
     ).then(
-    fetch("http://api.emakam.tujuhlangit.id/api/kecamatan/viewall?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/kecamatan/viewall?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -139,7 +139,7 @@ class tpu extends Component {
 
   handleEdit() {
     alert("new lat+lng is : "+this.state.lat+","+this.state.lng)
-    fetch('http://api.emakam.tujuhlangit.id/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/edit/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -172,7 +172,7 @@ class tpu extends Component {
 
   handleCreate() {
 
-    fetch('http://api.emakam.tujuhlangit.id/api/tpu/create?token=' + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/create?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -204,7 +204,7 @@ class tpu extends Component {
 
   handleDelete() {
 
-    fetch('http://api.emakam.tujuhlangit.id/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
+    fetch('http://localhost:8000/api/tpu/delete/' + this.state.idtpuaktif + "?token=" + sessionStorage.getItem('token'), {
       method: 'DELETE',
     })
     // .then((response) => response.json())

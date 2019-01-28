@@ -25,7 +25,7 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    fetch('http://api.emakam.tujuhlangit.id/api/signin', {
+    fetch('http://localhost:8000/api/signin', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
