@@ -92,6 +92,8 @@ Route::middleware('cors')->get('penghuni_makam/view_search', 'PenggunaController
 Route::middleware('cors')->get('track_progress', 'AuthController@track_progress');
 Route::middleware('cors')->get('tpu/view_pengguna', 'PenggunaController@view_tpu_pengguna');
 Route::middleware('cors')->get('view_all_makam', 'PenggunaController@view_all_makam');
+Route::middleware('cors')->get('view_all_pmakam', 'PenggunaController@view_all_pmakam');
+
 
 
 

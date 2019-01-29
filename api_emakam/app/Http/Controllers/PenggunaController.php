@@ -23,6 +23,11 @@ class PenggunaController extends Controller{
         return response()->json($makam);
     }
 
+    function view_all_pmakam(){
+        $pmakam = Penghuni_makam::all();
+        return response()->json($pmakam);
+    }
+
     function view_search_penghunimakam(Request $request){
         $id_user=$request->input('id_user');
         $role=$request->input('role');
