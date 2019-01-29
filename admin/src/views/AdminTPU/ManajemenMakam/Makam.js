@@ -4,53 +4,27 @@ import { Bar, Line } from 'react-chartjs-2';
 import axios from 'axios';
 import usersData from '../../../views/Users/UsersData';
 import {
-  Badge,
   Button,
-  ButtonDropdown,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  CardTitle,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Progress,
   Row,
-  Table,
   Modal,
   ModalBody, 
   ModalFooter, 
   ModalHeader,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
   Input,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
-  Label,
 } from 'reactstrap';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import ReactTable from "react-table";
-import GoogleMapReact from 'google-map-react';
 import { RingLoader } from 'react-spinners';
 import {Map, InfoWindow, Marker, GoogleApiWrapper,Polygon} from 'google-maps-react';
 
 import moment from 'moment';
 import 'react-table/react-table.css'
 
-const brandPrimary = getStyle('--primary')
-const brandSuccess = getStyle('--success')
-const brandInfo = getStyle('--info')
-const brandWarning = getStyle('--warning')
-const brandDanger = getStyle('--danger')
 const AnyReactComponent = ({ text }) => <div><img src="assets/img/map-marker1.png" class="rounded" alt="..."></img>{text}</div>;
 
 class Makam extends Component {
@@ -60,13 +34,15 @@ class Makam extends Component {
     
     
     this.toggle = this.toggle.bind(this);
-    this.toggleSmall = this.toggleSmall.bind(this);
-    this.toggleSmallclose = this.toggleSmallclose.bind(this);
+    this.ToggleDelete = this.ToggleDelete.bind(this);
+    this.ToggleDeleteclose = this.ToggleDeleteclose.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleEditclose = this.toggleEditclose.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.toggleLocation = this.toggleLocation.bind(this);
     this.toggleLocationClose = this.toggleLocationClose.bind(this);
+    this.toggleHistory = this.toggleHistory.bind(this);
+    this.toggleHistoryClose = this.toggleHistoryClose.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.fetchmakam = this.fetchmakam.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -355,14 +331,15 @@ class Makam extends Component {
   }
 
 
-  toggleSmall(items) {
+  ToggleDelete(items) {
     this.setState({
       small: !this.state.small,
       idmakamaktif:items.id_makam,
+      nomoraktif:items.kode_makam,
     });
   }
 
-  toggleSmallclose() {
+  ToggleDeleteclose() {
     this.setState({
       small: !this.state.small,
     });
@@ -406,6 +383,21 @@ class Makam extends Component {
   toggleLocationClose(){
     this.setState({
       location: !this.state.location,
+    })
+  }
+
+  toggleHistory(items){
+    console.log(items)
+
+    this.setState({      
+      history: !this.state.history,
+      kodeaktif:items.kode_makam,
+    })
+  }
+
+  toggleHistoryClose(){
+    this.setState({
+      history: !this.state.history,
     })
   }
 
@@ -572,17 +564,17 @@ class Makam extends Component {
                               </ModalFooter>
                             </Modal>
     
-                            <Modal isOpen={this.state.small} toggle={this.toggleSmallclose}
+                            <Modal isOpen={this.state.small} toggle={this.ToggleDeleteclose}
                                   className={'modal-sm ' + this.props.className}>
-                              <ModalHeader toggle={this.toggleSmallclose}></ModalHeader>
+                              <ModalHeader toggle={this.ToggleDeleteclose}></ModalHeader>
                               <ModalBody>
                                     <strong>Menghapus makam akan menghapus seluruh data penghuni makam</strong>
                                     <br/><br/><br/>
-                                    <strong>Apakah anda yakin ingin menghapus makam {this.state.idmakamaktif} ?</strong>
+                                    <strong>Apakah anda yakin ingin menghapus makam {this.state.nomoraktif} ?</strong>
                               </ModalBody>
                               <ModalFooter>
                                 <Button color="danger" onClick={() => this.handleDelete()}>hapus</Button>
-                                <Button color="secondary" onClick={this.toggleSmallclose}>batal</Button>
+                                <Button color="secondary" onClick={this.ToggleDeleteclose}>batal</Button>
                               </ModalFooter>
                             </Modal>
 
@@ -614,7 +606,79 @@ class Makam extends Component {
                               </div>
                               </ModalBody>
                               <ModalFooter>
-                                <Button color="secondary" onClick=''>Tutup</Button>
+                                <Button color="secondary" onClick={this.toggleLocationClose}>Close</Button>
+                              </ModalFooter>
+                            </Modal>
+
+                            <Modal isOpen={this.state.history} toggle={this.toggleHistoryClose}
+                                  className={'modal-large ' + this.props.className}>
+                              <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
+                              <ModalBody>
+                              <ReactTable
+                      data={this.state.items}
+                      defaultPageSize={10}
+                      filterable
+                      columns={[
+                        {accessor:'id_makam',show:false},
+                        {accessor:'kode_blok',show:false},
+                        {accessor:'lat',show:false},
+                        {accessor:'lng',show:false},
+                        {accessor:'nomor_makam',show:false},
+                        {accessor:'created_at',show:false},
+                        {
+                          Header: 'Nomor Makam', 
+                          show:false,
+                          // accessor: 'nomor_makam', // String-based value accessors!
+                          Cell: row=>(
+                            <div>{row.row.nomor_makam}
+                            </div>
+                          )
+                        },
+                        {
+                          Header: 'Kode Makam',
+                          accessor: 'kode_makam', // String-based value accessors!
+                          Cell: row=>(
+                            <div
+                            >{row.row.kode_makam}
+                            </div>
+                          )
+                        },
+                        {
+                          Header: 'Kode Blok',
+                          accessor: 'kode_blok', // String-based value accessors!
+                          Cell: row=>(
+                            <div>{row.row.kode_blok}
+                            </div>
+                          )
+                        },
+                        {
+                          Header: 'TPU',
+                          accessor: 'nama_tpu', // String-based value accessors!
+                          Cell: row=>(
+                            <div>{row.row.nama_tpu}
+                            </div>
+                          )
+                        },
+                        {
+                          Header: "Status Makam",
+                          Cell: row=>(
+                            <div
+                            // style={{
+                            //   width: "100%",
+                            //   height: "100%",
+                            //   backgroundColor:this.status_terisi(row.row),
+                            //   borderRadius: "2px",
+                            // }}
+                            >
+                            {this.status_terisi(row.row)}
+                            </div>
+                          )
+                        },
+                      ]}
+                    />
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="secondary" onClick={this.toggleHistoryClose}>Close</Button>
                               </ModalFooter>
                             </Modal>
                 <Card>
@@ -700,7 +764,11 @@ class Makam extends Component {
                                 &emsp;
                                 <Button onClick={()=>this.toggleEdit(row.row)}    outline color="success"><i className="cui-pencil icons text-left"></i> </Button>
                                 &emsp;
-                                <Button onClick={()=>this.toggleSmall(row.row)}    outline color="danger"><i className="cui-circle-x icons text-left"></i> </Button>
+                                <Button onClick={()=>this.ToggleDelete(row.row)}    outline color="danger"><i className="cui-circle-x icons text-left"></i> </Button>
+                                &emsp;
+                                <Button onClick={()=>this.toggleHistory(row.row)}    outline color="info"><i className="icon-magnifier icons text-left"></i> </Button>
+                              <Col col="1"  xl className="">
+                              </Col>
                               <Col col="1"  xl className="">
                               </Col>
                               <Col col="1"  xl className="">
