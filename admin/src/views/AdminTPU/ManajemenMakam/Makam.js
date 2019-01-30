@@ -615,25 +615,11 @@ class Makam extends Component {
                               <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
                               <ModalBody>
                               <ReactTable
-                      data={this.state.items}
+                      data={this.state.penghuni}
                       defaultPageSize={10}
                       filterable
                       columns={[
                         {accessor:'id_makam',show:false},
-                        {accessor:'kode_blok',show:false},
-                        {accessor:'lat',show:false},
-                        {accessor:'lng',show:false},
-                        {accessor:'nomor_makam',show:false},
-                        {accessor:'created_at',show:false},
-                        {
-                          Header: 'Nomor Makam', 
-                          show:false,
-                          // accessor: 'nomor_makam', // String-based value accessors!
-                          Cell: row=>(
-                            <div>{row.row.nomor_makam}
-                            </div>
-                          )
-                        },
                         {
                           Header: 'Kode Makam',
                           accessor: 'kode_makam', // String-based value accessors!
@@ -644,36 +630,30 @@ class Makam extends Component {
                           )
                         },
                         {
-                          Header: 'Kode Blok',
-                          accessor: 'kode_blok', // String-based value accessors!
+                          Header: 'Nama Penghuni Makam',
+                          accessor: 'nama', // String-based value accessors!
                           Cell: row=>(
-                            <div>{row.row.kode_blok}
+                            <div>{row.row.nama}
                             </div>
                           )
                         },
                         {
-                          Header: 'TPU',
-                          accessor: 'nama_tpu', // String-based value accessors!
+                          Header: 'Tanggal Wafat',
+                          accessor: 'tanggal_wafat', // String-based value accessors!
                           Cell: row=>(
-                            <div>{row.row.nama_tpu}
+                            <div>{row.row.tanggal_wafat}
                             </div>
                           )
                         },
                         {
-                          Header: "Status Makam",
+                          Header: 'Tanggal Pemakaman',
+                          accessor: 'tanggal_pemakaman', // String-based value accessors!
                           Cell: row=>(
-                            <div
-                            // style={{
-                            //   width: "100%",
-                            //   height: "100%",
-                            //   backgroundColor:this.status_terisi(row.row),
-                            //   borderRadius: "2px",
-                            // }}
-                            >
-                            {this.status_terisi(row.row)}
+                            <div>{row.row.tanggal_pemakaman}
                             </div>
                           )
                         },
+                        
                       ]}
                     />
                               </ModalBody>
