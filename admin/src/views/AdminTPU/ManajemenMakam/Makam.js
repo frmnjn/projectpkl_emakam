@@ -311,6 +311,14 @@ class Makam extends Component {
     return <p style={{color:"yellow"}}>Kosong</p>
   }
 
+  filter_history(id){
+    var newitem = this.state.penghuni.filter(function(item){
+      return item.id_makam==id
+    })
+    console.log(newitem)
+    return newitem
+  }
+
 
   toggle() {
     this.setState({
@@ -391,7 +399,7 @@ class Makam extends Component {
 
     this.setState({      
       history: !this.state.history,
-      kodeaktif:items.kode_makam,
+      kodeaktif:items.id_makam,
     })
   }
 
@@ -615,47 +623,46 @@ class Makam extends Component {
                               <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
                               <ModalBody>
                               <ReactTable
-                      data={this.state.penghuni}
-                      defaultPageSize={10}
-                      filterable
-                      columns={[
-                        {accessor:'id_makam',show:false},
-                        {
-                          Header: 'Kode Makam',
-                          accessor: 'kode_makam', // String-based value accessors!
-                          Cell: row=>(
-                            <div
-                            >{row.row.kode_makam}
-                            </div>
-                          )
-                        },
-                        {
-                          Header: 'Nama Penghuni Makam',
-                          accessor: 'nama', // String-based value accessors!
-                          Cell: row=>(
-                            <div>{row.row.nama}
-                            </div>
-                          )
-                        },
-                        {
-                          Header: 'Tanggal Wafat',
-                          accessor: 'tanggal_wafat', // String-based value accessors!
-                          Cell: row=>(
-                            <div>{row.row.tanggal_wafat}
-                            </div>
-                          )
-                        },
-                        {
-                          Header: 'Tanggal Pemakaman',
-                          accessor: 'tanggal_pemakaman', // String-based value accessors!
-                          Cell: row=>(
-                            <div>{row.row.tanggal_pemakaman}
-                            </div>
-                          )
-                        },
-                        
-                      ]}
-                    />
+                                  data={this.filter_history(this.state.kodeaktif)}
+                                  defaultPageSize={10}
+                                  columns={[
+                                    {accessor:'id_makam',show:false},
+                                    {
+                                      Header: 'Kode Makam',
+                                      accessor: 'kode_makam', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div
+                                        >{row.row.kode_makam}
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: 'Nama Penghuni Makam',
+                                      accessor: 'nama', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.nama}
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: 'Tanggal Wafat',
+                                      accessor: 'tanggal_wafat', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.tanggal_wafat}
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: 'Tanggal Pemakaman',
+                                      accessor: 'tanggal_pemakaman', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.tanggal_pemakaman}
+                                        </div>
+                                      )
+                                    },
+                                    
+                                  ]}
+                                />
                               </ModalBody>
                               <ModalFooter>
                                 <Button color="secondary" onClick={this.toggleHistoryClose}>Close</Button>
