@@ -95,8 +95,6 @@ Route::middleware('cors')->get('view_all_makam', 'PenggunaController@view_all_ma
 Route::middleware('cors')->get('view_all_pmakam', 'PenggunaController@view_all_pmakam');
 
 
-
-
 //mailing
 Route::middleware('cors')->get('send', 'MailController@send');
 

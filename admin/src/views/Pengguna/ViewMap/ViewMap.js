@@ -10,6 +10,8 @@ import {
 import { RingLoader } from 'react-spinners';
 import { Map, InfoWindow, Marker, GoogleApiWrapper, Polygon } from 'google-maps-react';
 import moment from 'moment';
+import Select from 'react-select';
+
 
 const center = {
   marginLeft: '45%'
@@ -34,6 +36,8 @@ class ViewMap extends Component {
       status: "",
       items: [],
       penghuni: [],
+      showitems:[],
+      forfilter: [],
       showingInfoWindow: false,  //Hides or the shows the infoWindow
       activeMarker: {},          //Shows the active marker upon click
       selectedPlace: {}          //Shows the infoWindow to the selected place upon a marker
@@ -72,7 +76,7 @@ class ViewMap extends Component {
   load() {
     // alert('is it working ?')
     return (
-      this.state.items.map((hasil, index) => (
+      this.state.showitems.map((hasil, index) => (
         <Marker icon={this.status_terisi(hasil)} position={{ lat: hasil.lat, lng: hasil.lng }} onClick={this.onMarkerClick}
           name={hasil.kode_makam} >
         </Marker>
@@ -81,6 +85,41 @@ class ViewMap extends Component {
       ))
 
     )
+  }
+
+  select_items() {
+    var newitem = [];
+    this.state.forfilter.map((items) => {
+      newitem = newitem.concat({ value: items.id_blok, label: items.kode_blok})
+    })
+
+    return newitem
+  }
+
+  handleSelect = (selectedOption) =>{
+    alert(selectedOption.value)
+    // var split = selectedOption.value.split('-');
+    // var label = split[3].split('-')
+    // alert(split[0]+" - "+split[1]+" - "+split[2])
+    this.setState({ 
+      selectedOption,
+      showitems:this.filter_items(selectedOption.value),
+      // activeid_makam: split[0],
+      // id_makam: split[0],
+      // id_tpu:split[1],
+      // id_kecamatan:split[2],
+      // kode_registrasi:label[0],
+    });
+  }
+
+  filter_items(id){
+    var newitem
+    newitem = this.state.items.filter(function(item){
+      return item.id_blok == id
+    })
+
+    return newitem
+
   }
 
   status_terisi(data) {
@@ -132,7 +171,8 @@ class ViewMap extends Component {
         (json) => {
           this.setState({
             isLoaded: true,
-            items: json
+            items: json,
+            showitems: json,
           });
         },
       )
@@ -146,6 +186,19 @@ class ViewMap extends Component {
           this.setState({
             isLoaded: true,
             penghuni: json
+          });
+        },
+      )
+
+      fetch("http://localhost:8000/api/blok/view_search?token=" + sessionStorage.getItem('token'))
+      .then(response => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+          this.setState({
+            isLoaded: true,
+            forfilter: json
           });
         },
       )
@@ -165,6 +218,17 @@ class ViewMap extends Component {
               <Card>
                 <CardBody>
                   <h2>View Map</h2>
+                  <Row>
+                    <Col>
+                      <CardBody>
+                        <Select
+                          value={this.state.selectedOption}
+                          onChange={this.handleSelect}
+                          options={this.select_items()}
+                        />
+                      </CardBody>
+                    </Col>        
+                  </Row>
                   <Row>
                     <Col style={{ height: '80vh' }}>
                       <Map
