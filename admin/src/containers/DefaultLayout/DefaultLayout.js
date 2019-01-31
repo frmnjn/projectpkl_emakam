@@ -54,8 +54,9 @@ class DefaultLayout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            {/* <AppBreadcrumb appRoutes={routes}/> */}
             <Container fluid>
+            <br></br>
             <h3>Welcome, {sessionStorage.getItem('username')}</h3>
             {
               sessionStorage.getItem('login_session') == "0" ?

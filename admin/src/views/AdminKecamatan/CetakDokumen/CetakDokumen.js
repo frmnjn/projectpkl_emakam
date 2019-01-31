@@ -125,7 +125,12 @@ class CetakDokumen extends Component {
       window.location = url;
       this.modalnosuratclose
     }else{
-      alert("nomor surat permohonan masih kosong!")
+      console.log(sessionStorage.getItem('login_session'))
+      if(sessionStorage.getItem('login_session') == "4"){
+        alert("Proses Dokumen Belum Selesai")
+      }else{
+        alert("nomor surat permohonan masih kosong!");
+      }
     }
   }
 
@@ -150,7 +155,11 @@ class CetakDokumen extends Component {
 
       window.location = url;
     }else{
-      alert("nomor surat perizinan masih kosong!");
+      if(sessionStorage.getItem('login_session') == "4"){
+        alert("Proses Dokumen Belum Selesai")
+      }else{
+        alert("nomor surat perizinan masih kosong!");
+      }
     }
   }
 
