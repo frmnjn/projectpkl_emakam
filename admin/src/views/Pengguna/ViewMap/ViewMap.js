@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 
 import {
+  Button,
   Container,
   Card,
   CardBody,
   Col,
   Row,
+  Modal,
+  ModalBody, 
+  ModalFooter, 
+  ModalHeader,
 } from 'reactstrap';
 import { RingLoader } from 'react-spinners';
 import { Map, InfoWindow, Marker, GoogleApiWrapper, Polygon } from 'google-maps-react';
 import moment from 'moment';
 import Select from 'react-select';
+import ReactTable from "react-table";
+import ReactDOM from "react-dom";
 
 
 const center = {
@@ -30,6 +37,8 @@ class ViewMap extends Component {
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
     this.onClose = this.onClose.bind(this);
+    this.toggleHistory = this.toggleHistory.bind(this);
+    this.toggleHistoryClose = this.toggleHistoryClose.bind(this)
 
     this.state = {
       hasil: [],
@@ -48,12 +57,16 @@ class ViewMap extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onMarkerClick = (props, marker, e) =>
+  onMarkerClick = (props, marker, e) =>{
+    console.log(props)
+    // console.log(marker)
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true
     });
+  }
+    
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
@@ -63,6 +76,20 @@ class ViewMap extends Component {
       });
     }
   };
+
+  toggleHistory(){
+    // console.log(items)
+    this.setState({      
+      history: !this.state.history,
+      // kodeaktif:items.id_makam,
+    })
+  }
+
+  toggleHistoryClose(){
+    this.setState({
+      history: !this.state.history,
+    })
+  }
 
   onMapClick = (props) => {
     if (this.state.showingInfoWindow) {
@@ -78,7 +105,7 @@ class ViewMap extends Component {
     return (
       this.state.showitems.map((hasil, index) => (
         <Marker icon={this.status_terisi(hasil)} position={{ lat: hasil.lat, lng: hasil.lng }} onClick={this.onMarkerClick}
-          name={hasil.kode_makam} >
+          name={hasil.kode_makam} id={hasil.id_makam} >
         </Marker>
 
 
@@ -122,6 +149,16 @@ class ViewMap extends Component {
 
   }
 
+  filter_history(){
+    var data = this.state.penghuni
+    var selectedplace= this.state.selectedPlace
+    var newitem = data.filter(function(item){
+      return item.id_makam==selectedplace.id
+    })
+    console.log(newitem)
+    return newitem
+  }
+
   status_terisi(data) {
     var item = this.state.penghuni
     var today = moment()
@@ -161,6 +198,22 @@ class ViewMap extends Component {
 
 
   }
+
+  onInfoWindowOpen(props, e) {
+    const button = (
+      <button
+        onClick={this.toggleHistory}
+      >
+        detail penghuni
+      </button>
+    );
+    ReactDOM.render(
+      React.Children.only(button),
+      document.getElementById("button")
+    );
+  }
+
+  
 
   componentDidMount() {
     fetch("http://localhost:8000/api/view_all_makam?token=" + sessionStorage.getItem('token'))
@@ -211,6 +264,49 @@ class ViewMap extends Component {
     console.log(this.state.hasil.nama_almarhum);
     return (
       <div>
+                              <Modal isOpen={this.state.history} toggle={this.toggleHistoryClose}
+                                  className={'modal-large ' + this.props.className}>
+                              <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
+                              <ModalBody>
+                              <ReactTable
+                                  data={this.filter_history()}
+                                  defaultPageSize={10}
+                                  columns={[
+                                    {accessor:'id_makam',show:false},
+                                    {
+                                      Header: 'Nama Penghuni Makam',
+                                      accessor: 'nama', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.nama}
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: 'Tanggal Wafat',
+                                      accessor: 'tanggal_wafat', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.tanggal_wafat}
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: 'Tanggal Pemakaman',
+                                      accessor: 'tanggal_pemakaman', // String-based value accessors!
+                                      Cell: row=>(
+                                        <div>{row.row.tanggal_pemakaman}
+                                        </div>
+                                      )
+                                    },
+                                    
+                                  ]}
+                                />
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button color="secondary" onClick={this.toggleHistoryClose}>Close</Button>
+                              </ModalFooter>
+                            </Modal>
+
+                            {/* MODALS */}
         <Container>
           <br />
           <Row>
@@ -237,17 +333,23 @@ class ViewMap extends Component {
                         initialCenter={{ lat: -7.967345, lng: 112.632462 }}
                         zoom={13}
                         style={{ width: '95%' }}
+                        
                       >
                         {this.load()}
 
                         <InfoWindow
                           marker={this.state.activeMarker}
                           visible={this.state.showingInfoWindow}
-                          onClose={this.onClose}>
+                          onClose={this.onClose}
+                          onOpen={e => {
+                            this.onInfoWindowOpen(this.props, e);
+                          }}
+                        >
                           <div>
-                            <h1>{this.state.selectedPlace.name}</h1>
-                            <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
+                            <h3>{this.state.selectedPlace.name}</h3>
                           </div>
+                          <div id="button"></div>
+
                         </InfoWindow>
 
                       </Map>
