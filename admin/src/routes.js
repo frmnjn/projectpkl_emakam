@@ -79,11 +79,16 @@ const CetakDokumen = Loadable({
   loading: Loading,
 });
 
+const ViewMapAdmin = Loadable({
+  loader: () => import('./views/Pengguna/ViewMapAdmin/ViewMapAdmin'),
+  loading: Loading,
+});
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
+  { path: '/ViewMapAdmin', exact: true, name: 'View Map Admin', component: ViewMapAdmin  },
   { path: '/Dokumen', exact: true, name: 'Dokumen', component: Dokumen  },
   { path: '/CetakDokumen', exact: true, name: 'Dokumen', component: CetakDokumen  },
   { path: '/ChangePassword', exact: true, name: 'Change Password', component: ChangePassword  },

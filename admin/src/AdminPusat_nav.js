@@ -35,6 +35,11 @@ export default {
       icon: 'icon-pencil',
     },
     {
+      name: 'Peta Makam',
+      url: '/ViewMapAdmin',
+      icon: 'icon-map',
+    },
+    {
       name: 'Cari Data',
       url: '/Search',
       icon: 'icon-magnifier',

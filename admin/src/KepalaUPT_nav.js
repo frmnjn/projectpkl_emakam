@@ -18,7 +18,12 @@ export default {
       name: sessionStorage.getItem ('login_session') == 5? 'Download Dokumen':'Data Dokumen',
       url: '/CetakDokumen',
       icon: 'icon-chart',
-    }   
+    },
+    {
+      name: 'Peta Makam',
+      url: '/ViewMapAdmin',
+      icon: 'icon-map',
+    },
     // {
     //   name: 'Manajemen Hak Akses',
     //   url: '/ManajemenHakAkses',
