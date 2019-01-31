@@ -25,9 +25,9 @@ const center = {
 };
 
 
-const yicon = { url: 'https://www.iconsdb.com/icons/preview/orange/marker-xxl.png', scaledSize: { width: 32, height: 32 } };
-const ricon = { url: 'https://www.iconsdb.com/icons/preview/persian-red/marker-xxl.png', scaledSize: { width: 32, height: 32 } };
-const gicon = { url: 'https://www.iconsdb.com/icons/preview/green/marker-xxl.png', scaledSize: { width: 32, height: 32 } };
+const yicon = { url: process.env.PUBLIC_URL + '/marker-xxl-y.png', scaledSize: { width: 32, height: 32 } };
+const ricon = { url: process.env.PUBLIC_URL + '/marker-xxl-r.png', scaledSize: { width: 32, height: 32 } };
+const gicon = { url: process.env.PUBLIC_URL + '/marker-xxl-g.png', scaledSize: { width: 32, height: 32 } };
 
 
 
