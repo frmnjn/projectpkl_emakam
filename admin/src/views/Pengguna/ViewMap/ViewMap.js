@@ -8,8 +8,8 @@ import {
   Col,
   Row,
   Modal,
-  ModalBody, 
-  ModalFooter, 
+  ModalBody,
+  ModalFooter,
   ModalHeader,
 } from 'reactstrap';
 import { RingLoader } from 'react-spinners';
@@ -43,13 +43,17 @@ class ViewMap extends Component {
     this.state = {
       hasil: [],
       status: "",
+      tpuselected: false,
+      blok_items_by_tpu: [],
       items: [],
+      itemsTPU: [],
       penghuni: [],
-      showitems:[],
+      showitems: [],
+      showitemsTPU: [],
       forfilter: [],
       showingInfoWindow: false,  //Hides or the shows the infoWindow
       activeMarker: {},          //Shows the active marker upon click
-      selectedPlace: {}          //Shows the infoWindow to the selected place upon a marker
+      selectedPlace: {},          //Shows the infoWindow to the selected place upon a marker
     };
   }
 
@@ -57,7 +61,7 @@ class ViewMap extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onMarkerClick = (props, marker, e) =>{
+  onMarkerClick = (props, marker, e) => {
     console.log(props)
     // console.log(marker)
     this.setState({
@@ -66,7 +70,7 @@ class ViewMap extends Component {
       showingInfoWindow: true
     });
   }
-    
+
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
@@ -77,15 +81,15 @@ class ViewMap extends Component {
     }
   };
 
-  toggleHistory(){
+  toggleHistory() {
     // console.log(items)
-    this.setState({      
+    this.setState({
       history: !this.state.history,
       // kodeaktif:items.id_makam,
     })
   }
 
-  toggleHistoryClose(){
+  toggleHistoryClose() {
     this.setState({
       history: !this.state.history,
     })
@@ -114,23 +118,58 @@ class ViewMap extends Component {
     )
   }
 
+  // options_select() {
+  //   if (this.state.tpuselected) {
+
+  //   } else {
+  //     return this.select_items()
+  //   }
+  // }
+
+  select_items_blok_filtered() {
+    console.log(this.state.blok_items_by_tpu)
+    var newitem = [];
+    this.state.blok_items_by_tpu.map((items) => {
+      newitem = newitem.concat({ value: items.id_blok, label: items.kode_blok })
+    })
+
+    console.log(newitem)
+    return newitem
+  }
+
   select_items() {
     var newitem = [];
-    this.state.forfilter.map((items) => {
-      newitem = newitem.concat({ value: items.id_blok, label: items.kode_blok})
-    })
+    if (this.state.tpuselected) {
+      this.state.blok_items_by_tpu.map((items) => {
+        newitem = newitem.concat({ value: items.id_blok, label: items.kode_blok })
+      })
+    } else {
+      this.state.forfilter.map((items) => {
+        newitem = newitem.concat({ value: items.id_blok, label: items.kode_blok })
+      })
+    }
+
 
     return newitem
   }
 
-  handleSelect = (selectedOption) =>{
+  select_items_TPU() {
+    var newitemTPU = [];
+    this.state.itemsTPU.map((item) => {
+      newitemTPU = newitemTPU.concat({ value: item.id_tpu, label: item.kode_tpu })
+    })
+
+    return newitemTPU
+  }
+
+  handleSelect = (selectedOption) => {
     alert(selectedOption.value)
     // var split = selectedOption.value.split('-');
     // var label = split[3].split('-')
     // alert(split[0]+" - "+split[1]+" - "+split[2])
-    this.setState({ 
+    this.setState({
       selectedOption,
-      showitems:this.filter_items(selectedOption.value),
+      showitems: this.filter_items(selectedOption.value),
       // activeid_makam: split[0],
       // id_makam: split[0],
       // id_tpu:split[1],
@@ -139,21 +178,67 @@ class ViewMap extends Component {
     });
   }
 
-  filter_items(id){
+  handleSelectTPU = (selectedOptionTPU) => {
+    alert(selectedOptionTPU.value)
+    // var split = selectedOption.value.split('-');
+    // var label = split[3].split('-')
+    // alert(split[0]+" - "+split[1]+" - "+split[2])
+    this.setState({
+      selectedOptionTPU,
+      showitems: this.filter_items_TPU(selectedOptionTPU.value),
+      tpuselected: true,
+      // activeid_makam: split[0],
+      // id_makam: split[0],
+      // id_tpu:split[1],
+      // id_kecamatan:split[2],
+      // kode_registrasi:label[0],
+    });
+
+    fetch("http://localhost:8000/api/view_blok_by_idTPU?id_tpu=" + selectedOptionTPU.value)
+      .then(response => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+          this.setState({
+            blok_items_by_tpu: json,
+          });
+        },
+      )
+
+    return this.select_items_blok_filtered()
+  }
+
+  filter_items(id) {
     var newitem
-    newitem = this.state.items.filter(function(item){
+    newitem = this.state.items.filter(function (item) {
       return item.id_blok == id
     })
+
+    console.log(newitem)
 
     return newitem
 
   }
 
-  filter_history(){
+  filter_items_TPU(id) {
+    var newitem
+    newitem = this.state.items.filter(function (item) {
+      return item.id_tpu == id
+    })
+
+    console.log(newitem)
+
+    return newitem
+
+
+  }
+
+  filter_history() {
     var data = this.state.penghuni
-    var selectedplace= this.state.selectedPlace
-    var newitem = data.filter(function(item){
-      return item.id_makam==selectedplace.id
+    var selectedplace = this.state.selectedPlace
+    var newitem = data.filter(function (item) {
+      return item.id_makam == selectedplace.id
     })
     console.log(newitem)
     return newitem
@@ -213,9 +298,20 @@ class ViewMap extends Component {
     );
   }
 
-  
-
   componentDidMount() {
+    fetch("http://localhost:8000/api/view_all_tpu?token=" + sessionStorage.getItem('token'))
+      .then(response => {
+        return response.json()
+      })
+      .then(
+        (json) => {
+          this.setState({
+            itemsTPU: json,
+            showitemsTPU: json,
+          });
+        },
+      )
+
     fetch("http://localhost:8000/api/view_all_makam?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
@@ -243,7 +339,7 @@ class ViewMap extends Component {
         },
       )
 
-      fetch("http://localhost:8000/api/blok/view_search?token=" + sessionStorage.getItem('token'))
+    fetch("http://localhost:8000/api/blok/view_search?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -264,49 +360,49 @@ class ViewMap extends Component {
     console.log(this.state.hasil.nama_almarhum);
     return (
       <div>
-                              <Modal isOpen={this.state.history} toggle={this.toggleHistoryClose}
-                                  className={'modal-large ' + this.props.className}>
-                              <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
-                              <ModalBody>
-                              <ReactTable
-                                  data={this.filter_history()}
-                                  defaultPageSize={10}
-                                  columns={[
-                                    {accessor:'id_makam',show:false},
-                                    {
-                                      Header: 'Nama Penghuni Makam',
-                                      accessor: 'nama', // String-based value accessors!
-                                      Cell: row=>(
-                                        <div>{row.row.nama}
-                                        </div>
-                                      )
-                                    },
-                                    {
-                                      Header: 'Tanggal Wafat',
-                                      accessor: 'tanggal_wafat', // String-based value accessors!
-                                      Cell: row=>(
-                                        <div>{row.row.tanggal_wafat}
-                                        </div>
-                                      )
-                                    },
-                                    {
-                                      Header: 'Tanggal Pemakaman',
-                                      accessor: 'tanggal_pemakaman', // String-based value accessors!
-                                      Cell: row=>(
-                                        <div>{row.row.tanggal_pemakaman}
-                                        </div>
-                                      )
-                                    },
-                                    
-                                  ]}
-                                />
-                              </ModalBody>
-                              <ModalFooter>
-                                <Button color="secondary" onClick={this.toggleHistoryClose}>Close</Button>
-                              </ModalFooter>
-                            </Modal>
+        <Modal isOpen={this.state.history} toggle={this.toggleHistoryClose}
+          className={'modal-large ' + this.props.className}>
+          <ModalHeader toggle={this.state.toggleHistory}>Riwayat Penghuni Makam</ModalHeader>
+          <ModalBody>
+            <ReactTable
+              data={this.filter_history()}
+              defaultPageSize={10}
+              columns={[
+                { accessor: 'id_makam', show: false },
+                {
+                  Header: 'Nama Penghuni Makam',
+                  accessor: 'nama', // String-based value accessors!
+                  Cell: row => (
+                    <div>{row.row.nama}
+                    </div>
+                  )
+                },
+                {
+                  Header: 'Tanggal Wafat',
+                  accessor: 'tanggal_wafat', // String-based value accessors!
+                  Cell: row => (
+                    <div>{row.row.tanggal_wafat}
+                    </div>
+                  )
+                },
+                {
+                  Header: 'Tanggal Pemakaman',
+                  accessor: 'tanggal_pemakaman', // String-based value accessors!
+                  Cell: row => (
+                    <div>{row.row.tanggal_pemakaman}
+                    </div>
+                  )
+                },
 
-                            {/* MODALS */}
+              ]}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleHistoryClose}>Close</Button>
+          </ModalFooter>
+        </Modal>
+
+        {/* MODALS */}
         <Container>
           <br />
           <Row>
@@ -317,13 +413,22 @@ class ViewMap extends Component {
                   <Row>
                     <Col>
                       <CardBody>
+                        <label>TPU</label>
+                        <Select
+                          value={this.state.selectedOptionTPU}
+                          onChange={this.handleSelectTPU}
+                          options={this.select_items_TPU()}
+                        />
+                        <label>Blok</label>
                         <Select
                           value={this.state.selectedOption}
                           onChange={this.handleSelect}
                           options={this.select_items()}
+                          //value={'...'}
                         />
                       </CardBody>
-                    </Col>        
+                      
+                    </Col>
                   </Row>
                   <Row>
                     <Col style={{ height: '80vh' }}>
@@ -333,7 +438,7 @@ class ViewMap extends Component {
                         initialCenter={{ lat: -7.967345, lng: 112.632462 }}
                         zoom={13}
                         style={{ width: '95%' }}
-                        
+
                       >
                         {this.load()}
 

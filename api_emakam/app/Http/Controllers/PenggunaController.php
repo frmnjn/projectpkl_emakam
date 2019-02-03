@@ -19,8 +19,15 @@ class PenggunaController extends Controller{
     // }
 
 	function view_all_makam(){
-        $makam = Makam::all();
-        return response()->json($makam);
+        // $makam = Makam::all();
+        // return response()->json($makam);
+
+        $view = DB::table('makam')
+        ->join('blok_makam', 'blok_makam.id_blok', '=', 'makam.id_blok')
+        ->select('blok_makam.*', 'makam.*')
+        ->get();
+
+        return response()->json($view);
     }
 
     function view_all_pmakam(){
@@ -55,12 +62,12 @@ class PenggunaController extends Controller{
         return response()->json($view);
     }
 
-    function view_tpu_pengguna(){
+    function view_all_tpu(){
         $view = DB::table('tpu')
 		->select('*')
 		->get();
 
-		return $view;
+		return response()->json($view);
         
     }
 
@@ -69,6 +76,16 @@ class PenggunaController extends Controller{
         $view = DB::table('blok_makam')
         ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
         ->select('blok_makam.*', 'tpu.*')
+        ->get();
+        return response()->json($view);
+    }
+
+    function view_blok_by_idTPU(Request $request){
+        $id_tpu=$request->input('id_tpu');
+        $view = DB::table('blok_makam')
+        ->join('tpu', 'blok_makam.id_tpu', '=', 'tpu.id_tpu')
+        ->select('blok_makam.*', 'tpu.*')
+        ->where('tpu.id_tpu','=',$id_tpu)
         ->get();
         return response()->json($view);
     }
