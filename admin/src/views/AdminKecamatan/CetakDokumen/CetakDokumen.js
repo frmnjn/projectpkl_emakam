@@ -70,7 +70,7 @@ class CetakDokumen extends Component {
   }
 
   fetchview(){
-      fetch("http://localhost:8000/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
+      fetch("http://149.28.138.217/api/dokumen/view_siap_cetak?token=" + sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user'))
       .then(response => {
         return response.json()
       })
@@ -108,7 +108,7 @@ class CetakDokumen extends Component {
 
   surat_permohonan = (items) =>{
     if(items.no_surat_permohonan!=null){
-      const url = 'http://localhost:8000/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
+      const url = 'http://149.28.138.217/api/dokumen/cetak_dokumen_permohonan?token=' + sessionStorage.getItem('token')
       + '&tanggal_sekarang=' + items.tanggal_surat_permohonan
       + '&nama_ahli_waris=' + items.nama_pewaris
       + '&alamat_ahli_waris=' + items.alamat_ahli_waris
@@ -138,7 +138,7 @@ class CetakDokumen extends Component {
     // event.preventDefault();
     if(items.no_surat_perizinan!=null){
       //alert(items.no_surat_perizinan)
-      const url = 'http://localhost:8000/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
+      const url = 'http://149.28.138.217/api/dokumen/cetak_dokumen_perizinan?token=' + sessionStorage.getItem('token')
       +'&tanggal_sekarang='+items.tanggal_surat_perizinin          
       +'&nama_ahli_waris='+items.nama_pewaris
       +'&alamat_ahli_waris='+items.alamat_ahli_waris
@@ -164,7 +164,7 @@ class CetakDokumen extends Component {
   }
 
   update_no_surat_perizinan(id) {
-    fetch('http://localhost:8000/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
+    fetch('http://149.28.138.217/api/dokumen/update?token=' + sessionStorage.getItem('token'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

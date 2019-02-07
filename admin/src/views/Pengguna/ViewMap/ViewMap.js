@@ -194,7 +194,7 @@ class ViewMap extends Component {
       // kode_registrasi:label[0],
     });
 
-    fetch("http://localhost:8000/api/view_blok_by_idTPU?id_tpu=" + selectedOptionTPU.value)
+    fetch("http://149.28.138.217/api/view_blok_by_idTPU?id_tpu=" + selectedOptionTPU.value)
       .then(response => {
         return response.json()
       })
@@ -299,7 +299,7 @@ class ViewMap extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/api/view_all_tpu?token=" + sessionStorage.getItem('token'))
+    fetch("http://149.28.138.217/api/view_all_tpu?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -312,7 +312,7 @@ class ViewMap extends Component {
         },
       )
 
-    fetch("http://localhost:8000/api/view_all_makam?token=" + sessionStorage.getItem('token'))
+    fetch("http://149.28.138.217/api/view_all_makam?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -326,7 +326,7 @@ class ViewMap extends Component {
         },
       )
 
-    fetch("http://localhost:8000/api/view_all_pmakam?token=" + sessionStorage.getItem('token'))
+    fetch("http://149.28.138.217/api/view_all_pmakam?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })
@@ -339,7 +339,7 @@ class ViewMap extends Component {
         },
       )
 
-    fetch("http://localhost:8000/api/blok/view_search?token=" + sessionStorage.getItem('token'))
+    fetch("http://149.28.138.217/api/blok/view_search?token=" + sessionStorage.getItem('token'))
       .then(response => {
         return response.json()
       })

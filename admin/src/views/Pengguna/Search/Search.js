@@ -135,7 +135,7 @@ class Search extends Component {
 
   componentDidMount() {
 
-    fetch("http://localhost:8000/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+ sessionStorage.getItem('login_session'))
+    fetch("http://149.28.138.217/api/penghuni_makam/view_search?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+'&role='+ sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
@@ -149,7 +149,7 @@ class Search extends Component {
         },
       )
 
-      fetch("http://localhost:8000/api/blok/view_search?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+ '&role=' + sessionStorage.getItem('login_session'))
+      fetch("http://149.28.138.217/api/blok/view_search?token="+sessionStorage.getItem('token')+'&id_user='+sessionStorage.getItem('id_user')+ '&role=' + sessionStorage.getItem('login_session'))
       .then(response => {
         return response.json()
       })
