@@ -251,7 +251,9 @@ class Search extends Component {
                   columns={[                    
                     {accessor:'nomor_makam',show:false},
                     {accessor:'nama_ahli_waris',show:false},
-                    {accessor:'nik_ahli_waris',show:false},                    
+                    {accessor:'nik_ahli_waris',show:false},      
+                    {accessor:'alamat_ahli_waris',show:false},   
+                    {accessor:'kontak_ahli_waris',show:false},              
                     {
                       Header: 'Penghuni Makam',
                       accessor: 'nama', // String-based value accessors!

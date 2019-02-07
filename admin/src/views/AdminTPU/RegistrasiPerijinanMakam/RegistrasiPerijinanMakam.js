@@ -143,6 +143,7 @@ class RegistrasiPerijinanMakam extends Component {
     data.append('email',this.state.email);
     data.append('id_tpu',this.state.id_tpu);
     data.append('id_kecamatan',this.state.id_kecamatan);
+    console.log('id_kecamatan'+this.state.id_kecamatan)
     data.append('tgllhr_ahli_waris',this.state.tgllhr_ahli_waris);
     data.append('pekerjaan_ahli_waris',this.state.pekerjaan);
 
@@ -176,7 +177,7 @@ class RegistrasiPerijinanMakam extends Component {
         isLoaded: false
       })
       if(responseJson.message==null){
-        console.log(responseJson.id_penghuni_makam)
+        //console.log(responseJson.id_penghuni_makam)
         data.append('id_penghuni_makam',responseJson.id_penghuni_makam);
         data.append('kode_tpu',this.state.kode_registrasi);
         fetch('http://localhost:8000/api/dokumen/upload?token=' + sessionStorage.getItem('token'), {
@@ -190,6 +191,7 @@ class RegistrasiPerijinanMakam extends Component {
             }
             this.props.history.push('/Dokumen');
           })
+          //console.log(data.value)
       }else{
         alert("Pembuatan dokumen gagal")
       }

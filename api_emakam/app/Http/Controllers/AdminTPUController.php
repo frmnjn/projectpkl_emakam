@@ -27,7 +27,7 @@ class AdminTPUController extends Controller{
 		->join('blok_makam', 'makam.id_blok', '=', 'blok_makam.id_blok')
 		->join('tpu', 'tpu.id_tpu', '=', 'blok_makam.id_tpu')
 		->join('role_tpu','role_tpu.id_tpu','=', 'blok_makam.id_tpu')
-		->select('blok_makam.*', 'makam.*','tpu.nama_tpu','tpu.id_tpu')
+		->select('blok_makam.*', 'makam.*','tpu.nama_tpu','tpu.id_tpu','tpu.id_kecamatan')
 		->where('role_tpu.id_user','=',$id_user)
 		->orderBy('id_makam','desc')
 		->get();

@@ -632,7 +632,8 @@ class Search extends Component {
                       },
                       {
                         Header: 'Status',
-                        accessor: 'status', // String-based value accessors!
+                        accessor: 'status', // String-based value accessors!,
+                        width: 300
                       },
                       // {
                       //   Header: 'Track Proggression',
