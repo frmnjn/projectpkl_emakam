@@ -367,6 +367,12 @@ class ViewMapAdmin extends Component {
             <ReactTable
               data={this.filter_history()}
               defaultPageSize={10}
+              defaultSorted={[
+                {
+                  id: "tanggal_pemakaman",
+                  desc: true
+                }
+              ]}
               columns={[
                 { accessor: 'id_makam', show: false },
                 {

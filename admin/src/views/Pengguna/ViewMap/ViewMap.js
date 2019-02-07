@@ -163,7 +163,7 @@ class ViewMap extends Component {
   }
 
   handleSelect = (selectedOption) => {
-    alert(selectedOption.value)
+    //alert(selectedOption.value)
     // var split = selectedOption.value.split('-');
     // var label = split[3].split('-')
     // alert(split[0]+" - "+split[1]+" - "+split[2])
@@ -179,7 +179,7 @@ class ViewMap extends Component {
   }
 
   handleSelectTPU = (selectedOptionTPU) => {
-    alert(selectedOptionTPU.value)
+    //alert(selectedOptionTPU.value)
     // var split = selectedOption.value.split('-');
     // var label = split[3].split('-')
     // alert(split[0]+" - "+split[1]+" - "+split[2])
@@ -367,6 +367,12 @@ class ViewMap extends Component {
             <ReactTable
               data={this.filter_history()}
               defaultPageSize={10}
+              defaultSorted={[
+                {
+                  id: "tanggal_pemakaman",
+                  desc: true
+                }
+              ]}
               columns={[
                 { accessor: 'id_makam', show: false },
                 {
