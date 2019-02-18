@@ -90,8 +90,8 @@ class tpu extends Component {
       namaaktif: null,
       kecamatanaktif: null,
       kodeaktif:null,
-      lat:null,
-      lng:null,
+      lat:-8.032373,
+      lng:112.642028,
 
       formqty: '1',
 
